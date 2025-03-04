@@ -5,6 +5,8 @@ class Scan_book_adding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+    return Scaffold(
+      body: Container(),
+    );
   }
 }
