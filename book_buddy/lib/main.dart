@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Scaffold(
-        appBar: AppBar(title: const Text('Simple Widget Example')),
         body: Center(
           child: const Text(
             'Hello, Flutter!',
