@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_buddy/register.dart';
+import 'package:book_buddy/screens/register.dart';
 
 void main() {
   runApp(const MainApp());
