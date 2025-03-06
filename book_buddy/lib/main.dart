@@ -17,10 +17,17 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: const Text(
+          children: [const Text(
             'Hello, Flutter!',
             style: TextStyle(fontSize: 24),
-          ),
+          ),body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+             Expanded(child: Image.asset('book_buddy_logo.png'))
+          ],
+        ),
+      ),]
         ),
       ),
     );
