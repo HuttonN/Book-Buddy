@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
       home: Scaffold(
+        appBar: AppBar(title: const Text('Simple Widget Example')),
         body: Center(
-          child: Text('Hello World!'),
+          child: const Text(
+            'Hello, Flutter!',
+            style: TextStyle(fontSize: 24),
+          ),
         ),
       ),
     );
