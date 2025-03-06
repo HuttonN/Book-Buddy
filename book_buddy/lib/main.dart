@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(Loading_page());
+  runApp(MyApp());
 }
 
-class Loading_page extends StatelessWidget {
-  const Loading_page({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  
-      body: Container()
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
     );
   }
 }
