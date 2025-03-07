@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 51, 243, 33)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(92, 216, 243, 245)),
         useMaterial3: true,
       ),
       home: MyHomePage(),  // Set the home page to MyHomePage
