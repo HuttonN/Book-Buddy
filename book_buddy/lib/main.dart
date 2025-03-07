@@ -1,3 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_option';
+
 import 'package:flutter/material.dart';
 import 'screens/library.dart';
 import 'screens/scan_book.dart';
