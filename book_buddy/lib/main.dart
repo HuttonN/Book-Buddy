@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_option';
+import 'package:book_buddy/firebase_options.dart';
 
 import 'package:flutter/material.dart';
 import 'screens/library.dart';
