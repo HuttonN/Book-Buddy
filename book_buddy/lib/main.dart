@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: Image.asset('assets/logo_no_words.png'),  
+          child: Image.asset('assets/logo_with_words.png'),  
         ),
       ),
     );
