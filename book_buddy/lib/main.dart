@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(92, 216, 243, 245)),
         useMaterial3: true,
       ),
-      home: MyHomePage(),  // Set the home page to MyHomePage
+      home: StartUpPage(),  
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class StartUpPage extends StatelessWidget {
+  const StartUpPage ({super.key});
 
   @override
   Widget build(BuildContext context) {
