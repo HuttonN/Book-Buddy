@@ -21,6 +21,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  #assets:
-   # - assets/logo_no_words.png
-    #- assets/logo_with_words.png
+  assets:
+    - assets/logo_no_words.png
+    - assets/logo_with_words.png
