@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Scan_book extends StatelessWidget {
-  const Scan_book({super.key});
+class ScanBook extends StatelessWidget {
+  const ScanBook({super.key});
 
   @override
   Widget build(BuildContext context) {
