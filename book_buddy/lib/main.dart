@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_buddy/login.dart';
+import 'package:book_buddy/screens/login.dart';
 
 void main() {
   runApp(MyApp());
