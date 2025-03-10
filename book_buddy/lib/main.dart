@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:book_buddy/firebase_options.dart';
 
 import 'package:flutter/material.dart';
-import 'package:book_buddy/screens/register.dart';
+import 'package:book_buddy/screens/login.dart';
 
 // Following block is required to ensure Flutter's widget system and Firebase are initialised before the application starts
 void main() async {
@@ -57,7 +57,7 @@ class StartUpPage extends StatelessWidget {
                 // Navigate to the Login page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Register()),  // Navigate to LoginPage // NH: changed to navigate to register page to test
+                  MaterialPageRoute(builder: (context) => Login()),  // Navigate to LoginPage
                 );
               },
               style: ElevatedButton.styleFrom(
