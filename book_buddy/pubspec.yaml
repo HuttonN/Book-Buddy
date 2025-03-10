@@ -21,3 +21,4 @@ flutter:
   assets:
     - assets/logo_no_words.png
     - assets/logo_with_words.png
+    - assets/settings_icon.png
