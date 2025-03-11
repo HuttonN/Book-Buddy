@@ -28,7 +28,7 @@ class StartUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(92, 216, 243, 245),
+      backgroundColor: Color.fromARGB(255, 216, 243, 245),
       body: Align(  // Align everything at the top
         alignment: Alignment.topCenter,  // Move everything to the top
         child: Column(
