@@ -1,26 +1,40 @@
 import 'package:flutter/material.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({super.key});
+// class Settings extends StatefulWidget {
+//   const Settings({super.key});
 
-  @override
-  _SettingsState createState() => _SettingsState();
+//   @override
+//   _SettingsState createState() => _SettingsState();
+// }
+
+// /*
+// State for light or dark mode.
+// Generative AI was used for generating this toggle
+// between light and dark mode.
+// */
+class Settings extends StatefulWidget {
+  final bool isDarkMode;
+  final Function(bool) toggleDarkMode; 
+
+   const Settings({
+    required this.isDarkMode,
+    required this.toggleDarkMode,
+    super.key,
+   });
+
+   @override 
+   _SettingsState createState() => _SettingsState();
 }
 
-/*
-State for light or dark mode.
-Generative AI was used for generating this toggle
-between light and dark mode.
-*/
-class _SettingsState extends State<Settings> {
-  bool isDarkMode = false;  
+class _SettingsState extends State<Settings>{
+  late bool _isDarkMode;
 
-   // Method to toggle dark mode
-  void toggleDarkMode(bool value) {
-    setState(() {
-      isDarkMode = value;  // Set state when the switch is toggled
-    });
+  @override
+  void initState(){
+    super.initState();
+    _isDarkMode = widget.isDarkMode;
   }
+
   
 
   @override
@@ -28,12 +42,13 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
-        backgroundColor: isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
-        iconTheme: IconThemeData(color: isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
+        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
         )),
       
-      backgroundColor: isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
+      backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
+      
       body: Align(
         alignment: Alignment.topCenter,
         child: Column(
@@ -44,14 +59,14 @@ class _SettingsState extends State<Settings> {
                 SizedBox(
                   width: 100,
                   height: 100,
-                  child: isDarkMode ? Image.asset('assets/settings_icon_dark_mode.png'): Image.asset('assets/settings_icon_light_mode.png'),
+                  child: _isDarkMode ? Image.asset('assets/settings_icon_dark_mode.png'): Image.asset('assets/settings_icon_light_mode.png'),
                 ),
                 Text(
                   'Settings',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: _isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
               ],
@@ -64,10 +79,10 @@ class _SettingsState extends State<Settings> {
               width: 200,
               height: 274,
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
+                color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: isDarkMode ? Colors.white : Color.fromARGB(255, 216, 238, 245),  // Border color
+                  color: _isDarkMode ? Colors.white : Color.fromARGB(255, 216, 238, 245),  // Border color
                   width: 1,  // Border width
                 ),
               boxShadow: [
@@ -89,13 +104,13 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Text('Email', 
                                 style: TextStyle(
-                                  color: isDarkMode ? Colors.black : Colors.white)),
+                                  color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
 
                   // Add space
@@ -105,13 +120,13 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Text('First Name', 
                                 style: TextStyle(
-                                  color: isDarkMode ? Colors.black : Colors.white)),
+                                  color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
 
                   // Add space
@@ -121,13 +136,13 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Text('Surname', 
                                 style: TextStyle(
-                                  color: isDarkMode ? Colors.black : Colors.white)),
+                                  color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
 
                   // Add space
@@ -138,7 +153,7 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
@@ -146,15 +161,20 @@ class _SettingsState extends State<Settings> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          isDarkMode ? 'Dark Mode' : 'Light Mode',  // Conditionally change text
+                          _isDarkMode ? 'Dark Mode' : 'Light Mode',  // Conditionally change text
                           style: TextStyle(
-                            color:isDarkMode ? Colors.black: Colors.white),
+                            color:_isDarkMode ? Colors.black: Colors.white),
                         ),
                         Transform.scale(
                           scale: 0.7,
                           child: Switch(
-                            value: isDarkMode,
-                            onChanged: toggleDarkMode,  // When the switch is toggled, update state
+                            value: _isDarkMode,
+                            onChanged: (value){
+                              setState((){
+                                _isDarkMode = value;
+                              });
+                              widget.toggleDarkMode(value);
+                            },  // When the switch is toggled, update state
                             activeColor: Colors.blue,  // Color of the switch when active
                           ),
                         )

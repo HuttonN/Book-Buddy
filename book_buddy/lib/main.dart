@@ -6,8 +6,27 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+/*
+AI was used to help make the light/dark mode settings.
+Firstly by helping make the toggle in the settings page, then by
+making the settings global.
+*/
+class _MyAppState extends State<MyApp>{
+  bool isDarkMode = false;
+
+  // Method to toggle to dark mode
+  void toggleDarkMode(bool value){
+    setState((){
+      isDarkMode = value;
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -17,18 +36,24 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(92, 216, 243, 245)),
         useMaterial3: true,
       ),
-      home: StartUpPage(),  
+      home: StartUpPage(
+        isDarkMode: isDarkMode,
+        toggleDarkMode: toggleDarkMode,
+      ),  
     );
   }
 }
 
 class StartUpPage extends StatelessWidget {
-  const StartUpPage ({super.key});
+  final bool isDarkMode;
+  final Function(bool) toggleDarkMode;
+
+  const StartUpPage ({super.key, required this.isDarkMode, required this.toggleDarkMode});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 216, 243, 245),
+      backgroundColor: isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
       body: Align(  // Align everything at the top
         alignment: Alignment.topCenter,  // Move everything to the top
         child: Column(
@@ -74,7 +99,7 @@ class StartUpPage extends StatelessWidget {
                 // Navigate to the Login page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Settings()),  // Navigate to LoginPage
+                  MaterialPageRoute(builder: (context) => Settings(isDarkMode: isDarkMode, toggleDarkMode:  toggleDarkMode,)),  // Navigate to LoginPage
                 );
               },
               style: ElevatedButton.styleFrom(
