@@ -117,7 +117,7 @@ class StartUpPage extends StatelessWidget {
                 foregroundColor: Colors.black, // Text color
                 shadowColor: Colors.blueAccent, // Shadow color (optional)
               ),
-              child: Text('settings'),
+              child: Text('Temporary Navigation - settings'),
             ),
           ],
         ),
