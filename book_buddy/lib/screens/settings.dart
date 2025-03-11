@@ -38,14 +38,14 @@ class _SettingsState extends State<Settings> {
                 SizedBox(
                   width: 100,
                   height: 100,
-                  child: Image.asset('assets/settings_icon.png'),
+                  child: isDarkMode ? Image.asset('assets/settings_icon_dark_mode.png'): Image.asset('assets/settings_icon_light_mode.png'),
                 ),
                 Text(
                   'Settings',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
               ],
@@ -58,7 +58,7 @@ class _SettingsState extends State<Settings> {
               width: 200,
               height: 270,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 216, 238, 245),
+                color: isDarkMode ? Colors.black : Color.fromARGB(255, 216, 238, 245),
                 borderRadius: BorderRadius.circular(10),
               ),
               alignment: Alignment.center,
@@ -71,11 +71,13 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text('Email', style: TextStyle(color: Colors.white)),
+                    child: Text('Email', 
+                                style: TextStyle(
+                                  color: isDarkMode ? Colors.black : Colors.white)),
                   ),
 
                   // Add space
@@ -85,11 +87,13 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text('First Name', style: TextStyle(color: Colors.white)),
+                    child: Text('First Name', 
+                                style: TextStyle(
+                                  color: isDarkMode ? Colors.black : Colors.white)),
                   ),
 
                   // Add space
@@ -99,21 +103,24 @@ class _SettingsState extends State<Settings> {
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text('Surname', style: TextStyle(color: Colors.white)),
+                    child: Text('Surname', 
+                                style: TextStyle(
+                                  color: isDarkMode ? Colors.black : Colors.white)),
                   ),
 
                   // Add space
                   SizedBox(height: 30),
 
+                  //Light/dark mode container
                   Container(
                     width: 150,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
@@ -122,7 +129,8 @@ class _SettingsState extends State<Settings> {
                       children: [
                         Text(
                           isDarkMode ? 'Dark Mode' : 'Light Mode',  // Conditionally change text
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                            color:isDarkMode ? Colors.black: Colors.white),
                         ),
                         Transform.scale(
                           scale: 0.7,
@@ -135,6 +143,7 @@ class _SettingsState extends State<Settings> {
                       ],
                     ),
                   ),
+
                   // Add space
                   SizedBox(height: 30)
                 ],

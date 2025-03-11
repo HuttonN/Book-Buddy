@@ -21,4 +21,5 @@ flutter:
   assets:
     - assets/logo_no_words.png
     - assets/logo_with_words.png
-    - assets/settings_icon.png
+    - assets/settings_icon_light_mode.png
+    - assets/settings_icon_dark_mode.png
