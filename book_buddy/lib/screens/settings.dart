@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class Settings extends StatefulWidget {
-//   const Settings({super.key});
-
-//   @override
-//   _SettingsState createState() => _SettingsState();
-// }
-
-// /*
-// State for light or dark mode.
-// Generative AI was used for generating this toggle
-// between light and dark mode.
-// */
 class Settings extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -26,6 +14,7 @@ class Settings extends StatefulWidget {
    _SettingsState createState() => _SettingsState();
 }
 
+
 class _SettingsState extends State<Settings>{
   late bool _isDarkMode;
 
@@ -34,8 +23,6 @@ class _SettingsState extends State<Settings>{
     super.initState();
     _isDarkMode = widget.isDarkMode;
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

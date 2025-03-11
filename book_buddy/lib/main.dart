@@ -63,7 +63,7 @@ class StartUpPage extends StatelessWidget {
             SizedBox(
               width: 500,
               height: 500,
-              child: Image.asset('assets/logo_with_words.png'),
+              child: isDarkMode ? Image.asset('assets/logo_words_dark_mode.png') : Image.asset('assets/logo_words_light_mode.png'),
             ),
 
             // Add space between the logo and the button.
@@ -87,9 +87,11 @@ class StartUpPage extends StatelessWidget {
                 minimumSize: Size(200, 70),  
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),  
                 textStyle: TextStyle(fontSize: 18),  // Font size of the text
-                backgroundColor: Color.fromARGB(255, 216, 238, 245), // Button background color
-                foregroundColor: Colors.black, // Text color
-                shadowColor: Colors.blueAccent, // Shadow color (optional)
+                backgroundColor: isDarkMode ? Colors.black : Color.fromARGB(255, 216, 238, 245), // Button background color
+                foregroundColor: isDarkMode ? Colors.white : Colors.black, // Text colour
+                side: BorderSide(color: isDarkMode ? Colors.white : Color.fromARGB(255, 216, 238, 245),
+                                  width: 2)
+
               ),
               child: Text('Get Started!'),
             ),
