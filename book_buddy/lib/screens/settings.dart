@@ -26,8 +26,14 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      child: AppBar(
+        backgroundColor: isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+        elevation: 5 ,
+        iconTheme: IconThemeData(color: isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
+        )),
+      
       backgroundColor: isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
-
       body: Align(
         alignment: Alignment.topCenter,
         child: Column(
@@ -56,11 +62,23 @@ class _SettingsState extends State<Settings> {
 
             Container(
               width: 200,
-              height: 270,
+              height: 274,
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.black : Color.fromARGB(255, 216, 238, 245),
+                color: isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
                 borderRadius: BorderRadius.circular(10),
-              ),
+                border: Border.all(
+                  color: isDarkMode ? Colors.white : Color.fromARGB(255, 216, 238, 245),  // Border color
+                  width: 1,  // Border width
+                ),
+              boxShadow: [
+                BoxShadow(
+                color: Color.fromARGB(90, 0, 0, 0),  
+                offset: Offset(0,5),  
+                blurRadius: 6,  
+                spreadRadius: 2,  
+                ),
+              ],
+            ),
               alignment: Alignment.center,
               child: Column(
                 children: [
@@ -125,7 +143,7 @@ class _SettingsState extends State<Settings> {
                     ),
                     alignment: Alignment.center,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           isDarkMode ? 'Dark Mode' : 'Light Mode',  // Conditionally change text
