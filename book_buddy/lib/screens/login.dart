@@ -124,7 +124,8 @@ class _LoginState extends State<Login> {
                       const InputDecoration(
                             labelText: 'Password',
                             border: OutlineInputBorder(),
-                      )
+                      ),
+                      obscureText: true,
                   ),
 
                   // Add space
