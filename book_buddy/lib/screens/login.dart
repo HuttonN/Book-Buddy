@@ -1,27 +1,166 @@
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:toast/toast.dart';
+import 'package:book_buddy/screens/register.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+// Define two TextEditingController instances to be able work with TextFields for email and password
+class _LoginState extends State<Login> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> loginUser() async {
+    String message = '' ;
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
+        password: passwordController.text.trim() // see line above
+        ); 
+        Future.delayed(const Duration(seconds: 3), () {
+          print('success');
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => Register())
+          );
+        });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'INVALID_LOGIN_CREDENTIALS'){
+        message = 'Invalid login credentials.';
+      } else {
+        message = e.code;
+      }
+      //Toast.show(
+        //message,
+        //duration: Toast.lengthShort
+      //);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      child: AppBar(
+        backgroundColor: Color.fromARGB(255, 223, 245, 252),
+        elevation: 5 ,
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 20, 9, 45) ),
+        )
+      ),
       backgroundColor: Color.fromARGB(92, 216, 243, 245),
       body: Align(  // Align everything at the top
         alignment: Alignment.topCenter,  // Move everything to the top
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
           children: [
-            // Add in the logo.
-            SizedBox(
-              width: 500,
-              height: 500,
-              child: Image.asset('assets/logo_with_words.png'),
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Image.asset('assets/logo_no_words_light_mode.png'),
+                ),
+                Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
-
+            // Add in the logo.
+            
             // Add space between the logo and the button.
             SizedBox(height: 10),  
+
+            Container(
+              width: 200,
+              height: 274,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 223, 245, 252),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Color.fromARGB(255, 216, 238, 245),  // Border color
+                  width: 1,  // Border width
+                ),
+              boxShadow: [
+                BoxShadow(
+                color: Color.fromARGB(90, 0, 0, 0),  
+                offset: Offset(0,5),  
+                blurRadius: 6,  
+                spreadRadius: 2,  
+                ),
+              ],
+            ),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  // Add space
+                  SizedBox(height: 30),
+
+                  TextField(
+                    controller: emailController,
+                    decoration: 
+                      const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                      )
+                  ),
+
+                  // Add space
+                  SizedBox(height: 30),
+
+                  TextField(
+                    controller: passwordController,
+                    decoration: 
+                      const InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(),
+                      )
+                  ),
+
+                  // Add space
+                  SizedBox(height: 30),
+
+                  //Light/dark mode container
+                  Container(
+                    width: 150,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: loginUser,
+                            child: Text("Sign In")
+                          ),
+                        ],
+                    ),
+                  ),
+
+                  // Add space
+                  SizedBox(height: 30)
+                ],
+              ),
+            ),
+
+           SizedBox(height: 30),
+
+           Text("Or"),
+
+           SizedBox(height: 30),
 
             // Add the "Get Started!" button and navigate to Login page.
             ElevatedButton(
