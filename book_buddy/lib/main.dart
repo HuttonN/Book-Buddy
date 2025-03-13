@@ -1,3 +1,4 @@
+import 'package:book_buddy/screens/home_page2.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:book_buddy/firebase_options.dart';
 
@@ -109,7 +110,7 @@ class StartUpPage extends StatelessWidget {
                 // Navigate to the Login page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Settings(isDarkMode: isDarkMode, toggleDarkMode:  toggleDarkMode,)),  // Navigate to LoginPage
+                  MaterialPageRoute(builder: (context) => HomePage2(isDarkMode: isDarkMode, toggleDarkMode:  toggleDarkMode,)),  // Navigate to LoginPage
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -125,7 +126,7 @@ class StartUpPage extends StatelessWidget {
                 foregroundColor: Colors.black, // Text color
                 shadowColor: Colors.blueAccent, // Shadow color (optional)
               ),
-              child: Text('Temporary Navigation - settings'),
+              child: Text('Temporary Navigation - home'),
             ),
           ],
         ),
