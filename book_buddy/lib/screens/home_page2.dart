@@ -1,4 +1,7 @@
 import 'package:book_buddy/screens/library.dart';
+import 'package:book_buddy/screens/scan_book.dart';
+import 'package:book_buddy/screens/settings.dart';
+import 'package:book_buddy/screens/tbr.dart';
 import 'package:flutter/material.dart';
 
 class HomePage2 extends StatefulWidget {
@@ -68,17 +71,18 @@ class _HomePage2State extends State<HomePage2>{
                     '[first name],\nYOU HAVE\n COMPLETED\n[...]\nBOOKS THIS\n YEAR!!!',
                     textAlign: TextAlign.center,  
                     style: TextStyle(
-                    color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
-                    fontSize: 16, 
+                      color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
+                      fontSize: 16, 
                     ),
                   ),
                   ],
               ),
             ),
 
+            // Container for navigations.
             Container(
               width: 200,
-              height: 200,
+              height: 180,
               decoration: BoxDecoration(
                 color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
                 borderRadius: BorderRadius.circular(10),
@@ -96,25 +100,216 @@ class _HomePage2State extends State<HomePage2>{
               ],
             ),
             child: Column(
+
+              //Navigations to different pages.
               children: [
+
+                SizedBox(height: 10),
+
+                //My Library.
                 TextButton(onPressed: (){
                   Navigator.push(
                     context, 
                     MaterialPageRoute(builder: (context) => Library(),));
                   }, child: 
-                    Container(color: Colors.black, 
+                    Container( 
                       width:180, 
                       height: 20, 
                       alignment: Alignment.center,
-                      child: Text('My Library', style: TextStyle(fontSize: 10)))),
-                Text('lib'),
-                Text('My TBR'),
-                Text('Scan Book'),
-                Text('Settings')
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(90, 0, 0, 0),  
+                            offset: Offset(0,5),  
+                            blurRadius: 6,  
+                            spreadRadius: 0.1,  
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+
+                          SizedBox(width: 2),
+
+                          Icon(
+                            Icons.menu_book,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+
+                          SizedBox(width: 45),
+
+                          Expanded(
+                            child: 
+                              Text('My Library', 
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10)
+                              )
+                          )
+                        ],
+                      )
+                    )
+                  ),
+
+                SizedBox(height: 10),
+
+                //My TBR.
+                TextButton(onPressed: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => TBR(),));
+                  }, child: 
+                    Container( 
+                      width:180, 
+                      height: 20, 
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(90, 0, 0, 0),  
+                            offset: Offset(0,5),  
+                            blurRadius: 6,  
+                            spreadRadius: 0.1,  
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          SizedBox(width: 2),
+
+                          Icon(
+                            Icons.bookmark,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+
+                          SizedBox(width: 45),
+
+                          Expanded(
+                            child: 
+                              Text('My TBR', 
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10)
+                              )
+                          )
+                        ],
+                      )
+                    )
+                  ),
+
+                SizedBox(height: 10),
+
+                //Scan Book.
+                TextButton(onPressed: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => ScanBook(),));
+                  }, child: 
+                    Container( 
+                      width:180, 
+                      height: 20, 
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(90, 0, 0, 0),  
+                            offset: Offset(0,5),  
+                            blurRadius: 6,  
+                            spreadRadius: 0.1,  
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          SizedBox(width: 2),
+
+                          Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+
+                          SizedBox(width: 45),
+
+                          Expanded(
+                            child: 
+                              Text('Scan Book', 
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10)
+                              )
+                          )
+                        ],
+                      )
+                    )
+                  ),
+
+                SizedBox(height: 10),
+
+                //Settings.
+                TextButton(onPressed: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => Settings(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode,),));
+                  }, child: 
+                    Container( 
+                      width:180, 
+                      height: 20, 
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(90, 0, 0, 0),  
+                            offset: Offset(0,5),  
+                            blurRadius: 5,  
+                            spreadRadius: 0.1,  
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          SizedBox(width: 2),
+
+                          Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+
+                          SizedBox(width: 45),
+
+                          Expanded(
+                            child: 
+                              Text('Settings', 
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10)
+                              )
+                          )
+                        ],
+                      )
+                    )
+                  ),
               ],
             )
             )
-
           ],
         ),
       ),
