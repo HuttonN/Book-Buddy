@@ -222,7 +222,12 @@ class _HomePage2State extends State<HomePage2>{
                 TextButton(onPressed: (){
                   Navigator.push(
                     context, 
-                    MaterialPageRoute(builder: (context) => ScanBook(),));
+                    MaterialPageRoute(builder: (context) => ScanBook(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+                    )
+                    )
+                  );
                   }, child: 
                     Container( 
                       width:180, 
