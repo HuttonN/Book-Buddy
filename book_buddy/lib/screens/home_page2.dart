@@ -110,7 +110,10 @@ class _HomePage2State extends State<HomePage2>{
                 TextButton(onPressed: (){
                   Navigator.push(
                     context, 
-                    MaterialPageRoute(builder: (context) => Library(),));
+                    MaterialPageRoute(builder: (context) => Library(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode,
+                    ),));
                   }, child: 
                     Container( 
                       width:180, 
