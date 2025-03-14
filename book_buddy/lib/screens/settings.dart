@@ -32,6 +32,15 @@ class _SettingsState extends State<Settings>{
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
         iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
+
+        //Save the state of light/dark mode when the back button is pressed.
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              widget.toggleDarkMode(_isDarkMode);  // Save the dark mode state.
+              Navigator.pop(context, _isDarkMode);  // Go back and pass the updated state.
+            },
+          ),
         )),
       
       backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),

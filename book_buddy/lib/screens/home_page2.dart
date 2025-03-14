@@ -260,11 +260,25 @@ class _HomePage2State extends State<HomePage2>{
                 SizedBox(height: 10),
 
                 //Settings.
-                TextButton(onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => Settings(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode,),));
-                  }, child: 
+                TextButton(
+                   onPressed: () async {
+                final updatedDarkMode = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Settings(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode,
+                    ),
+                  ),
+                );
+
+                // Update the state with the new dark mode value
+                if (updatedDarkMode != null) {
+                  setState(() {
+                    _isDarkMode = updatedDarkMode;
+                  });
+                }
+              },child: 
                     Container( 
                       width:180, 
                       height: 20, 
