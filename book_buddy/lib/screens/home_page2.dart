@@ -136,7 +136,7 @@ class _HomePage2State extends State<HomePage2>{
 
                           Icon(
                             Icons.menu_book,
-                            color: Colors.white,
+                            color: _isDarkMode ? Colors.black : Colors.white,
                             size: 20,
                           ),
 
@@ -146,7 +146,7 @@ class _HomePage2State extends State<HomePage2>{
                             child: 
                               Text('My Library', 
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: _isDarkMode ? Colors.black : Colors.white,
                                   fontSize: 10)
                               )
                           )
@@ -187,7 +187,7 @@ class _HomePage2State extends State<HomePage2>{
 
                           Icon(
                             Icons.bookmark,
-                            color: Colors.white,
+                            color: _isDarkMode ? Colors.black : Colors.white,
                             size: 20,
                           ),
 
@@ -197,7 +197,7 @@ class _HomePage2State extends State<HomePage2>{
                             child: 
                               Text('My TBR', 
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: _isDarkMode ? Colors.black : Colors.white,
                                   fontSize: 10)
                               )
                           )
@@ -238,7 +238,7 @@ class _HomePage2State extends State<HomePage2>{
 
                           Icon(
                             Icons.camera_alt,
-                            color: Colors.white,
+                            color: _isDarkMode ? Colors.black : Colors.white,
                             size: 20,
                           ),
 
@@ -248,7 +248,7 @@ class _HomePage2State extends State<HomePage2>{
                             child: 
                               Text('Scan Book', 
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: _isDarkMode ? Colors.black : Colors.white,
                                   fontSize: 10)
                               )
                           )
@@ -289,7 +289,7 @@ class _HomePage2State extends State<HomePage2>{
 
                           Icon(
                             Icons.settings,
-                            color: Colors.white,
+                            color: _isDarkMode ? Colors.black : Colors.white,
                             size: 20,
                           ),
 
@@ -299,7 +299,7 @@ class _HomePage2State extends State<HomePage2>{
                             child: 
                               Text('Settings', 
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: _isDarkMode ? Colors.black : Colors.white,
                                   fontSize: 10)
                               )
                           )
