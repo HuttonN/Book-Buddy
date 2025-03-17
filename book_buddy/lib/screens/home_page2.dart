@@ -18,6 +18,71 @@ class HomePage2 extends StatefulWidget {
    _HomePage2State createState() => _HomePage2State();
 }
 
+class NavBar extends StatelessWidget {
+  final int currentIndex;
+  final Function(int) onTap;
+
+  const NavBar({super.key, required this.onTap, required this.currentIndex});
+
+ @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black, // Black background
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+    
+    child: BottomNavigationBar(
+        backgroundColor: Colors.transparent, 
+        selectedItemColor: Colors.white, 
+        unselectedItemColor: Colors.white70, 
+        showSelectedLabels: false, 
+        showUnselectedLabels: false, 
+        currentIndex: currentIndex, 
+        onTap: onTap, 
+        type: BottomNavigationBarType.fixed,  
+
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book),
+          label: "", 
+        ),
+        
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark),
+          label: "", 
+        ),
+        
+        BottomNavigationBarItem(
+            icon: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black, // Black circle for camera button
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
+            ),
+            label: "", 
+        ),
+        
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: "", 
+        ),
+        
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "", 
+        ),
+      ],
+    ),
+    );
+  }
+}
+
 
 class _HomePage2State extends State<HomePage2>{
   late bool _isDarkMode;
@@ -341,6 +406,48 @@ class _HomePage2State extends State<HomePage2>{
             )
           ],
         ),
+      ),
+      bottomNavigationBar: NavBar(
+        currentIndex: 4,
+        onTap: (index) {
+          Widget screen;
+          switch (index) {
+            case 0:
+              screen = Library(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+              );
+              break;
+            case 1:
+              screen = TBR(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+              );
+              break;
+            case 2:
+              screen = ScanBook(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+                    );
+              break;
+            case 3:
+              screen = Settings(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+              );
+              break;
+            case 4:
+            default:
+              screen = HomePage2(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+              );
+          }
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => screen),
+            );
+        },
       ),
     );
   }
