@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User? user = auth.currentUser;
+final User currentUser = FirebaseAuth.instance.currentUser!;
 
 class Settings extends StatefulWidget {
   final bool isDarkMode;
@@ -95,7 +101,7 @@ class _SettingsState extends State<Settings>{
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text('Email', 
+                    child: Text("$currentUser", 
                                 style: TextStyle(
                                   color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
