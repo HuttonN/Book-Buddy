@@ -2,17 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
-import 'package:book_buddy/screens/register.dart';
+import 'package:book_buddy/screens/home_page2.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  final bool isDarkMode;
+  final Function(bool) toggleDarkMode; 
 
-  @override
-  State<Login> createState() => _LoginState();
+   const Login({
+    required this.isDarkMode,
+    required this.toggleDarkMode,
+    super.key,
+   });
+
+   @override 
+   _LoginState createState() => _LoginState();
 }
+
+
 
 // Define two TextEditingController instances to be able work with TextFields for email and password
 class _LoginState extends State<Login> {
+
+  late bool _isDarkMode;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -27,7 +39,10 @@ class _LoginState extends State<Login> {
           print('success');
           Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => Register())
+            MaterialPageRoute(builder: (context) => HomePage2(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+                    ))
           );
         });
     } on FirebaseAuthException catch (e) {
@@ -42,6 +57,13 @@ class _LoginState extends State<Login> {
       //);
     }
   }
+
+  @override
+  void initState(){
+    super.initState();
+    _isDarkMode = widget.isDarkMode;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -193,3 +215,5 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+

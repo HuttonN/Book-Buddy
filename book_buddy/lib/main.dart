@@ -84,7 +84,10 @@ class StartUpPage extends StatelessWidget {
                 // Navigate to the Login page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),  // Navigate to LoginPage
+                  MaterialPageRoute(builder: (context) => Login(
+                      isDarkMode: isDarkMode, 
+                      toggleDarkMode: toggleDarkMode
+                    )),  // Navigate to LoginPage
                 );
               },
               style: ElevatedButton.styleFrom(
