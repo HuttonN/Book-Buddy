@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
         email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
         password: passwordController.text.trim() // see line above
         ); 
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 0), () {
           print('success');
           Navigator.push(
             context, 
@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
         iconTheme: IconThemeData(color: Color.fromARGB(255, 20, 9, 45) ),
         )
       ),
-      backgroundColor: Color.fromARGB(92, 216, 243, 245),
+      backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
       body: Align(  // Align everything at the top
         alignment: Alignment.topCenter,  // Move everything to the top
         child: Column(
@@ -107,7 +107,7 @@ class _LoginState extends State<Login> {
               width: 200,
               height: 274,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 223, 245, 252),
+                color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: Color.fromARGB(255, 216, 238, 245),  // Border color
