@@ -2,7 +2,10 @@ import 'package:book_buddy/screens/library.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/tbr.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:book_buddy/screens/scan_book_adding.dart';
+
 
 class ScanBook extends StatefulWidget {
   final bool isDarkMode;
@@ -63,7 +66,7 @@ class NavBar extends StatelessWidget {
                 color: Colors.black, // Black circle for camera button
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
+              child: Icon(Icons.camera_alt, color: Colors.black), // White camera icon
             ),
             label: "", 
         ),
@@ -84,14 +87,52 @@ class NavBar extends StatelessWidget {
 }
 
 
+
 class _ScanBookState extends State<ScanBook>{
   late bool _isDarkMode;
+  CameraController? _cameraController;
+  late List<CameraDescription> cameras;
+  bool isCameraInitialized = false;
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    initializeCamera();
   }
+
+  Future<void> initializeCamera() async {
+    cameras = await availableCameras();
+    _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
+    await _cameraController!.initialize();
+    if (!mounted) return;
+    setState(() {
+      isCameraInitialized = true;
+    });
+  }
+
+  Future<void> captureAndSearch() async {
+    if (_cameraController == null || !_cameraController!.value.isInitialized) {
+      return;
+    }
+    final XFile imageFile = await _cameraController!.takePicture();
+
+    if (!mounted) return;
+ 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScanBookAdding(imagePath: imageFile.path),
+      ),
+   );
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,64 +145,35 @@ class _ScanBookState extends State<ScanBook>{
       
       backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
       
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: _isDarkMode ? Colors.white: Colors.black,
-                    size: 80,
-                    )
-                ),
-                Text(
-                  'Scan Book',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: _isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-              ],
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              "Position camera directly above book cover",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-
-            Container(
-              width:300, 
-              height: 60, 
-              alignment: Alignment.center,
+          ),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: _isDarkMode ? Colors.white : Color.fromARGB(255, 216, 238, 245),  // Border color
-                  width: 1,  // Border width
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(90, 0, 0, 0),  
-                    offset: Offset(0,5),  
-                    blurRadius: 5,  
-                    spreadRadius: 0.1,  
-                  ),
-                ],
+                border: Border.all(color: Colors.black),
               ),
-              child: Text('Position camera directly above book cover.',
-                style: TextStyle(
-                  color: _isDarkMode ? Colors.white : Colors.black,
-                  fontSize: 18)),
-            )
-
-            
-          ],
-        ),
+              child: isCameraInitialized
+                  ? CameraPreview(_cameraController!)
+                  : const Center(child: CircularProgressIndicator()),
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: captureAndSearch,
+            backgroundColor: Colors.black,
+            child: const Icon(Icons.camera_alt, color: Colors.white),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
-             bottomNavigationBar: NavBar(
+      bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {
           Widget screen;
@@ -172,7 +184,7 @@ class _ScanBookState extends State<ScanBook>{
                       toggleDarkMode: widget.toggleDarkMode
               );
               break;
-            case 1:
+            case 1: 
               screen = TBR(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
@@ -182,7 +194,7 @@ class _ScanBookState extends State<ScanBook>{
               screen = ScanBook(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
-                    );
+              );
               break;
             case 3:
               screen = Settings(
@@ -200,9 +212,10 @@ class _ScanBookState extends State<ScanBook>{
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => screen),
-            );
+          );
         }
-       )
+      )
     );
+
   }
 }
