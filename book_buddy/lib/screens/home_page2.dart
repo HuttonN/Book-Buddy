@@ -162,7 +162,7 @@ class _HomePage2State extends State<HomePage2>{
                 crossAxisAlignment: CrossAxisAlignment.center, 
                 children: [
                   Text(
-                    '[${userData!['First Name']}],\nYOU HAVE\n COMPLETED\n[...]\nBOOKS THIS\n YEAR!!!',
+                    '${userData!['First Name']},\nYOU HAVE\n COMPLETED\n${userData!['Books Read']}\nBOOKS THIS\n YEAR!!!',
                     textAlign: TextAlign.center,  
                     style: TextStyle(
                       color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
