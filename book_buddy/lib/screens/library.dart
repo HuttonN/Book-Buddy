@@ -130,7 +130,19 @@ class _LibraryState extends State<Library>{
                 ),
               ],
             ),
+            Column(
+              children: [
+                Card(
+                  color: _isDarkMode ?  Colors.white : Colors.white,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text('This is a card'),
 
+                )
+              ]
+            )
             
 
             
