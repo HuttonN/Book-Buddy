@@ -21,8 +21,13 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //Saves book details on Firestore
   Future<void> _saveBook() async {
+
+    //Checks if user is logged in
     User? user = _auth.currentUser;
+
+    //If logged in the book details are added to Firestore
     if (user != null) {
       await _firestore.collection('users').doc(user.uid).collection('books').add({
         'title': _titleController.text,
@@ -39,7 +44,8 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       );
     }
   }
-
+  
+  //Creates an AI Review of the book
   Future<void> _generateAIReview() async {
     final model = GenerativeModel(model: 'gemini-pro', apiKey: 'YOUR_API_KEY');
     final prompt = "Write a review for the book '${_titleController.text}' by ${_authorController.text}";
@@ -70,9 +76,17 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
               decoration: InputDecoration(labelText: "ISBN"),
             ),
             SizedBox(height: 20),
+            
+            //Both save book to same list right now using same method
+            //Change nearer to time as still unsure on firebase stuff
             ElevatedButton(
               onPressed: _saveBook,
               child: Text("Add Book to Library"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _saveBook,
+              child: Text("Add Book to TBR"),
             ),
             SizedBox(height: 20),
             ElevatedButton(

@@ -21,6 +21,7 @@ class ScanBook extends StatefulWidget {
    _ScanBookState createState() => _ScanBookState();
 }
 
+//Custom NavBar 
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -91,7 +92,9 @@ class NavBar extends StatelessWidget {
 class _ScanBookState extends State<ScanBook>{
   late bool _isDarkMode;
   CameraController? _cameraController;
+  //Creates a list of available cameras on the device
   late List<CameraDescription> cameras;
+  //Tracks whether camera is initialised
   bool isCameraInitialized = false;
 
   @override
@@ -101,6 +104,8 @@ class _ScanBookState extends State<ScanBook>{
     initializeCamera();
   }
 
+  //Method to fetch available cameras, create a camera controller and updates 
+  //state of the camera
   Future<void> initializeCamera() async {
     cameras = await availableCameras();
     _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
@@ -111,6 +116,8 @@ class _ScanBookState extends State<ScanBook>{
     });
   }
 
+  //Method used to capture the image using the camera and push onto the 
+  //scan_book_adding page
   Future<void> captureAndSearch() async {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
@@ -126,13 +133,16 @@ class _ScanBookState extends State<ScanBook>{
       ),
    );
   }
-
+  
+  //Used to release resource when the widget is disposed
   @override
   void dispose() {
     _cameraController?.dispose();
     super.dispose();
   }
 
+
+  //Defines the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
