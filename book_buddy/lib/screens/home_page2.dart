@@ -3,6 +3,12 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/tbr.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User? user = auth.currentUser;
+final User currentUser = FirebaseAuth.instance.currentUser!;
 
 class HomePage2 extends StatefulWidget {
   final bool isDarkMode;
@@ -86,11 +92,34 @@ class NavBar extends StatelessWidget {
 
 class _HomePage2State extends State<HomePage2>{
   late bool _isDarkMode;
+  Map<String, dynamic>? userData;
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try{
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      
+      firestore.QuerySnapshot querySnapshot = await firestore.FirebaseFirestore.instance
+      .collection("usersCollection")
+      .where("uid", isEqualTo: uid)
+      .get();
+
+     firestore.DocumentSnapshot userDoc = querySnapshot.docs.first;
+
+    setState(() {
+      userData = userDoc.data() as Map<String,dynamic>?;
+    });
+
+     print(userData);
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
   }
 
   @override
@@ -133,7 +162,7 @@ class _HomePage2State extends State<HomePage2>{
                 crossAxisAlignment: CrossAxisAlignment.center, 
                 children: [
                   Text(
-                    '[first name],\nYOU HAVE\n COMPLETED\n[...]\nBOOKS THIS\n YEAR!!!',
+                    '${userData!['First Name']},\nYOU HAVE\n COMPLETED\n${userData!['Books Read']}\nBOOKS THIS\n YEAR!!!',
                     textAlign: TextAlign.center,  
                     style: TextStyle(
                       color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
