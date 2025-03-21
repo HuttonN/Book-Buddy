@@ -29,26 +29,26 @@ packages:
     dependency: "direct main"
     description:
       name: camera
-      sha256: dfa8fc5a1adaeb95e7a54d86a5bd56f4bb0e035515354c8ac6d262e35cec2ec8
+      sha256: "413d2b34fe28496c35c69ede5b232fb9dd5ca2c3a4cb606b14efc1c7546cc8cb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.6"
-  camera_android:
+    version: "0.11.1"
+  camera_android_camerax:
     dependency: transitive
     description:
-      name: camera_android
-      sha256: "997f19dbdb1bb0e40bdb87265c7e550abea657fe3c4ba3720f81e97b6d4b64dd"
+      name: camera_android_camerax
+      sha256: "13784f539c7f104766bff84e4479a70f03b29d78b208278be45c939250d9d7f5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.10+1"
+    version: "0.6.14+1"
   camera_avfoundation:
     dependency: transitive
     description:
       name: camera_avfoundation
-      sha256: "3057ada0b30402e3a9b6dffec365c9736a36edbf04abaecc67c4309eadc86b49"
+      sha256: ba48b65a3a97004276ede882e6b838d9667642ff462c95a8bb57ca8a82b6bd25
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.18+9"
+    version: "0.9.18+11"
   camera_platform_interface:
     dependency: transitive
     description:
@@ -256,6 +256,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  google_generative_ai:
+    dependency: "direct main"
+    description:
+      name: google_generative_ai
+      sha256: "81dae159c89e4d9bdc46955b6f4ee5ae0a291f9e8f990d76f43944e0d6041d4f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.6"
   http:
     dependency: transitive
     description:

@@ -60,10 +60,10 @@ class NavBar extends StatelessWidget {
             icon: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
+                color: Colors.black, 
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
+              child: Icon(Icons.camera_alt, color: Colors.white), 
             ),
             label: "", 
         ),
