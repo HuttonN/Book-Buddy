@@ -23,20 +23,26 @@ class _RegisterState extends State<Register> {
     if (firstNameController.text.isNotEmpty &&
         surnameController.text.isNotEmpty &&
         emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty
-        ) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        passwordController.text.isNotEmpty) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
           password: passwordController.text.trim() // see line above
-        ).then((value) => 
-          firestore.collection("usersCollection").add({
+        );
+        
+        String uid = userCredential.user!.uid;
+
+        await firestore.collection("usersCollection").add({
             "First Name": firstNameController.text,
             "Surname": surnameController.text,
-            "Email": emailController.text
-          })
-          );
-        }; // Need to add action for when user is registered. Currently nothing indicates that user is registered but they have been added to Firebase
-    }
+            "Email": emailController.text,
+            "uid": uid,
+          });
+        } catch (e) {
+          print("Error during registration: $e");
+        } // Need to add action for when user is registered. Currently nothing indicates that user is registered but they have been added to Firebase
+      }
+  }
 // ADD SOME ERROR HANDLING HERE? email already in use, email format incorrect (no '@'), password not sophisticated enough, no password and/or email entered
 
 // Simple Widget for registeration

@@ -3,6 +3,9 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/tbr.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Library extends StatefulWidget {
   final bool isDarkMode;
@@ -47,7 +50,7 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.book),
+          icon: Icon(Icons.menu_book),
           label: "", 
         ),
         
@@ -86,12 +89,52 @@ class NavBar extends StatelessWidget {
 
 class _LibraryState extends State<Library>{
   late bool _isDarkMode;
+  Map<String, dynamic>? userData;
+  List<Map<String, dynamic>> userBooks = [];
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    fetchUserData();
   }
+
+  Future<void> fetchUserData() async {
+    try{
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      
+      firestore.QuerySnapshot querySnapshot = await firestore.FirebaseFirestore.instance
+      .collection("usersCollection")
+      .where("uid", isEqualTo: uid)
+      .get();
+
+     firestore.DocumentSnapshot userDoc = querySnapshot.docs.first;
+
+    setState(() {
+      userData = userDoc.data() as Map<String,dynamic>?;
+    });
+
+     print(userData);
+
+    firestore.QuerySnapshot booksSnapshot = await userDoc.reference
+      .collection("Books")
+      .get();
+
+    List<Map<String, dynamic>> booksList = booksSnapshot.docs
+      .map((doc) => doc.data() as Map<String, dynamic>)
+      .toList();
+
+    setState(() {
+      userBooks = booksList;
+    });
+
+    print(userBooks);
+    
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +173,16 @@ class _LibraryState extends State<Library>{
                 ),
               ],
             ),
-
+            Column(
+              children: [
+                Card(
+                  child: ListTile(
+                    title: Text('${userBooks![0]['Title']}'),
+                    subtitle: Text('${userBooks![0]['Author']}'),
+                  ),
+                )
+              ]
+            )
             
 
             

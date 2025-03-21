@@ -51,7 +51,7 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.book),
+          icon: Icon(Icons.menu_book),
           label: "", 
         ),
         
