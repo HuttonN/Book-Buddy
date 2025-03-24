@@ -56,15 +56,25 @@ class _LoginState extends State<Login> {
           );
         });
     } on FirebaseAuthException catch (e) {
+      String message;
       if (e.code == 'INVALID_LOGIN_CREDENTIALS'){
-        print('Invalid login credentials.');
+        message = 'Invalid login credentials.';
+      } else if (e.code == 'user-not-found'){
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password'){
+        message = 'Incorrect password.';
       } else {
-        print('Invalid login credentials.');
+        message = 'Login failed: ${e.message}';
       }
-      //Toast.show(
-        //message,
-        //duration: Toast.lengthShort
-      //);
+      
+      // Show error snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 
