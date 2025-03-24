@@ -3,6 +3,7 @@ import 'package:book_buddy/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:book_buddy/screens/home_page2.dart';
+import 'package:book_buddy/screens/forgot_password.dart';
 
 class Login extends StatefulWidget {
   final bool isDarkMode;
@@ -155,7 +156,28 @@ class _LoginState extends State<Login> {
                   ),
 
                   // Add space
-                  SizedBox(height: 30),
+                  SizedBox(height: 10),
+
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                            ForgotPassword(isDarkMode: _isDarkMode),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: _isDarkMode? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                  // Add space
+                  SizedBox(height: 10),
 
                   ElevatedButton(
                     onPressed: loginUser,
