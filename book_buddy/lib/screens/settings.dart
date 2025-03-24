@@ -92,11 +92,44 @@ class NavBar extends StatelessWidget {
 
 class _SettingsState extends State<Settings>{
   late bool _isDarkMode;
+  Map<String, dynamic>? userData;
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try{
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null){
+        print("User not signed in yet.");
+        return;
+      }
+
+      String uid = user.uid;
+      
+      final querySnapshot = await FirebaseFirestore.instance
+      .collection("usersCollection")
+      .where("uid", isEqualTo: uid)
+      .get();
+
+      if (querySnapshot.docs.isEmpty){
+        print("No matching user found.");
+        return;
+      }
+
+      final userDoc = querySnapshot.docs.first;
+      setState(() {
+        userData = userDoc.data() as Map<String,dynamic>?;
+      });
+
+      print(userData);
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
   }
 
   @override
@@ -147,7 +180,7 @@ class _SettingsState extends State<Settings>{
             SizedBox(height: 50),
 
             Container(
-              width: 200,
+              width: 270,
               height: 274,
               decoration: BoxDecoration(
                 color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
@@ -172,14 +205,14 @@ class _SettingsState extends State<Settings>{
                   SizedBox(height: 30),
 
                   Container(
-                    width: 150,
+                    width: 240,
                     height: 30,
                     decoration: BoxDecoration(
                       color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text("$currentUser", 
+                    child: Text('Email: ${userData!['Email']}', 
                                 style: TextStyle(
                                   color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
@@ -188,14 +221,14 @@ class _SettingsState extends State<Settings>{
                   SizedBox(height: 30),
 
                   Container(
-                    width: 150,
+                    width: 240,
                     height: 30,
                     decoration: BoxDecoration(
                       color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text('First Name', 
+                    child: Text('First Name: ${userData!['First Name']}', 
                                 style: TextStyle(
                                   color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
@@ -204,14 +237,14 @@ class _SettingsState extends State<Settings>{
                   SizedBox(height: 30),
 
                   Container(
-                    width: 150,
+                    width: 240,
                     height: 30,
                     decoration: BoxDecoration(
                       color: _isDarkMode ? Colors.white : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
-                    child: Text('Surname', 
+                    child: Text('Surname: ${userData!['Surname']}', 
                                 style: TextStyle(
                                   color: _isDarkMode ? Colors.black : Colors.white)),
                   ),
@@ -221,7 +254,7 @@ class _SettingsState extends State<Settings>{
 
                   //Light/dark mode container
                   Container(
-                    width: 150,
+                    width: 240,
                     height: 30,
                     decoration: BoxDecoration(
                       color: _isDarkMode ? Colors.white : Colors.black,
