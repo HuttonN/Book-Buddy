@@ -103,20 +103,30 @@ class _HomePage2State extends State<HomePage2>{
 
   Future<void> fetchUserData() async {
     try{
-      String uid = FirebaseAuth.instance.currentUser!.uid;
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null){
+        print("User not signed in yet.");
+        return;
+      }
+
+      String uid = user.uid;
       
-      firestore.QuerySnapshot querySnapshot = await firestore.FirebaseFirestore.instance
+      final querySnapshot = await firestore.FirebaseFirestore.instance
       .collection("usersCollection")
       .where("uid", isEqualTo: uid)
       .get();
 
-     firestore.DocumentSnapshot userDoc = querySnapshot.docs.first;
+      if (querySnapshot.docs.isEmpty){
+        print("No matching user found.");
+        return;
+      }
 
-    setState(() {
-      userData = userDoc.data() as Map<String,dynamic>?;
-    });
+      final userDoc = querySnapshot.docs.first;
+      setState(() {
+        userData = userDoc.data() as Map<String,dynamic>?;
+      });
 
-     print(userData);
+      print(userData);
     } catch (e) {
       print("Error fetching user data: $e");
     }
@@ -124,6 +134,15 @@ class _HomePage2State extends State<HomePage2>{
 
   @override
   Widget build(BuildContext context) {
+    if (userData == null){
+      return Scaffold(
+        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
