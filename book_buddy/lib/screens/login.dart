@@ -228,7 +228,9 @@ class _LoginState extends State<Login> {
                 // Navigate to the Login page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Register()),  // Navigate to LoginPage
+                  MaterialPageRoute(builder: (context) => Register(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode)),  // Navigate to LoginPage
                 );
               },
               style: ElevatedButton.styleFrom(

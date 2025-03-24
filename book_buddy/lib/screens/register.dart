@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; //required package for authentication
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:book_buddy/screens/home_page2.dart';
 
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  final bool isDarkMode;
+  final Function(bool) toggleDarkMode; 
+
+  const Register({
+    super.key,
+    required this.isDarkMode,
+    required this.toggleDarkMode,
+  });
+  
 
   @override
   State<Register> createState() => _RegisterState();
@@ -12,6 +21,15 @@ class Register extends StatefulWidget {
 
 // Define two TextEditingController instances to be able work with TextFields for email and password
 class _RegisterState extends State<Register> {
+
+  late bool _isDarkMode;
+
+  @override
+  void initState(){
+    super.initState();
+    _isDarkMode = widget.isDarkMode;
+  }
+
   final firestore = FirebaseFirestore.instance;
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController surnameController = TextEditingController();
@@ -46,6 +64,17 @@ class _RegisterState extends State<Register> {
               duration: Duration(seconds: 3),
             ),
           );
+
+          Future.delayed(const Duration(seconds: 2), () {
+          print('success');
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => HomePage2(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+                    ))
+          );
+          });
 
         } catch (e) {
           print("Error during registration: $e");
