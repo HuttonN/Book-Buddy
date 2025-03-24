@@ -5,6 +5,7 @@ import 'package:book_buddy/screens/tbr.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:book_buddy/screens/login.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
@@ -131,6 +132,30 @@ class _SettingsState extends State<Settings>{
       print("Error fetching user data: $e");
     }
   }
+
+    Future<void> signOutUser() async {
+      await FirebaseAuth.instance.signOut();
+      
+      // Show success snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Log out successful!'),
+          backgroundColor: Colors.black,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+        Future.delayed(const Duration(seconds: 2), () {
+          print('success');
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => Login(
+                      isDarkMode: _isDarkMode, 
+                      toggleDarkMode: widget.toggleDarkMode
+                    ))
+          );
+        });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -291,6 +316,48 @@ class _SettingsState extends State<Settings>{
                 ],
               ),
             ),
+
+            SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context, 
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      title: Text('Are you sure?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            signOutUser();
+                          }, 
+                          child: Text("Yes")
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }, 
+                          child: Text("No")
+                        )
+                      ],
+                    );
+                  }
+                );
+                //Navigator.push(
+                  //context,
+                  //MaterialPageRoute(builder: (context) => Register()),  // Navigate to LoginPage
+                //);
+              },
+              style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
+                      textStyle: TextStyle(fontSize: 16),  
+                      backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
+                      foregroundColor: _isDarkMode ? Colors.black: Colors.white,
+                      minimumSize: Size(100, 40)
+                    ),
+              child: Text('Sign Out'),
+            )
           ],
         ),
       ),
