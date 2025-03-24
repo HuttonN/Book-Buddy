@@ -30,13 +30,22 @@ class _LoginState extends State<Login> {
   final TextEditingController passwordController = TextEditingController();
 
   Future<void> loginUser() async {
-    String message = '' ;
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
         password: passwordController.text.trim() // see line above
         ); 
-        Future.delayed(const Duration(seconds: 0), () {
+
+        // Show success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login successful!'),
+            backgroundColor: Colors.black,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        Future.delayed(const Duration(seconds: 2), () {
           print('success');
           Navigator.push(
             context, 
@@ -48,9 +57,9 @@ class _LoginState extends State<Login> {
         });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'INVALID_LOGIN_CREDENTIALS'){
-        message = 'Invalid login credentials.';
+        print('Invalid login credentials.');
       } else {
-        message = e.code;
+        print('Invalid login credentials.');
       }
       //Toast.show(
         //message,
