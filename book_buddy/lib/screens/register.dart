@@ -38,6 +38,15 @@ class _RegisterState extends State<Register> {
             "Email": emailController.text,
             "uid": uid,
           });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Registration successful!"),
+              backgroundColor: Colors.black,
+              duration: Duration(seconds: 3),
+            ),
+          );
+
         } catch (e) {
           print("Error during registration: $e");
         } // Need to add action for when user is registered. Currently nothing indicates that user is registered but they have been added to Firebase

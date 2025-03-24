@@ -3,6 +3,7 @@ import 'package:book_buddy/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:book_buddy/screens/home_page2.dart';
+import 'package:book_buddy/screens/forgot_password.dart';
 
 class Login extends StatefulWidget {
   final bool isDarkMode;
@@ -29,13 +30,22 @@ class _LoginState extends State<Login> {
   final TextEditingController passwordController = TextEditingController();
 
   Future<void> loginUser() async {
-    String message = '' ;
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
         password: passwordController.text.trim() // see line above
         ); 
-        Future.delayed(const Duration(seconds: 0), () {
+
+        // Show success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login successful!'),
+            backgroundColor: Colors.black,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        Future.delayed(const Duration(seconds: 2), () {
           print('success');
           Navigator.push(
             context, 
@@ -46,15 +56,25 @@ class _LoginState extends State<Login> {
           );
         });
     } on FirebaseAuthException catch (e) {
+      String message;
       if (e.code == 'INVALID_LOGIN_CREDENTIALS'){
         message = 'Invalid login credentials.';
+      } else if (e.code == 'user-not-found'){
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password'){
+        message = 'Incorrect password.';
       } else {
-        message = e.code;
+        message = 'Login failed: ${e.message}';
       }
-      //Toast.show(
-        //message,
-        //duration: Toast.lengthShort
-      //);
+      
+      // Show error snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 
@@ -155,7 +175,28 @@ class _LoginState extends State<Login> {
                   ),
 
                   // Add space
-                  SizedBox(height: 30),
+                  SizedBox(height: 10),
+
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                            ForgotPassword(isDarkMode: _isDarkMode),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: _isDarkMode? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                  // Add space
+                  SizedBox(height: 10),
 
                   ElevatedButton(
                     onPressed: loginUser,
