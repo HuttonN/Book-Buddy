@@ -160,7 +160,7 @@ class _LibraryState extends State<Library>{
                   child: Icon(
                     Icons.menu_book,
                     color: _isDarkMode ? Colors.white: Colors.black,
-                    size: 80,
+                    size: 90,
                     )
                 ),
                 Text(

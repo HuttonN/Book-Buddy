@@ -109,7 +109,7 @@ class _LoginState extends State<Login> {
                   child: _isDarkMode ? Image.asset('assets/logo_no_words_dark_mode.png'): Image.asset('assets/logo_no_words_light_mode.png'),
                 ),
                 Text(
-                  'Login',
+                  'Sign In',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

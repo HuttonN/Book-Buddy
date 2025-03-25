@@ -118,7 +118,7 @@ class _TBRState extends State<TBR>{
                   child: Icon(
                     Icons.bookmark,
                     color: _isDarkMode ? Colors.white: Colors.black,
-                    size: 80,
+                    size: 90,
                     )
                 ),
                 Text(

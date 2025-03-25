@@ -87,35 +87,136 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title: const Text("Register")),
-      body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
+
+       // App bar.
+      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      child: AppBar(
+        backgroundColor: Color.fromARGB(255, 223, 245, 252),
+        elevation: 5 ,
+        iconTheme: IconThemeData(
+          color: Color.fromARGB(255, 20, 9, 45) 
+          ),)),
+
+      backgroundColor: Color.fromARGB(255, 216, 243, 245),
+      body: Align(  // Align everything at the top
+        alignment: Alignment.topCenter,  // Move everything to the top
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  height: 100,
+                  child:Image.asset('assets/logo_no_words_light_mode.png'),
+                ),
+                Text(
+                  'Register',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color:  Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          Padding(padding: const EdgeInsets.all(16.0),
+            child: Column(
             children: [
+
               TextField(
                 controller: firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
+                decoration: const InputDecoration(
+                labelText: 'First Name',
+                filled: true,
+                fillColor:Colors.white,
+                border: OutlineInputBorder(),
+                ),
               ),
+
+              SizedBox(height: 20),
+
               TextField(
                 controller: surnameController,
-                decoration: const InputDecoration(labelText: 'Surname'),
+                decoration: const InputDecoration(
+                labelText: 'Surname',
+                filled: true,
+                fillColor:Colors.white,
+                border: OutlineInputBorder(),
+                ),
               ),
+
+              SizedBox(height: 20),
+
               TextField(
                 controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(
+                labelText: 'Email',
+                filled: true,
+                fillColor:Colors.white,
+                border: OutlineInputBorder(),
+                ),
               ),
+
+              SizedBox(height: 20),
+
               TextField(
                 controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                decoration: const InputDecoration(
+                labelText: 'Password',
+                filled: true,
+                fillColor:Colors.white,
+                border: OutlineInputBorder(),
+                ),
               ),
+
+              SizedBox(height: 20),
+
+              // TextField(
+              //   controller: firstNameController,
+              //   decoration: const InputDecoration(labelText: 'First Name'),
+              // ),
+              // TextField(
+              //   controller: surnameController,
+              //   decoration: const InputDecoration(labelText: 'Surname'),
+              // ),
+              // TextField(
+              //   controller: emailController,
+              //   decoration: const InputDecoration(labelText: 'Email'),
+              // ),
+              // TextField(
+              //   controller: passwordController,
+              //   decoration: const InputDecoration(labelText: 'Password'),
+              //   obscureText: true,
+              // ),
+              // ElevatedButton(
+              //   onPressed: registerUser, //runs registerUser function above when clicked
+              //   child: const Text("Register"),
+              // )
+
               ElevatedButton(
-                onPressed: registerUser, //runs registerUser function above when clicked
-                child: const Text("Register"),
-              )
+              onPressed: registerUser,
+              style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
+                      textStyle: TextStyle(fontSize: 16),  
+                      backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
+                      foregroundColor: _isDarkMode ? Colors.black: Colors.white,
+                      minimumSize: Size(100, 40)
+                    ),
+              child: Text('Register'),
+            ),
             ],
           ),
-        ),
-      );
+          
+          
+          
+          
+          )
+           
+            
+          ]
+        )
+      )
+    );
   }
 }

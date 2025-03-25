@@ -32,59 +32,95 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: widget.isDarkMode
-            ? Color.fromARGB(255, 20, 9, 45)
-            : Color.fromARGB(255, 223, 245, 252),
+
+       // App bar.
+      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      child: AppBar(
+        backgroundColor: Color.fromARGB(255, 223, 245, 252),
+        elevation: 5 ,
         iconTheme: IconThemeData(
-            color: widget.isDarkMode
-                ? Colors.white
-                : Color.fromARGB(255, 20, 9, 45)),
-        title: Text(
-          'Forgot Password',
-          style: TextStyle(
-            color: widget.isDarkMode ? Colors.white : Colors.black,
-          ),
-        ),
-      ),
-      backgroundColor: widget.isDarkMode
-       ? Color.fromARGB(255, 20, 9, 45)
-       : Color.fromARGB(255, 223, 245, 252),
-body: Padding(
-        padding: const EdgeInsets.all(20),
+          color: Color.fromARGB(255, 20, 9, 45) 
+          ),)),
+
+      backgroundColor: Color.fromARGB(255, 216, 243, 245),
+      body: Align(  // Align everything at the top
+        alignment: Alignment.topCenter,  // Move everything to the top
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
           children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Enter your email',
-                filled: true,
-                fillColor: widget.isDarkMode ? Colors.grey : Colors.white,
-                border: OutlineInputBorder(),
-              ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  height: 100,
+                  child:Image.asset('assets/logo_no_words_light_mode.png'),
+                ),
+                Text(
+                  'Forgot Password',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color:  Colors.black,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: sendResetEmail,
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    widget.isDarkMode ? Colors.white : Colors.black,
-                foregroundColor:
-                    widget.isDarkMode ? Colors.black : Colors.white,
-              ),
-              child: Text('Send Reset Link'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              message,
-              style: TextStyle(
-                color: widget.isDarkMode ? Colors.white : Colors.black,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+
+            Padding(padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text('Enter the email linked to your account, and you will be emailed a link to reset your password!'),
+
+                  SizedBox(height: 20),
+
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your email',
+                      filled: true,
+                      fillColor: widget.isDarkMode 
+                        ? Colors.grey 
+                        : Colors.white,
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  ElevatedButton(
+                    onPressed: sendResetEmail,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                        widget.isDarkMode 
+                          ? Colors.white 
+                          : Colors.black,
+                      foregroundColor:
+                        widget.isDarkMode 
+                          ? Colors.black 
+                          : Colors.white,
+                    ),
+                  child: Text('Send Reset Link'),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Text(
+                    message,
+                    style: TextStyle(
+                      color: widget.isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+            
+                ],
+              )
+            )
+            
+          ]
+        )
+      )
     );
   }
 }

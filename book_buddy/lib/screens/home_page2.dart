@@ -116,17 +116,17 @@ class _HomePage2State extends State<HomePage2>{
       .where("uid", isEqualTo: uid)
       .get();
 
-      if (querySnapshot.docs.isEmpty){
+     if (querySnapshot.docs.isEmpty){
         print("No matching user found.");
         return;
       }
 
       final userDoc = querySnapshot.docs.first;
-      setState(() {
-        userData = userDoc.data() as Map<String,dynamic>?;
-      });
+    setState(() {
+      userData = userDoc.data() as Map<String,dynamic>?;
+    });
 
-      print(userData);
+     print(userData);
     } catch (e) {
       print("Error fetching user data: $e");
     }
@@ -134,7 +134,7 @@ class _HomePage2State extends State<HomePage2>{
 
   @override
   Widget build(BuildContext context) {
-    if (userData == null){
+if (userData == null){
       return Scaffold(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
         body: Center(
@@ -142,8 +142,8 @@ class _HomePage2State extends State<HomePage2>{
         ),
       );
     }
-
-    return Scaffold(
+    
+        return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
@@ -157,20 +157,42 @@ class _HomePage2State extends State<HomePage2>{
         alignment: Alignment.topCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+
+          // Page icon and heading.
           children: [
             Row(
               children: [
+
+                // Icon.
                 SizedBox(
                   width: 100,
-                  height: 50,
-                  child: _isDarkMode ? Image.asset('assets/home_icon_dark_mode.png'): Image.asset('assets/home_icon_light_mode.png'),
+                  height: 100,
+                    child: Icon(
+                      Icons.home,
+                      size: 90,
+                      color: _isDarkMode
+                        ? Colors.white
+                        : Colors.black
+                    )
+                ),
+
+                // Heading.
+                Text(
+                  'Home',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black,
+                  ),
                 ),
               ],
             ),
 
             Container(
               width: 200,
-              height: 274,
+              height: 220,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,  
                 color: _isDarkMode ? Colors.white : Colors.black,
@@ -185,7 +207,7 @@ class _HomePage2State extends State<HomePage2>{
                     textAlign: TextAlign.center,  
                     style: TextStyle(
                       color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
-                      fontSize: 16, 
+                      fontSize: 14, 
                     ),
                   ),
                   ],

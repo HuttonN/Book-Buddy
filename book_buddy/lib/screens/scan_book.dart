@@ -157,8 +157,34 @@ class _ScanBookState extends State<ScanBook>{
       
       body: Column(
         children: [
+          Row(children: [
+             // Icon.
+                SizedBox(
+                  width: 100,
+                  height: 100,
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 90,
+                      color: _isDarkMode
+                        ? Colors.white
+                        : Colors.black
+                    )
+                ),
+
+                // Heading.
+                Text(
+                  'Scan Book',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black,
+                  ),
+                ),
+          ],),
           const Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(0),
             child: Text(
               "Position camera directly above book cover",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
