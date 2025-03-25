@@ -216,9 +216,13 @@ class _SettingsState extends State<Settings>{
                 SizedBox(
                   width: 100,
                   height: 100,
-                  child: _isDarkMode 
-                    ? Image.asset('assets/settings_icon_dark_mode.png')
-                    : Image.asset('assets/settings_icon_light_mode.png'),
+                    child: Icon(
+                      Icons.settings,
+                      size: 90,
+                      color: _isDarkMode
+                        ? Colors.white
+                        : Colors.black
+                    )
                 ),
 
                 // Heading.
@@ -238,7 +242,7 @@ class _SettingsState extends State<Settings>{
             // Add space
             SizedBox(height: 50),
 
-            // Menu of navigations.
+            // Menu of user details, mode and sign out options.
             // Outer container.
             Container(
               width: 270,
