@@ -1,16 +1,21 @@
+// Import required packages.
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+// Import some other screens.
 import 'package:book_buddy/screens/library.dart';
 import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:book_buddy/screens/login.dart';
 
+// User details from Firebase.
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final User currentUser = FirebaseAuth.instance.currentUser!;
 
+// Light/dark mode.
 class Settings extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -25,6 +30,7 @@ class Settings extends StatefulWidget {
    _SettingsState createState() => _SettingsState();
 }
 
+// Navigation bar.
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -53,16 +59,20 @@ class NavBar extends StatelessWidget {
         type: BottomNavigationBarType.fixed,  
 
       items: [
+
+        // My Library.
         BottomNavigationBarItem(
           icon: Icon(Icons.menu_book),
           label: "", 
         ),
         
+        // My TBR.
         BottomNavigationBarItem(
           icon: Icon(Icons.bookmark),
           label: "", 
         ),
         
+        // Scan Book.
         BottomNavigationBarItem(
             icon: Container(
               padding: EdgeInsets.all(8),
@@ -75,21 +85,23 @@ class NavBar extends StatelessWidget {
             label: "", 
         ),
         
+        // Settings.
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
           label: "", 
         ),
         
+        // Home.
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: "", 
         ),
+
       ],
     ),
     );
   }
 }
-
 
 class _SettingsState extends State<Settings>{
   late bool _isDarkMode;
@@ -102,6 +114,7 @@ class _SettingsState extends State<Settings>{
     fetchUserData();
   }
 
+  // Error catching for user data.
   Future<void> fetchUserData() async {
     try{
       final user = FirebaseAuth.instance.currentUser;
@@ -133,6 +146,7 @@ class _SettingsState extends State<Settings>{
     }
   }
 
+    // Sign out option for user.
     Future<void> signOutUser() async {
       await FirebaseAuth.instance.signOut();
       
@@ -160,11 +174,19 @@ class _SettingsState extends State<Settings>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      // App bar.
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
-        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+        backgroundColor: _isDarkMode 
+          ? Color.fromARGB(255, 20, 9, 45) 
+          : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
-        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
+        iconTheme: IconThemeData(
+          color: _isDarkMode 
+            ? Colors.white 
+            : Color.fromARGB(255, 20, 9, 45) 
+          ),
 
         //Save the state of light/dark mode when the back button is pressed.
         leading: IconButton(
@@ -176,26 +198,38 @@ class _SettingsState extends State<Settings>{
           ),
         )),
       
-      backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
+      backgroundColor: _isDarkMode 
+        ? Color.fromARGB(255, 20, 9, 45) 
+        : Color.fromARGB(255, 216, 243, 245),
       
       body: Align(
         alignment: Alignment.topCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+
+          // Page icon and heading.
           children: [
             Row(
               children: [
+
+                // Icon.
                 SizedBox(
                   width: 100,
                   height: 100,
-                  child: _isDarkMode ? Image.asset('assets/settings_icon_dark_mode.png'): Image.asset('assets/settings_icon_light_mode.png'),
+                  child: _isDarkMode 
+                    ? Image.asset('assets/settings_icon_dark_mode.png')
+                    : Image.asset('assets/settings_icon_light_mode.png'),
                 ),
+
+                // Heading.
                 Text(
                   'Settings',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: _isDarkMode ? Colors.white : Colors.black,
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black,
                   ),
                 ),
               ],
@@ -204,96 +238,138 @@ class _SettingsState extends State<Settings>{
             // Add space
             SizedBox(height: 50),
 
+            // Menu of navigations.
+            // Outer container.
             Container(
               width: 270,
-              height: 274,
+              height: 330,
               decoration: BoxDecoration(
-                color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
+                color: _isDarkMode 
+                  ? Colors.black 
+                  : Color.fromARGB(255, 223, 245, 252),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isDarkMode ? Colors.white : Color.fromARGB(255, 216, 238, 245),  // Border color
+                  color: _isDarkMode 
+                    ? Colors.white 
+                    : Color.fromARGB(255, 216, 238, 245),  // Border color
                   width: 1,  // Border width
                 ),
               boxShadow: [
                 BoxShadow(
-                color: Color.fromARGB(90, 0, 0, 0),  
-                offset: Offset(0,5),  
-                blurRadius: 6,  
-                spreadRadius: 2,  
+                  color: Color.fromARGB(90, 0, 0, 0),  
+                  offset: Offset(0,5),  
+                  blurRadius: 6,  
+                  spreadRadius: 2,  
                 ),
               ],
             ),
+
               alignment: Alignment.center,
               child: Column(
+
+                // Inner containers.
                 children: [
-                  // Add space
+
+                  // Add space.
                   SizedBox(height: 30),
 
+                  // Displayn user's email address.
                   Container(
                     width: 240,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Text('Email: ${userData!['Email']}', 
                                 style: TextStyle(
-                                  color: _isDarkMode ? Colors.black : Colors.white)),
+                                  color: _isDarkMode 
+                                    ? Colors.black 
+                                    : Colors.white
+                                )
+                            ),
                   ),
 
-                  // Add space
+                  // Add space.
                   SizedBox(height: 30),
-
+                  
+                  // Display user's first name.
                   Container(
                     width: 240,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Text('First Name: ${userData!['First Name']}', 
                                 style: TextStyle(
-                                  color: _isDarkMode ? Colors.black : Colors.white)),
+                                  color: _isDarkMode 
+                                    ? Colors.black 
+                                    : Colors.white
+                                )
+                            ),
                   ),
 
-                  // Add space
+                  // Add space.
                   SizedBox(height: 30),
 
+                  // Display user's surname.
                   Container(
                     width: 240,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Text('Surname: ${userData!['Surname']}', 
                                 style: TextStyle(
-                                  color: _isDarkMode ? Colors.black : Colors.white)),
+                                  color: _isDarkMode 
+                                    ? Colors.black 
+                                    : Colors.white
+                                )
+                            ),
                   ),
 
-                  // Add space
+                  // Add space.
                   SizedBox(height: 30),
 
-                  //Light/dark mode container
+                  // Light/ dark mode toggle switch.
                   Container(
                     width: 240,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.white : Colors.black,
+                      color: _isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     alignment: Alignment.center,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+
+                        // Change the text on the button.
                         Text(
-                          _isDarkMode ? 'Dark Mode' : 'Light Mode',  // Conditionally change text
+                          _isDarkMode 
+                            ? 'Dark Mode' 
+                            : 'Light Mode', 
                           style: TextStyle(
-                            color:_isDarkMode ? Colors.black: Colors.white),
+                            color:_isDarkMode 
+                              ? Colors.black
+                              : Colors.white
+                          ),
                         ),
+
+                        // switch between modes.
                         Transform.scale(
                           scale: 0.7,
                           child: Switch(
@@ -303,65 +379,79 @@ class _SettingsState extends State<Settings>{
                                 _isDarkMode = value;
                               });
                               widget.toggleDarkMode(value);
-                            },  // When the switch is toggled, update state
-                            activeColor: Colors.blue,  // Color of the switch when active
+                            }, 
+                            activeColor: Colors.blue,
                           ),
                         )
+
                       ],
+
                     ),
                   ),
 
                   // Add space
-                  SizedBox(height: 30)
+                  SizedBox(height: 30),
+
+                  // Sign out button.
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context, 
+                          builder: (BuildContext context){
+
+                            // Dialog box.
+                            return AlertDialog(
+                              title: Text('Are you sure?'),
+                                actions: [
+
+                                  // Sign out confirmed.
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      signOutUser();
+                                    }, 
+                                    child: Text("Yes")
+                                  ),
+
+                                  // Sign out cancelled.
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    }, 
+                                    child: Text("No")
+                                  )
+                                ],
+                            );
+                          }
+                      );
+                    },
+
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30, 
+                        vertical: 10),  
+                      textStyle: TextStyle(fontSize: 16),  
+                      backgroundColor: _isDarkMode 
+                        ? Colors.white
+                        : Colors.black, 
+                      foregroundColor: _isDarkMode 
+                        ? Colors.black
+                        : Colors.white,
+                      minimumSize: Size(100, 40)
+                    ),
+                    child: Text('Sign Out'),
+                  )
                 ],
               ),
             ),
 
             SizedBox(height: 30),
-
-            ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context, 
-                  builder: (BuildContext context){
-                    return AlertDialog(
-                      title: Text('Are you sure?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            signOutUser();
-                          }, 
-                          child: Text("Yes")
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }, 
-                          child: Text("No")
-                        )
-                      ],
-                    );
-                  }
-                );
-                //Navigator.push(
-                  //context,
-                  //MaterialPageRoute(builder: (context) => Register()),  // Navigate to LoginPage
-                //);
-              },
-              style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
-                      textStyle: TextStyle(fontSize: 16),  
-                      backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
-                      foregroundColor: _isDarkMode ? Colors.black: Colors.white,
-                      minimumSize: Size(100, 40)
-                    ),
-              child: Text('Sign Out'),
-            )
           ],
         ),
       ),
-             bottomNavigationBar: NavBar(
+
+      // Navigation bar.       
+      bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {
           Widget screen;
@@ -406,7 +496,3 @@ class _SettingsState extends State<Settings>{
     );
   }
 }
-
-
-
-
