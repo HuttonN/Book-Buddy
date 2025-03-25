@@ -173,15 +173,19 @@ class _LibraryState extends State<Library>{
                 ),
               ],
             ),
-            Column(
-              children: [
-                Card(
-                  child: ListTile(
-                    title: Text('${userBooks![0]['Title']}'),
-                    subtitle: Text('${userBooks![0]['Author']}'),
-                  ),
-                )
-              ]
+            Expanded(
+              child:ListView.builder(
+                itemCount: userBooks.length,
+                itemBuilder: (context, index) {
+                  final book = userBooks[index];
+                  return Card(
+                    child: ListTile(
+                      title: Text(book['Title']),
+                      subtitle: Text(book['Author']),
+                    ),
+                  );
+                },
+              ),
             )
             
 
