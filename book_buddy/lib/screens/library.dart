@@ -122,6 +122,8 @@ class _LibraryState extends State<Library>{
 
     List<Map<String, dynamic>> booksList = booksSnapshot.docs
       .map((doc) => doc.data() as Map<String, dynamic>)
+      .where((book) => 
+        book['has_read'] == true)
       .toList();
 
     setState(() {
@@ -173,17 +175,18 @@ class _LibraryState extends State<Library>{
                 ),
               ],
             ),
+
             Expanded(
               child:ListView.builder(
                 itemCount: userBooks.length,
                 itemBuilder: (context, index) {
                   final book = userBooks[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(book['Title']),
-                      subtitle: Text(book['Author']),
-                    ),
-                  );
+                    return Card(
+                      child: ListTile(
+                        title: Text(book['Title']),
+                        subtitle: Text(book['Author']),
+                      ),
+                    );
                 },
               ),
             )
