@@ -47,7 +47,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   
   //Creates an AI Review of the book
   Future<void> _generateAIReview() async {
-    final model = GenerativeModel(model: 'gemini-pro', apiKey: 'YOUR_API_KEY');
+    final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCZirTMrhis_ztfS_gBJlAfU_P4lmexc74');
     final prompt = "Write a review for the book '${_titleController.text}' by ${_authorController.text}";
     final response = await model.generateContent([Content.text(prompt)]);
     setState(() {
