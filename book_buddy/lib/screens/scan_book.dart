@@ -5,6 +5,7 @@ import 'package:book_buddy/screens/tbr.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/scan_book_adding.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 
 class ScanBook extends StatefulWidget {
@@ -96,6 +97,7 @@ class _ScanBookState extends State<ScanBook>{
   late List<CameraDescription> cameras;
   //Tracks whether camera is initialised
   bool isCameraInitialized = false;
+  bool isProcessing = false;
 
   @override
   void initState(){
@@ -122,16 +124,60 @@ class _ScanBookState extends State<ScanBook>{
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
-    final XFile imageFile = await _cameraController!.takePicture();
+    setState(() {
+      isProcessing = true;
+    });
+    
+    try {
+      final XFile imageFile = await _cameraController!.takePicture();
+      
+      // Process the image to extract text
+      final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+      final inputImage = InputImage.fromFilePath(imageFile.path);
+      final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+      
+      String? title;
+      String? author;
+      
+      // Simple logic to extract title and author (you might need more sophisticated parsing)
+      for (TextBlock block in recognizedText.blocks) {
+        for (TextLine line in block.lines) {
+          final text = line.text.toLowerCase();
+          if (text.contains("by") && text.split("by").length > 1) {
+            // Assuming format "Title by Author"
+            final parts = line.text.split("by");
+            title = parts[0].trim();
+            author = parts[1].trim();
+          } else if (title == null && line.text.length > 10) {
+            // If no "by" found, take the longest line as title
+            title = line.text;
+          }
+        }
+      }
 
     if (!mounted) return;
  
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ScanBookAdding(imagePath: imageFile.path),
-      ),
-   );
+          builder: (context) => ScanBookAdding(
+            imagePath: imageFile.path,
+            initialTitle: title ?? '',
+            initialAuthor: author ?? '',
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error processing image: ${e.toString()}")),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          isProcessing = false;
+        });
+      }
+    }
   }
   
   //Used to release resource when the widget is disposed
