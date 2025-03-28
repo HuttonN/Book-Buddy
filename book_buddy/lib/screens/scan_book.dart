@@ -5,6 +5,7 @@ import 'package:book_buddy/screens/tbr.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/scan_book_adding.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 
 class ScanBook extends StatefulWidget {
@@ -51,34 +52,55 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
+          icon: Semantics(
+            label: 'Library- book icon',
+            hint: 'Press to go to My Library screen',
+            child: Icon(Icons.menu_book),
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Semantics(
+            label: 'My TBR- bookmark icon',
+            hint: 'Press to go to My TBR screen',
+            child: Icon(Icons.bookmark)
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
-                shape: BoxShape.circle,
+            icon: Semantics(
+              label: 'Scan book- camera icon',
+              hint: 'Press to to go to scan book screen',
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.black, // Black circle for camera button
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
               ),
-              child: Icon(Icons.camera_alt, color: Colors.black), // White camera icon
             ),
             label: "", 
-        ),
-        
+            ),
+            
+
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Semantics(
+            label: 'Settings- settings icon',
+            hint: 'Press to go to Settings screen', 
+            child: Icon(Icons.settings),
+          ), 
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Semantics(
+            label: 'Home- home icon', 
+            hint: 'Press to go to the home page screen',
+            child: Icon(Icons.home),
+          ),
           label: "", 
         ),
       ],
@@ -96,6 +118,7 @@ class _ScanBookState extends State<ScanBook>{
   late List<CameraDescription> cameras;
   //Tracks whether camera is initialised
   bool isCameraInitialized = false;
+  bool isProcessing = false;
 
   @override
   void initState(){
@@ -122,16 +145,60 @@ class _ScanBookState extends State<ScanBook>{
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
-    final XFile imageFile = await _cameraController!.takePicture();
+    setState(() {
+      isProcessing = true;
+    });
+    
+    try {
+      final XFile imageFile = await _cameraController!.takePicture();
+      
+      // Process the image to extract text
+      final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+      final inputImage = InputImage.fromFilePath(imageFile.path);
+      final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+      
+      String? title;
+      String? author;
+      
+      // Simple logic to extract title and author (you might need more sophisticated parsing)
+      for (TextBlock block in recognizedText.blocks) {
+        for (TextLine line in block.lines) {
+          final text = line.text.toLowerCase();
+          if (text.contains("by") && text.split("by").length > 1) {
+            // Assuming format "Title by Author"
+            final parts = line.text.split("by");
+            title = parts[0].trim();
+            author = parts[1].trim();
+          } else if (title == null && line.text.length > 10) {
+            // If no "by" found, take the longest line as title
+            title = line.text;
+          }
+        }
+      }
 
     if (!mounted) return;
  
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ScanBookAdding(imagePath: imageFile.path),
-      ),
-   );
+          builder: (context) => ScanBookAdding(
+            imagePath: imageFile.path,
+            initialTitle: title ?? '',
+            initialAuthor: author ?? '',
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error processing image: ${e.toString()}")),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          isProcessing = false;
+        });
+      }
+    }
   }
   
   //Used to release resource when the widget is disposed
