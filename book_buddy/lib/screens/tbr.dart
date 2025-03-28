@@ -248,7 +248,7 @@ class _TBRState extends State<TBR>{
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: Image.network(
-                                'https://firebasestorage.googleapis.com/v0/b/cs991-project.firebasestorage.app/o/handmaids_cover.jpeg?alt=media&token=3594ee78-efc8-4941-a00e-884c57a4bdd5',
+                                book['image_url'],
                                 fit: BoxFit.cover,
                               ),
                             ),
