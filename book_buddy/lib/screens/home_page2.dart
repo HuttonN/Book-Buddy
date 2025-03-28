@@ -148,8 +148,9 @@ if (userData == null){
       child: AppBar(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
-        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
-        )),
+        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45)),
+      )
+      ),
       
       backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
       
@@ -242,153 +243,180 @@ if (userData == null){
                 SizedBox(height: 10),
 
                 //My Library.
-                TextButton(onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => Library(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-                    )
-                    )
-                  );
-                  }, child: 
-                    Container( 
-                      width:180, 
-                      height: 20, 
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.white : Colors.black,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 6,  
-                            spreadRadius: 0.1,  
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                Semantics(
 
-                          SizedBox(width: 2),
+                  // Semantics added for accessibility.
+                  label: 'Nativate to My Library',
+                  hint: 'Press to navigate to the My Library screen',
 
-                          Icon(
-                            Icons.menu_book,
-                            color: _isDarkMode ? Colors.black : Colors.white,
-                            size: 20,
-                          ),
-
-                          SizedBox(width: 45),
-
-                          Expanded(
-                            child: 
-                              Text('My Library', 
-                                style: TextStyle(
-                                  color: _isDarkMode ? Colors.black : Colors.white,
-                                  fontSize: 10)
-                              )
+                  child: 
+                    TextButton(onPressed: (){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => Library(
+                          isDarkMode: _isDarkMode, 
+                          toggleDarkMode: widget.toggleDarkMode
                           )
-                        ],
-                      )
-                    )
-                  ),
+                        )
+                      );
+                      }, child: 
+                        Container( 
+                          width:180, 
+                          height: 20, 
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: _isDarkMode ? Colors.white : Colors.black,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(90, 0, 0, 0),  
+                                offset: Offset(0,5),  
+                                blurRadius: 6,  
+                                spreadRadius: 0.1,  
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
 
+                              SizedBox(width: 2),
+
+                              Icon(
+                                Icons.menu_book,
+                                color: _isDarkMode ? Colors.black : Colors.white,
+                                size: 20,
+                              ),
+
+                              SizedBox(width: 45),
+
+                              Expanded(
+                                child: 
+                                  Text('My Library', 
+                                    style: TextStyle(
+                                      color: _isDarkMode ? Colors.black : Colors.white,
+                                      fontSize: 10)
+                                  )
+                              )
+                            ],
+                          )
+                        )
+                      ),
+                ),
+                
                 SizedBox(height: 10),
 
                 //My TBR.
-                TextButton(onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => TBR(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-                    )
-                    )
-                  );
-                  }, child: 
-                    Container( 
-                      width:180, 
-                      height: 20, 
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.white : Colors.black,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 6,  
-                            spreadRadius: 0.1,  
+                Semantics(
+
+                  // Semantics added for accessibility.
+                  label: 'Nativate to My TBR',
+                  hint: 'Press to navigate to the My TBR screen',
+
+                  child: 
+                    TextButton(onPressed: (){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => TBR(
+                          isDarkMode: _isDarkMode, 
+                          toggleDarkMode: widget.toggleDarkMode
+                        )
+                        )
+                      );
+                      }, child: 
+                        Container( 
+                          width:180, 
+                          height: 20, 
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: _isDarkMode ? Colors.white : Colors.black,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(90, 0, 0, 0),  
+                                offset: Offset(0,5),  
+                                blurRadius: 6,  
+                                spreadRadius: 0.1,  
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          
-                          SizedBox(width: 2),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              
+                              SizedBox(width: 2),
 
-                          Icon(
-                            Icons.bookmark,
-                            color: _isDarkMode ? Colors.black : Colors.white,
-                            size: 20,
-                          ),
+                              Icon(
+                                Icons.bookmark,
+                                color: _isDarkMode ? Colors.black : Colors.white,
+                                size: 20,
+                              ),
 
-                          SizedBox(width: 45),
+                              SizedBox(width: 45),
 
-                          Expanded(
-                            child: 
-                              Text('My TBR', 
-                                style: TextStyle(
-                                  color: _isDarkMode ? Colors.black : Colors.white,
-                                  fontSize: 10)
+                              Expanded(
+                                child: 
+                                  Text('My TBR', 
+                                    style: TextStyle(
+                                      color: _isDarkMode ? Colors.black : Colors.white,
+                                      fontSize: 10)
+                                  )
                               )
+                            ],
                           )
-                        ],
+                        )
                       )
-                    )
-                  ),
+                ),
 
                 SizedBox(height: 10),
 
                 //Scan Book.
-                TextButton(onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => ScanBook(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-                    )
-                    )
-                  );
-                  }, child: 
-                    Container( 
-                      width:180, 
-                      height: 20, 
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.white : Colors.black,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 6,  
-                            spreadRadius: 0.1,  
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                Semantics(
+
+                  // Semantics added for accessibility.
+                  label: 'Nativate to Scan Book',
+                  hint: 'Press to navigate to the Scan Book screen',
+
+                  child: 
+                    TextButton(onPressed: (){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => ScanBook(
+                          isDarkMode: _isDarkMode, 
+                          toggleDarkMode: widget.toggleDarkMode
+                        )
+                        )
+                      );
+                    }, child: 
+                      Container( 
+                        width:180, 
+                        height: 20, 
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: _isDarkMode 
+                            ? Colors.white
+                            : Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(90, 0, 0, 0),  
+                              offset: Offset(0,5),  
+                              blurRadius: 6,  
+                              spreadRadius: 0.1,  
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                           
                           SizedBox(width: 2),
 
                           Icon(
                             Icons.camera_alt,
-                            color: _isDarkMode ? Colors.black : Colors.white,
+                            color: _isDarkMode
+                              ? Colors.black
+                              : Colors.white,
                             size: 20,
                           ),
 
@@ -402,81 +430,98 @@ if (userData == null){
                                   fontSize: 10)
                               )
                           )
-                        ],
+                          ],
+                        )
                       )
-                    )
-                  ),
+                  )
+
+                ),
+                
 
                 SizedBox(height: 10),
 
                 //Settings.
-                TextButton(
-                   onPressed: () async {
-                final updatedDarkMode = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Settings(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode,
-                    ),
-                  ),
-                );
+                Semantics(
 
-                // Update the state with the new dark mode value
-                if (updatedDarkMode != null) {
-                  setState(() {
-                    _isDarkMode = updatedDarkMode;
-                  });
-                }
-              },child: 
-                    Container( 
-                      width:180, 
-                      height: 20, 
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.white : Colors.black,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 5,  
-                            spreadRadius: 0.1,  
+                  // Semantics added for accessibility.
+                  label: 'Nativate to Settings',
+                  hint: 'Press to navigate to the Settings screen',
+
+                  child: 
+                    TextButton(
+                      onPressed: () async {
+                        final updatedDarkMode = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Settings(
+                            isDarkMode: _isDarkMode, 
+                            toggleDarkMode: widget.toggleDarkMode,
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          
-                          SizedBox(width: 2),
+                        ),
+                        );
 
-                          Icon(
-                            Icons.settings,
-                            color: _isDarkMode ? Colors.black : Colors.white,
-                            size: 20,
+                    // Update the state with the new dark mode value
+                    if (updatedDarkMode != null) {
+                      setState(() {
+                        _isDarkMode = updatedDarkMode;
+                      });
+                    }
+                  },child: 
+                        Container( 
+                          width:180, 
+                          height: 20, 
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: _isDarkMode ? Colors.white : Colors.black,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(90, 0, 0, 0),  
+                                offset: Offset(0,5),  
+                                blurRadius: 5,  
+                                spreadRadius: 0.1,  
+                              ),
+                            ],
                           ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              
+                              SizedBox(width: 2),
 
-                          SizedBox(width: 45),
+                              Icon(
+                                Icons.settings,
+                                color: _isDarkMode ? Colors.black : Colors.white,
+                                size: 20,
+                              ),
 
-                          Expanded(
-                            child: 
-                              Text('Settings', 
-                                style: TextStyle(
-                                  color: _isDarkMode ? Colors.black : Colors.white,
-                                  fontSize: 10)
+                              SizedBox(width: 45),
+
+                              Expanded(
+                                child: 
+                                  Text('Settings', 
+                                    style: TextStyle(
+                                      color: _isDarkMode
+                                        ? Colors.black
+                                        : Colors.white,
+                                      fontSize: 10
+                                      )
+                                  )
                               )
+                            ],
                           )
-                        ],
-                      )
+                        )
                     )
-                  ),
+
+                ),
               ],
             )
             )
           ],
         ),
       ),
+
+
       bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {
