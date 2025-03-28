@@ -52,34 +52,55 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
+          icon: Semantics(
+            label: 'Library- book icon',
+            hint: 'Press to go to My Library screen',
+            child: Icon(Icons.menu_book),
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Semantics(
+            label: 'My TBR- bookmark icon',
+            hint: 'Press to go to My TBR screen',
+            child: Icon(Icons.bookmark)
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
-                shape: BoxShape.circle,
+            icon: Semantics(
+              label: 'Scan book- camera icon',
+              hint: 'Press to to go to scan book screen',
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.black, // Black circle for camera button
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
               ),
-              child: Icon(Icons.camera_alt, color: Colors.black), // White camera icon
             ),
             label: "", 
-        ),
-        
+            ),
+            
+
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Semantics(
+            label: 'Settings- settings icon',
+            hint: 'Press to go to Settings screen', 
+            child: Icon(Icons.settings),
+          ), 
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Semantics(
+            label: 'Home- home icon', 
+            hint: 'Press to go to the home page screen',
+            child: Icon(Icons.home),
+          ),
           label: "", 
         ),
       ],
