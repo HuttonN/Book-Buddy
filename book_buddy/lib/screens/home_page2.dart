@@ -239,7 +239,7 @@ if (userData == null){
             // Container for navigations.
             Container(
               width: 200,
-              height: 180,
+              height: 240,
               decoration: BoxDecoration(
                 color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
                 borderRadius: BorderRadius.circular(10),
