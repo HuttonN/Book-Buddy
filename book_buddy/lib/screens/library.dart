@@ -204,6 +204,13 @@ class _LibraryState extends State<Library>{
                   final book = userBooks[index];
                     return Card(
                       child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            book['image_url'],
+                            fit: BoxFit.cover,
+                            )
+                        ),
                         title: Text(book['Title']),
                         subtitle: Text(book['Author']),
                       ),

@@ -202,91 +202,37 @@ class _TBRState extends State<TBR>{
                 itemCount: userBooks.length,
                 itemBuilder: (context, index) {
                   final book = userBooks[index];
-                  return TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context, 
-                        MaterialPageRoute(
-                          builder: (context) => TBR_specific_book(
-                            isDarkMode: _isDarkMode, 
-                            toggleDarkMode: widget.toggleDarkMode,
-                          ),
+                  return Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(
+                              builder: (context) => TBR_specific_book(
+                                isDarkMode: _isDarkMode, 
+                                toggleDarkMode: widget.toggleDarkMode,
+                              ),
+                            ),
+                          );
+                        },
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            book['image_url'],
+                            fit: BoxFit.cover,
+                            )
                         ),
-                      );
-                    }, 
-                    child: Container(
-                      width:240, 
-                      height: 50, 
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 6,  
-                            spreadRadius: 0.1,  
-                          ),
-                        ],
+                        title: Text(book['Title']),
+                        subtitle: Text(book['Author']),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-
-                          SizedBox(width: 2),
-
-                          Container(
-                            width: 40,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 223, 245, 252),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.black)
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                book['image_url'],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(width: 45),
-
-                          Expanded(
-                            child: 
-                              Column(
-                                children: [
-                                  Text(book['Title'], 
-                                    style: 
-                                      TextStyle(
-                                        color: _isDarkMode ? Colors.white : Colors.black,
-                                        fontSize: 20
-                                      )
-                                  ),
-                                  Text(book['Author'], 
-                                    style: 
-                                      TextStyle(
-                                        color: _isDarkMode ? Colors.white : Colors.black,
-                                        fontSize: 10
-                                      ),
-                                  ),
-                                ],
-                              ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                    );
                 },
-                ),
+              ),
             ),
           ],
         ),
       ),
+
              bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {
