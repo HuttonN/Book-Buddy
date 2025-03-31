@@ -6,120 +6,109 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/scan_book_adding.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-
+import 'package:image/image.dart' as image;
+import 'dart:io';
 
 class ScanBook extends StatefulWidget {
   final bool isDarkMode;
-  final Function(bool) toggleDarkMode; 
+  final Function(bool) toggleDarkMode;
 
-   const ScanBook({
+  const ScanBook({
     required this.isDarkMode,
     required this.toggleDarkMode,
     super.key,
-   });
+  });
 
-   @override 
-   _ScanBookState createState() => _ScanBookState();
+  @override
+  _ScanBookState createState() => _ScanBookState();
 }
 
-//Custom NavBar 
+// Custom Navigation Bar
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
   const NavBar({super.key, required this.onTap, required this.currentIndex});
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black, // Black background
+        color: Colors.black,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
       ),
-    
-    child: BottomNavigationBar(
-        backgroundColor: Colors.transparent, 
-        selectedItemColor: Colors.white, 
-        unselectedItemColor: Colors.white70, 
-        showSelectedLabels: false, 
-        showUnselectedLabels: false, 
-        currentIndex: currentIndex, 
-        onTap: onTap, 
-        type: BottomNavigationBarType.fixed,  
-
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
-          label: "", 
-        ),
-        
-        BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
-          label: "", 
-        ),
-        
-        BottomNavigationBarItem(
+      child: BottomNavigationBar(
+        backgroundColor: Colors.transparent,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: ""),
+          BottomNavigationBarItem(
             icon: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
+                color: Colors.black,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.camera_alt, color: Colors.black), // White camera icon
+              child: Icon(Icons.camera_alt, color: Colors.white),
             ),
-            label: "", 
-        ),
-        
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: "", 
-        ),
-        
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "", 
-        ),
-      ],
-    ),
+            label: "",
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+        ],
+      ),
     );
   }
 }
 
-
-
-class _ScanBookState extends State<ScanBook>{
+class _ScanBookState extends State<ScanBook> {
   late bool _isDarkMode;
   CameraController? _cameraController;
-  //Creates a list of available cameras on the device
   late List<CameraDescription> cameras;
-  //Tracks whether camera is initialised
   bool isCameraInitialized = false;
   bool isProcessing = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
     initializeCamera();
   }
 
-  //Method to fetch available cameras, create a camera controller and updates 
-  //state of the camera
+  // Initialize the Camera
   Future<void> initializeCamera() async {
     cameras = await availableCameras();
-    _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
+    _cameraController = CameraController(cameras[0], ResolutionPreset.max);
     await _cameraController!.initialize();
+    await _cameraController!.setFocusMode(FocusMode.auto);       
+    await _cameraController!.setExposureMode(ExposureMode.auto); 
     if (!mounted) return;
     setState(() {
       isCameraInitialized = true;
     });
   }
 
-  //Method used to capture the image using the camera and push onto the 
-  //scan_book_adding page
+  Future<InputImage> preprocessImage(String imagePath) async {
+    final originalImage = image.decodeImage(await File(imagePath).readAsBytes())!;
+    final grayImage = image.grayscale(originalImage);
+    final contrastImage = image.adjustColor(grayImage, contrast: 1.5);
+    final processedPath = '${imagePath}_processed.jpg';
+
+    await File(processedPath).writeAsBytes(image.encodeJpg(contrastImage));
+    return InputImage.fromFilePath(processedPath);
+  }
+
+  // Capture Image & Extract Text
   Future<void> captureAndSearch() async {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
@@ -127,41 +116,35 @@ class _ScanBookState extends State<ScanBook>{
     setState(() {
       isProcessing = true;
     });
-    
+
     try {
       final XFile imageFile = await _cameraController!.takePicture();
-      
-      // Process the image to extract text
       final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-      final inputImage = InputImage.fromFilePath(imageFile.path);
+      final inputImage = await preprocessImage(imageFile.path); 
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-      
+
+      // NEW: Step 4 - Improved Text Parsing
       String? title;
       String? author;
-      
-      // Simple logic to extract title and author (you might need more sophisticated parsing)
+
       for (TextBlock block in recognizedText.blocks) {
         for (TextLine line in block.lines) {
-          final text = line.text.toLowerCase();
-          if (text.contains("by") && text.split("by").length > 1) {
-            // Assuming format "Title by Author"
-            final parts = line.text.split("by");
-            title = parts[0].trim();
-            author = parts[1].trim();
-          } else if (title == null && line.text.length > 10) {
-            // If no "by" found, take the longest line as title
-            title = line.text;
+          final text = line.text.trim();
+
+          if (text.length > 3) { 
+            if (title == null && text.length > 20) title = text; 
+            if (author == null && text.contains(RegExp(r'^[A-Za-z\s]+$'))) author = text; 
           }
         }
       }
 
-    if (!mounted) return;
- 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
+      if (!mounted) return;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
           builder: (context) => ScanBookAdding(
-            imagePath: imageFile.path,
+            imagePath: imageFile.path, 
             initialTitle: title ?? '',
             initialAuthor: author ?? '',
           ),
@@ -179,56 +162,50 @@ class _ScanBookState extends State<ScanBook>{
       }
     }
   }
-  
-  //Used to release resource when the widget is disposed
+
+  // Dispose Camera
   @override
   void dispose() {
     _cameraController?.dispose();
     super.dispose();
   }
 
-
-  //Defines the UI
+  // UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
-      child: AppBar(
-        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
-        elevation: 5 ,
-        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
-        )),
-      
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(35),
+        child: AppBar(
+          backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+          elevation: 5,
+          iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45)),
+        ),
+      ),
       backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
-      
       body: Column(
         children: [
-          Row(children: [
-             // Icon.
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                    child: Icon(
-                      Icons.camera_alt,
-                      size: 90,
-                      color: _isDarkMode
-                        ? Colors.white
-                        : Colors.black
-                    )
+          Row(
+            children: [
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: Icon(
+                  Icons.camera_alt,
+                  size: 90,
+                  color: _isDarkMode ? Colors.white : Colors.black,
                 ),
-
-                // Heading.
-                Text(
-                  'Scan Book',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: _isDarkMode 
-                      ? Colors.white 
-                      : Colors.black,
-                  ),
+              ),
+              Text(
+                'Scan Book',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: _isDarkMode ? Colors.white : Colors.black,
                 ),
-          ],),
+              ),
+            ],
+          ),
           const Padding(
             padding: EdgeInsets.all(0),
             child: Text(
@@ -242,9 +219,7 @@ class _ScanBookState extends State<ScanBook>{
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
               ),
-              child: isCameraInitialized
-                  ? CameraPreview(_cameraController!)
-                  : const Center(child: CircularProgressIndicator()),
+              child: isCameraInitialized ? CameraPreview(_cameraController!) : const Center(child: CircularProgressIndicator()),
             ),
           ),
           FloatingActionButton(
@@ -256,48 +231,28 @@ class _ScanBookState extends State<ScanBook>{
         ],
       ),
       bottomNavigationBar: NavBar(
-        currentIndex: 4,
+        currentIndex: 2,
         onTap: (index) {
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-              );
+              screen = Library(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
               break;
-            case 1: 
-              screen = TBR(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-              );
+            case 1:
+              screen = TBR(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
               break;
             case 2:
-              screen = ScanBook(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-              );
+              screen = ScanBook(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
               break;
             case 3:
-              screen = Settings(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-              );
+              screen = Settings(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
               break;
-            case 4:
             default:
-              screen = HomePage2(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-              );
+              screen = HomePage2(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
           }
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => screen),
-          );
-        }
-      )
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen));
+        },
+      ),
     );
-
   }
 }
