@@ -5,6 +5,7 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
+import 'package:book_buddy/api_keys.dart';
 
 class Library_specific_book extends StatefulWidget {
   final bool isDarkMode;
@@ -107,8 +108,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     });
 
     try {
-      const apiKey = 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA';
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+      final model = GenerativeModel(model: 'gemini-pro', apiKey: APIKey.geminiApiKey);
       final prompt = "Write a 150-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
       final response = await model.generateContent([Content.text(prompt)]);
