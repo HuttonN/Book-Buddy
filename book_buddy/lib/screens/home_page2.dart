@@ -44,7 +44,7 @@ class NavBar extends StatelessWidget {
     child: BottomNavigationBar(
         backgroundColor: Colors.transparent, 
         selectedItemColor: Colors.white, 
-        unselectedItemColor: Colors.white70, 
+        unselectedItemColor: Colors.white, 
         showSelectedLabels: false, 
         showUnselectedLabels: false, 
         currentIndex: currentIndex, 

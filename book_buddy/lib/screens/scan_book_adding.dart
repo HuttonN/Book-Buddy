@@ -3,6 +3,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
+import 'package:book_buddy/api_keys.dart';
 
 class ScanBookAdding extends StatefulWidget {
   final String imagePath;
@@ -94,7 +95,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
 
   Future<void> _generateAIReview() async {
     try {
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA');
+      final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
       final prompt = "Write a review for the book '${_titleController.text}' by ${_authorController.text}";
       final response = await model.generateContent([Content.text(prompt)]);
       setState(() {
