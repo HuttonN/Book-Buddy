@@ -196,51 +196,27 @@ class _TBRState extends State<TBR>{
                 ),
               ],
             ),
-
-            TextButton(onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => TBR_specific_book(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode,
-                      bookTitle: 'The title of the book',
-                      bookAuthor: 'The Author of the book',
-                    )
-                    )
-                  );
-                  }, child: 
-                    Container( 
-                      width:240, 
-                      height: 50, 
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 6,  
-                            spreadRadius: 0.1,  
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-
-                          SizedBox(width: 2),
-
-                          Container(
-                            width: 40,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 223, 245, 252),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.black)
+            Expanded(
+              child:ListView.builder(
+                itemCount: userBooks.length,
+                itemBuilder: (context, index) {
+                  final book = userBooks[index];
+                  return Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(
+                              builder: (context) => TBR_specific_book(
+                                isDarkMode: _isDarkMode, 
+                                toggleDarkMode: widget.toggleDarkMode,
+                                bookTitle: book['Title'],
+                                bookAuthor: book['Author'],
+                              ),
                             ),
                           );
                         },
+
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: Image.network(

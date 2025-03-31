@@ -5,7 +5,6 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
-import 'package:book_buddy/api_keys.dart';
 
 class TBR_specific_book extends StatefulWidget {
   final bool isDarkMode;
