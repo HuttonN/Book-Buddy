@@ -4,6 +4,8 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr_specific_book.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TBR extends StatefulWidget {
   final bool isDarkMode;
@@ -48,34 +50,55 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
+          icon: Semantics(
+            label: 'Library- book icon',
+            hint: 'Press to go to My Library screen',
+            child: Icon(Icons.menu_book),
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Semantics(
+            label: 'My TBR- bookmark icon',
+            hint: 'Press to go to My TBR screen',
+            child: Icon(Icons.bookmark)
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black, 
-                shape: BoxShape.circle,
+            icon: Semantics(
+              label: 'Scan book- camera icon',
+              hint: 'Press to to go to scan book screen',
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.black, // Black circle for camera button
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white), 
             ),
             label: "", 
-        ),
-        
+            ),
+            
+
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Semantics(
+            label: 'Settings- settings icon',
+            hint: 'Press to go to Settings screen', 
+            child: Icon(Icons.settings),
+          ), 
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Semantics(
+            label: 'Home- home icon', 
+            hint: 'Press to go to the home page screen',
+            child: Icon(Icons.home),
+          ),
           label: "", 
         ),
       ],
@@ -87,12 +110,54 @@ class NavBar extends StatelessWidget {
 
 class _TBRState extends State<TBR>{
   late bool _isDarkMode;
+  Map<String, dynamic>? userData;
+  List<Map<String, dynamic>> userBooks = [];
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    fetchUserData();
   }
+
+  Future<void> fetchUserData() async {
+    try{
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      
+      firestore.QuerySnapshot querySnapshot = await firestore.FirebaseFirestore.instance
+      .collection("usersCollection")
+      .where("uid", isEqualTo: uid)
+      .get();
+
+      firestore.DocumentSnapshot userDoc = querySnapshot.docs.first;
+
+    setState(() {
+      userData = userDoc.data() as Map<String,dynamic>?;
+    });
+
+     print(userData);
+
+    firestore.QuerySnapshot booksSnapshot = await userDoc.reference
+      .collection("Books")
+      .get();
+
+    List<Map<String, dynamic>> booksList = booksSnapshot.docs
+      .map((doc) => doc.data() as Map<String, dynamic>)
+      .where((book) => 
+        book['has_read'] == false)
+      .toList();
+
+    setState(() {
+      userBooks = booksList;
+    });
+
+    print(userBooks);
+    
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,43 +239,26 @@ class _TBRState extends State<TBR>{
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.black)
                             ),
-                            child: Text('cover'),
-                          ),
-
-                          SizedBox(width: 45),
-
-                          Expanded(
-                            child: 
-                              Column(
-                                children: [
-                                  Text('Book title', 
-                                    style: 
-                                      TextStyle(
-                                        color: _isDarkMode ? Colors.white : Colors.black,
-                                        fontSize: 20
-                                      )
-                                  ),
-                                  Text('Author', 
-                                    style: 
-                                      TextStyle(
-                                        color: _isDarkMode ? Colors.white : Colors.black,
-                                        fontSize: 10
-                                      )
-                                  )
-                                ]
-                              )
-                              
-                          )
-                        ],
-                      )
-                    )
-                  ),
-
-            
-            
+                          );
+                        },
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            book['image_url'],
+                            fit: BoxFit.cover,
+                            )
+                        ),
+                        title: Text(book['Title']),
+                        subtitle: Text(book['Author']),
+                      ),
+                    );
+                },
+              ),
+            ),
           ],
         ),
       ),
+
              bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {

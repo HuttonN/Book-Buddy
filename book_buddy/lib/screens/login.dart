@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:toast/toast.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/forgot_password.dart';
 
@@ -88,6 +87,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
@@ -96,153 +96,158 @@ class _LoginState extends State<Login> {
         )
       ),
       backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
-      body: Align(  // Align everything at the top
-        alignment: Alignment.topCenter,  // Move everything to the top
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
-          children: [
-            Row(
+      body: SafeArea( 
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: Align(  // Align everything at the top
+            alignment: Alignment.topCenter,  // Move everything to the top
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
               children: [
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: _isDarkMode ? Image.asset('assets/logo_no_words_dark_mode.png'): Image.asset('assets/logo_no_words_light_mode.png'),
-                ),
-                Text(
-                  'Sign In',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: _isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            // Add in the logo.
-            
-            // Add space between the logo and the button.
-            SizedBox(height: 10),  
-
-            Container(
-              width: 200,
-              height: 274,
-              decoration: BoxDecoration(
-                color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Color.fromARGB(255, 216, 238, 245),  // Border color
-                  width: 1,  // Border width
-                ),
-              boxShadow: [
-                BoxShadow(
-                color: Color.fromARGB(90, 0, 0, 0),  
-                offset: Offset(0,5),  
-                blurRadius: 6,  
-                spreadRadius: 2,  
-                ),
-              ],
-            ),
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  // Add space
-                  SizedBox(height: 30),
-
-                  TextField(
-                    controller: emailController,
-                    decoration: 
-                       InputDecoration(
-                            labelText: 'Email',
-                            border: OutlineInputBorder(),
-                            fillColor: _isDarkMode ? Colors.grey: Colors.white,
-                            filled: true
-                      )
-                  ),
-
-                  // Add space
-                  SizedBox(height: 30),
-
-                  TextField(
-                    controller: passwordController,
-                    decoration: 
-                       InputDecoration(
-                            labelText: 'Password',
-                            border: OutlineInputBorder(),
-                            fillColor: _isDarkMode ? Colors.grey: Colors.white,
-                            filled: true
-                      ),
-                      obscureText: true,
-                  ),
-
-                  // Add space
-                  SizedBox(height: 10),
-
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                            ForgotPassword(isDarkMode: _isDarkMode),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Forgot Password?',
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: _isDarkMode ? Image.asset('assets/logo_no_words_dark_mode.png'): Image.asset('assets/logo_no_words_light_mode.png'),
+                    ),
+                    Text(
+                      'Sign In',
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: _isDarkMode? Colors.white : Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: _isDarkMode ? Colors.white : Colors.black,
                       ),
                     ),
-                  ),
-                  // Add space
-                  SizedBox(height: 10),
+                  ],
+                ),
+                // Add in the logo.
+                
+                // Add space between the logo and the button.
+                SizedBox(height: 10),  
 
-                  ElevatedButton(
-                    onPressed: loginUser,
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
-                      textStyle: TextStyle(fontSize: 16),  
-                      backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
-                      foregroundColor: _isDarkMode ? Colors.black: Colors.white,
-                      minimumSize: Size(100, 40)
+                Container(
+                  width: 200,
+                  height: 295,
+                  decoration: BoxDecoration(
+                    color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 216, 238, 245),  // Border color
+                      width: 1,  // Border width
                     ),
-                    child: Text('Sign In'),
-                  ),
-
-                  // Add space
-                  SizedBox(height: 30)
-                ],
-              ),
-            ),
-
-           SizedBox(height: 30),
-
-           Text("Or"),
-
-           SizedBox(height: 30),
-
-
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the Login page when the button is pressed
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Register(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode)),  // Navigate to LoginPage
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
-                      textStyle: TextStyle(fontSize: 16),  
-                      backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
-                      foregroundColor: _isDarkMode ? Colors.black: Colors.white,
-                      minimumSize: Size(100, 40)
+                  boxShadow: [
+                    BoxShadow(
+                    color: Color.fromARGB(90, 0, 0, 0),  
+                    offset: Offset(0,5),  
+                    blurRadius: 6,  
+                    spreadRadius: 2,  
                     ),
-              child: Text('Register'),
+                  ],
+                ),
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      // Add space
+                      SizedBox(height: 30),
+
+                      TextField(
+                        controller: emailController,
+                        decoration: 
+                          InputDecoration(
+                                labelText: 'Email',
+                                border: OutlineInputBorder(),
+                                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                                filled: true
+                          )
+                      ),
+
+                      // Add space
+                      SizedBox(height: 30),
+
+                      TextField(
+                        controller: passwordController,
+                        decoration: 
+                          InputDecoration(
+                                labelText: 'Password',
+                                border: OutlineInputBorder(),
+                                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                                filled: true
+                          ),
+                          obscureText: true,
+                      ),
+
+                      // Add space
+                      SizedBox(height: 10),
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                ForgotPassword(isDarkMode: _isDarkMode),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: _isDarkMode? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                      // Add space
+                      SizedBox(height: 10),
+
+                      ElevatedButton(
+                        onPressed: loginUser,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
+                          textStyle: TextStyle(fontSize: 16),  
+                          backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
+                          foregroundColor: _isDarkMode ? Colors.black: Colors.white,
+                          minimumSize: Size(100, 40)
+                        ),
+                        child: Text('Sign In'),
+                      ),
+
+                      // Add space
+                      SizedBox(height: 30)
+                    ],
+                  ),
+                ),
+
+              SizedBox(height: 30),
+
+              Text("Or"),
+
+              SizedBox(height: 30),
+
+
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigate to the Login page when the button is pressed
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Register(
+                          isDarkMode: _isDarkMode, 
+                          toggleDarkMode: widget.toggleDarkMode)),  // Navigate to LoginPage
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),  
+                          textStyle: TextStyle(fontSize: 16),  
+                          backgroundColor: _isDarkMode ? Colors.white: Colors.black, 
+                          foregroundColor: _isDarkMode ? Colors.black: Colors.white,
+                          minimumSize: Size(100, 40)
+                        ),
+                  child: Text('Register'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

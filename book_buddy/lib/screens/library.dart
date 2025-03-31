@@ -50,34 +50,55 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
+          icon: Semantics(
+            label: 'Library- book icon',
+            hint: 'Press to go to My Library screen',
+            child: Icon(Icons.menu_book),
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Semantics(
+            label: 'My TBR- bookmark icon',
+            hint: 'Press to go to My TBR screen',
+            child: Icon(Icons.bookmark)
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
-                shape: BoxShape.circle,
+            icon: Semantics(
+              label: 'Scan book- camera icon',
+              hint: 'Press to to go to scan book screen',
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.black, // Black circle for camera button
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
             ),
             label: "", 
-        ),
-        
+            ),
+            
+
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Semantics(
+            label: 'Settings- settings icon',
+            hint: 'Press to go to Settings screen', 
+            child: Icon(Icons.settings),
+          ), 
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Semantics(
+            label: 'Home- home icon', 
+            hint: 'Press to go to the home page screen',
+            child: Icon(Icons.home),
+          ),
           label: "", 
         ),
       ],
@@ -122,6 +143,8 @@ class _LibraryState extends State<Library>{
 
     List<Map<String, dynamic>> booksList = booksSnapshot.docs
       .map((doc) => doc.data() as Map<String, dynamic>)
+      .where((book) => 
+        book['has_read'] == true)
       .toList();
 
     setState(() {
@@ -173,15 +196,27 @@ class _LibraryState extends State<Library>{
                 ),
               ],
             ),
-            Column(
-              children: [
-                Card(
-                  child: ListTile(
-                    title: Text('${userBooks![0]['Title']}'),
-                    subtitle: Text('${userBooks![0]['Author']}'),
-                  ),
-                )
-              ]
+
+            Expanded(
+              child:ListView.builder(
+                itemCount: userBooks.length,
+                itemBuilder: (context, index) {
+                  final book = userBooks[index];
+                    return Card(
+                      child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            book['image_url'],
+                            fit: BoxFit.cover,
+                            )
+                        ),
+                        title: Text(book['Title']),
+                        subtitle: Text(book['Author']),
+                      ),
+                    );
+                },
+              ),
             )
             
 
