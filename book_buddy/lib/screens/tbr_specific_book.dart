@@ -108,7 +108,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     });
 
     try {
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: APIKey.geminiApiKey);
+      final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
       final prompt = "Write a 150-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
       final response = await model.generateContent([Content.text(prompt)]);
