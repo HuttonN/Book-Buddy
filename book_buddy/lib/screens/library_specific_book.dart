@@ -9,11 +9,15 @@ import 'package:book_buddy/screens/tbr.dart';
 class Library_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
+  final String bookTitle;  
+  final String bookAuthor;
 
   const Library_specific_book({
     required this.isDarkMode,
     required this.toggleDarkMode,
-    super.key,
+    required this.bookTitle,  
+    required this.bookAuthor,
+    super.key
   });
 
   @override
@@ -89,6 +93,7 @@ class NavBar extends StatelessWidget {
 class _Library_specific_bookState extends State<Library_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
+  bool _isGeneratingReview = false;
 
   @override
   void initState() {
@@ -96,13 +101,36 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     _isDarkMode = widget.isDarkMode;
   }
 
-  void generateAIReview(String s) {
+  Future<void> generateAIReview() async {  
     setState(() {
-      _aiReview = "This is an AI-generated review of the book..."; // Replace with API call
+      _isGeneratingReview = true;
     });
+
+    try {
+      const apiKey = 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA';
+      final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+      final prompt = "Write a 150-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
+          "Include the genre, main themes, and who might enjoy it.";
+      final response = await model.generateContent([Content.text(prompt)]);
+      
+      setState(() {
+        _aiReview = response.text ?? "Could not generate review. Please try again.";
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error generating review: ${e.toString()}")),
+      );
+      setState(() {
+        _aiReview = "Error generating review. Please try again.";
+      });
+    } finally {
+      setState(() {
+        _isGeneratingReview = false;
+      });
+    }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     Color bgColor = _isDarkMode
         ? const Color.fromARGB(255, 20, 9, 45)
@@ -136,9 +164,15 @@ class _Library_specific_bookState extends State<Library_specific_book> {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () => generateAIReview('Sample Title'),
-              child: _buildBox(350, 60, 'Click to generate AI review', Colors.black, shadowColor,
-                  textColor: Colors.white),
+              onTap: _isGeneratingReview ? null : generateAIReview, 
+              child: _buildBox(
+                350, 
+                60, 
+                _isGeneratingReview ? 'Generating review...' : 'Click to generate AI review', 
+                Colors.black, 
+                shadowColor,
+                textColor: Colors.white,
+              )
             ),
             const SizedBox(height: 40),
             _buildSpeechBubble(_aiReview, boxColor, shadowColor),
@@ -192,7 +226,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     );
   }
 
-  Widget _buildSpeechBubble(String text, Color color, Color shadowColor) {
+  Widget _buildSpeechBubble(String text, Color color, Color shadowColor, {bool isLoading = false}) {
     return Container(
       width: 350,
       padding: const EdgeInsets.all(10),
@@ -206,10 +240,12 @@ class _Library_specific_bookState extends State<Library_specific_book> {
           const Icon(Icons.person, size: 30),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              text.isEmpty ? 'AI generated review' : text,
-              style: const TextStyle(fontSize: 16),
-            ),
+            child: isLoading
+                ? const CircularProgressIndicator()
+                : Text(
+                    text,
+                    style: const TextStyle(fontSize: 16),
+                  ),
           ),
         ],
       ),
