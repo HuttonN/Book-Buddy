@@ -137,7 +137,9 @@ class _TBRState extends State<TBR>{
                     context, 
                     MaterialPageRoute(builder: (context) => TBR_specific_book(
                       isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
+                      toggleDarkMode: widget.toggleDarkMode,
+                      bookTitle: 'The title of the book',
+                      bookAuthor: 'The Author of the book',
                     )
                     )
                   );
