@@ -4,6 +4,8 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr_specific_book.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TBR extends StatefulWidget {
   final bool isDarkMode;
@@ -108,12 +110,54 @@ class NavBar extends StatelessWidget {
 
 class _TBRState extends State<TBR>{
   late bool _isDarkMode;
+  Map<String, dynamic>? userData;
+  List<Map<String, dynamic>> userBooks = [];
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    fetchUserData();
   }
+
+  Future<void> fetchUserData() async {
+    try{
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      
+      firestore.QuerySnapshot querySnapshot = await firestore.FirebaseFirestore.instance
+      .collection("usersCollection")
+      .where("uid", isEqualTo: uid)
+      .get();
+
+      firestore.DocumentSnapshot userDoc = querySnapshot.docs.first;
+
+    setState(() {
+      userData = userDoc.data() as Map<String,dynamic>?;
+    });
+
+     print(userData);
+
+    firestore.QuerySnapshot booksSnapshot = await userDoc.reference
+      .collection("Books")
+      .get();
+
+    List<Map<String, dynamic>> booksList = booksSnapshot.docs
+      .map((doc) => doc.data() as Map<String, dynamic>)
+      .where((book) => 
+        book['has_read'] == false)
+      .toList();
+
+    setState(() {
+      userBooks = booksList;
+    });
+
+    print(userBooks);
+    
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,83 +197,42 @@ class _TBRState extends State<TBR>{
               ],
             ),
 
-            TextButton(onPressed: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => TBR_specific_book(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-                    )
-                    )
-                  );
-                  }, child: 
-                    Container( 
-                      width:240, 
-                      height: 50, 
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(90, 0, 0, 0),  
-                            offset: Offset(0,5),  
-                            blurRadius: 6,  
-                            spreadRadius: 0.1,  
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-
-                          SizedBox(width: 2),
-
-                          Container(
-                            width: 40,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 223, 245, 252),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.black)
+            Expanded(
+              child:ListView.builder(
+                itemCount: userBooks.length,
+                itemBuilder: (context, index) {
+                  final book = userBooks[index];
+                  return Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(
+                              builder: (context) => TBR_specific_book(
+                                isDarkMode: _isDarkMode, 
+                                toggleDarkMode: widget.toggleDarkMode,
+                              ),
                             ),
-                            child: Text('cover'),
-                          ),
-
-                          SizedBox(width: 45),
-
-                          Expanded(
-                            child: 
-                              Column(
-                                children: [
-                                  Text('Book title', 
-                                    style: 
-                                      TextStyle(
-                                        color: _isDarkMode ? Colors.white : Colors.black,
-                                        fontSize: 20
-                                      )
-                                  ),
-                                  Text('Author', 
-                                    style: 
-                                      TextStyle(
-                                        color: _isDarkMode ? Colors.white : Colors.black,
-                                        fontSize: 10
-                                      )
-                                  )
-                                ]
-                              )
-                              
-                          )
-                        ],
-                      )
-                    )
-                  ),
-
-            
-            
+                          );
+                        },
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            book['image_url'],
+                            fit: BoxFit.cover,
+                            )
+                        ),
+                        title: Text(book['Title']),
+                        subtitle: Text(book['Author']),
+                      ),
+                    );
+                },
+              ),
+            ),
           ],
         ),
       ),
+
              bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {

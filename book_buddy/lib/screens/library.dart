@@ -143,6 +143,8 @@ class _LibraryState extends State<Library>{
 
     List<Map<String, dynamic>> booksList = booksSnapshot.docs
       .map((doc) => doc.data() as Map<String, dynamic>)
+      .where((book) => 
+        book['has_read'] == true)
       .toList();
 
     setState(() {
@@ -194,15 +196,27 @@ class _LibraryState extends State<Library>{
                 ),
               ],
             ),
-            Column(
-              children: [
-                Card(
-                  child: ListTile(
-                    title: Text('${userBooks![0]['Title']}'),
-                    subtitle: Text('${userBooks![0]['Author']}'),
-                  ),
-                )
-              ]
+
+            Expanded(
+              child:ListView.builder(
+                itemCount: userBooks.length,
+                itemBuilder: (context, index) {
+                  final book = userBooks[index];
+                    return Card(
+                      child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            book['image_url'],
+                            fit: BoxFit.cover,
+                            )
+                        ),
+                        title: Text(book['Title']),
+                        subtitle: Text(book['Author']),
+                      ),
+                    );
+                },
+              ),
             )
             
 
