@@ -5,6 +5,7 @@ import 'package:book_buddy/screens/tbr.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:book_buddy/screens/library_specific_book.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 
 class Library extends StatefulWidget {
@@ -204,6 +205,20 @@ class _LibraryState extends State<Library>{
                   final book = userBooks[index];
                     return Card(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(
+                              builder: (context) => Library_specific_book(
+                                isDarkMode: _isDarkMode, 
+                                toggleDarkMode: widget.toggleDarkMode,
+                                bookTitle: book['Title'],
+                                bookAuthor: book['Author'],
+                                imageUrl: book['image_url']
+                              ),
+                            ),
+                          );
+                        },
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: Image.network(
