@@ -11,12 +11,14 @@ class TBR_specific_book extends StatefulWidget {
   final Function(bool) toggleDarkMode;
   final String bookTitle;  
   final String bookAuthor;
+  final String imageUrl;
 
   const TBR_specific_book({
     required this.isDarkMode,
     required this.toggleDarkMode,
     required this.bookTitle,  
     required this.bookAuthor,
+    required this.imageUrl,
     super.key
   });
 
@@ -177,9 +179,17 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildBox(80, 100, 'Front cover of book', boxColor, shadowColor),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.network(
+                    widget.imageUrl,
+                    height: 100,
+                    width: 80,
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 const SizedBox(width: 40),
-                _buildBox(200, 100, 'Book Title\nAuthor', boxColor, shadowColor),
+                _buildBox(200, 100, '${widget.bookTitle} \n ${widget.bookAuthor}', boxColor, shadowColor),
               ],
             ),
             const SizedBox(height: 40),
