@@ -224,14 +224,23 @@ if (userData == null){
                 mainAxisAlignment: MainAxisAlignment.center,  
                 crossAxisAlignment: CrossAxisAlignment.center, 
                 children: [
-                  Text(
-                    '${userData!['First Name']},\nYOU HAVE\n COMPLETED\n${userData!['Books Read']}\nBOOKS THIS\n YEAR!!!',
-                    textAlign: TextAlign.center,  
-                    style: TextStyle(
-                      color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
-                      fontSize: 14, 
+                  (userData!['Books Read']==0)
+                    ? Text(
+                      '${userData!['First Name']},\nYOU HAVEN\'T\n READ\nANY BOOKS YET!\nSTART YOUR READING\n JOURNEY TODAY!!!',
+                      textAlign: TextAlign.center,  
+                      style: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
+                        fontSize: 14, 
+                      ),
+                    )
+                    : Text(
+                      '${userData!['First Name']},\nYOU HAVE\n COMPLETED\n${userData!['Books Read']}\nBOOKS THIS\n YEAR!!!',
+                      textAlign: TextAlign.center,  
+                      style: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white,  // Text color based on dark mode
+                        fontSize: 14, 
+                      ),
                     ),
-                  ),
                   ],
               ),
             ),
