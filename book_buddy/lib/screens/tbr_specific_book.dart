@@ -6,19 +6,18 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
 
+
 class TBR_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
   final String bookTitle;  
   final String bookAuthor;
-  final String imageUrl;
 
   const TBR_specific_book({
     required this.isDarkMode,
     required this.toggleDarkMode,
     required this.bookTitle,  
     required this.bookAuthor,
-    required this.imageUrl,
     super.key
   });
 
@@ -130,7 +129,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     });
 
     try {
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
       final prompt = "Write a 150-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
       final response = await model.generateContent([Content.text(prompt)]);
@@ -179,17 +178,9 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.network(
-                    widget.imageUrl,
-                    height: 100,
-                    width: 80,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                _buildBox(80, 100, 'Front cover of book', boxColor, shadowColor),
                 const SizedBox(width: 40),
-                _buildBox(200, 100, '${widget.bookTitle} \n ${widget.bookAuthor}', boxColor, shadowColor),
+                _buildBox(200, 100, 'Book Title\nAuthor', boxColor, shadowColor),
               ],
             ),
             const SizedBox(height: 40),
