@@ -1,12 +1,7 @@
-import 'package:book_buddy/screens/home_page2.dart';
-import 'package:book_buddy/screens/library_specific_book.dart';
-import 'package:book_buddy/screens/tbr.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:book_buddy/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/login.dart';
-import 'package:book_buddy/screens/settings.dart';
-import 'package:book_buddy/screens/library_specific_book.dart';
 
 // Following block is required to ensure Flutter's widget system and Firebase are initialised before the application starts
 void main() async {
@@ -44,7 +39,8 @@ class _MyAppState extends State<MyApp>{
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(92, 216, 243, 245)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(92, 216, 243, 245)),
         useMaterial3: true,
       ),
       home: StartUpPage(
@@ -59,7 +55,12 @@ class StartUpPage extends StatelessWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
 
-  const StartUpPage ({super.key, required this.isDarkMode, required this.toggleDarkMode});
+  const StartUpPage ({
+    super.key, 
+    required this.isDarkMode, 
+    required this.toggleDarkMode
+    }
+  );
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/forgot_password.dart';
 
+// Login screen that handles user authentication with email and password
 class Login extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -25,11 +26,14 @@ class _LoginState extends State<Login> {
 
   late bool _isDarkMode;
 
+  //Controllers for email and pasword input fields 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  // Handles firebase authentication
   Future<void> loginUser() async {
     try {
+      // Section to sign in with provided credentials 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
         password: passwordController.text.trim() // see line above
@@ -44,6 +48,7 @@ class _LoginState extends State<Login> {
           ),
         );
 
+        // Navigate to home page after successful login 
         Future.delayed(const Duration(seconds: 2), () {
           print('success');
           Navigator.push(
@@ -54,6 +59,7 @@ class _LoginState extends State<Login> {
                     ))
           );
         });
+        // Handles any error messages in the snackbar
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'INVALID_LOGIN_CREDENTIALS'){
@@ -80,6 +86,7 @@ class _LoginState extends State<Login> {
   @override
   void initState(){
     super.initState();
+    // For dark mode state
     _isDarkMode = widget.isDarkMode;
   }
 
@@ -87,6 +94,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Adjust layout when keyboard appears
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
@@ -126,6 +134,7 @@ class _LoginState extends State<Login> {
                 // Add space between the logo and the button.
                 SizedBox(height: 10),  
 
+                // Main login form container
                 Container(
                   width: 200,
                   height: 295,
@@ -151,6 +160,7 @@ class _LoginState extends State<Login> {
                       // Add space
                       SizedBox(height: 30),
 
+                      // Email input field
                       TextField(
                         controller: emailController,
                         decoration: 
@@ -165,6 +175,7 @@ class _LoginState extends State<Login> {
                       // Add space
                       SizedBox(height: 30),
 
+                      // Password input field
                       TextField(
                         controller: passwordController,
                         decoration: 
@@ -174,14 +185,17 @@ class _LoginState extends State<Login> {
                                 fillColor: _isDarkMode ? Colors.grey: Colors.white,
                                 filled: true
                           ),
-                          obscureText: true,
+                          // Hides input characters
+                          obscureText: true, 
                       ),
 
                       // Add space
                       SizedBox(height: 10),
 
+                      // Forgotten password link
                       GestureDetector(
                         onTap: () {
+                          // Navigates to forgot password screen
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -201,6 +215,7 @@ class _LoginState extends State<Login> {
                       // Add space
                       SizedBox(height: 10),
 
+                      // Login button
                       ElevatedButton(
                         onPressed: loginUser,
                         style: ElevatedButton.styleFrom(
@@ -221,11 +236,14 @@ class _LoginState extends State<Login> {
 
               SizedBox(height: 30),
 
-              Text("Or"),
+              Text("Or",
+                style: TextStyle(
+                  color: _isDarkMode? Colors.white : Colors.black
+                )),
 
               SizedBox(height: 30),
 
-
+                // Register Button
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to the Login page when the button is pressed

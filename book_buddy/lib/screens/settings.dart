@@ -34,14 +34,21 @@ class Settings extends StatefulWidget {
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final bool isDarkMode;
 
-  const NavBar({super.key, required this.onTap, required this.currentIndex});
+  const NavBar({
+    super.key, 
+    required this.onTap, 
+    required this.currentIndex,
+    required this.isDarkMode});
 
  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black, // Black background
+        color: isDarkMode 
+          ? Colors.white
+          : Colors.black, // Nav bar background colour
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -59,44 +66,58 @@ class NavBar extends StatelessWidget {
         type: BottomNavigationBarType.fixed,  
 
       items: [
-
-        // My Library.
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
+          icon: Semantics(
+            label: 'Library- book icon',
+            hint: 'Press to go to My Library screen',
+            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
+          ),
           label: "", 
         ),
         
-        // My TBR.
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Semantics(
+            label: 'My TBR- bookmark icon',
+            hint: 'Press to go to My TBR screen',
+            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
+          ),
           label: "", 
         ),
         
-        // Scan Book.
         BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
-                shape: BoxShape.circle,
+            icon: Semantics(
+              label: 'Scan book- camera icon',
+              hint: 'Press to to go to scan book screen',
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
             ),
             label: "", 
-        ),
-        
-        // Settings.
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: "", 
-        ),
-        
-        // Home.
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "", 
-        ),
+            ),
+            
 
+        BottomNavigationBarItem(
+          icon: Semantics(
+            label: 'Settings- settings icon',
+            hint: 'Press to go to Settings screen', 
+            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
+          ), 
+          label: "", 
+        ),
+        
+        BottomNavigationBarItem(
+          icon: Semantics(
+            label: 'Home- home icon', 
+            hint: 'Press to go to the home page screen',
+            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
+          ),
+          label: "", 
+        ),
       ],
     ),
     );
@@ -495,7 +516,8 @@ class _SettingsState extends State<Settings>{
               context,
               MaterialPageRoute(builder: (context) => screen),
             );
-        }
+        },
+        isDarkMode: _isDarkMode,
        )
     );
   }
