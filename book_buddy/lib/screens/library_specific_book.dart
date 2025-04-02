@@ -5,6 +5,8 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 class Library_specific_book extends StatefulWidget {
   final bool isDarkMode;
@@ -96,11 +98,39 @@ class _Library_specific_bookState extends State<Library_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
   bool _isGeneratingReview = false;
+  bool _isSavingNotes = false;
+
+  final myFirestore = firestore.FirebaseFirestore.instance;
+  final TextEditingController _notesController = TextEditingController() ;
 
   @override
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
+  }
+
+  Future<void> _saveNotes() async {
+    setState(() {
+      _isSavingNotes = true;
+    });
+    if(_notesController.text.isNotEmpty){
+      try{
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+
+
+        await myFirestore.collection("usersCollection")
+          .doc(uid)
+          .update({'User_Notes':_notesController.text});
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error saving notes: ${e.toString()}"))
+        );
+      } finally {
+      setState(() {
+        _isSavingNotes = false;
+      });
+    }
+    }
   }
 
   Future<void> generateAIReview() async {  
@@ -189,14 +219,6 @@ class _Library_specific_bookState extends State<Library_specific_book> {
             const SizedBox(height: 40),
 
             // ====== NOTES SECTION STARTS HERE ======
-            if (_isLoadingNotes)
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            else
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -247,7 +269,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _isSavingNotes ? null : _saveNotes,
+                        onPressed: _saveNotes,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(vertical: 15),
