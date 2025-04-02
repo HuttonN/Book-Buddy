@@ -55,6 +55,7 @@ class _RegisterState extends State<Register> {
             "Surname": surnameController.text,
             "Email": emailController.text,
             "uid": uid,
+            "Books Read": 0
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
