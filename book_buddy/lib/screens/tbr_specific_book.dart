@@ -146,7 +146,9 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
             .collection("Books")
             .doc(widget.bookId)
             .update({"has_read": true});
-        });
+          await userDoc.reference
+            .update({"Books Read": firestore.FieldValue.increment(1)});
+        }); 
     } catch (e) {
       print("Error");
     }
@@ -240,7 +242,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
               child: _buildBox(
                 350, 
                 60, 
-                _hasRead ? 'Read ${Icons.check}': 'Mark as Read',
+                _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
                 Colors.black, 
                 shadowColor,
                 textColor: Colors.white,
