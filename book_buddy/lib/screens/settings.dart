@@ -367,8 +367,8 @@ class _SettingsState extends State<Settings>{
 
                   // Displayn user's email address.
                   Container(
-                    width: 240,
-                    height: 30,
+                    width: 260,
+                    height: 50,
                     decoration: 
                     BoxDecoration(
                       color: _isDarkMode 
