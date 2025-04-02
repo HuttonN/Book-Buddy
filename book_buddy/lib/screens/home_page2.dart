@@ -27,14 +27,21 @@ class HomePage2 extends StatefulWidget {
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final bool isDarkMode;
 
-  const NavBar({super.key, required this.onTap, required this.currentIndex});
+  const NavBar({
+    super.key, 
+    required this.onTap, 
+    required this.currentIndex,
+    required this.isDarkMode});
 
  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black, // Black background
+        color: isDarkMode 
+          ? Colors.white
+          : Colors.black, // Nav bar background colour
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -56,7 +63,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Library- book icon',
             hint: 'Press to go to My Library screen',
-            child: Icon(Icons.menu_book),
+            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
           ),
           label: "", 
         ),
@@ -65,7 +72,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'My TBR- bookmark icon',
             hint: 'Press to go to My TBR screen',
-            child: Icon(Icons.bookmark)
+            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
           ),
           label: "", 
         ),
@@ -77,10 +84,10 @@ class NavBar extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.black, // Black circle for camera button
+                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
+                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
               ),
             ),
             label: "", 
@@ -91,7 +98,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Settings- settings icon',
             hint: 'Press to go to Settings screen', 
-            child: Icon(Icons.settings),
+            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
           ), 
           label: "", 
         ),
@@ -100,7 +107,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Home- home icon', 
             hint: 'Press to go to the home page screen',
-            child: Icon(Icons.home),
+            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
           ),
           label: "", 
         ),
@@ -205,7 +212,7 @@ if (userData == null){
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: _isDarkMode 
-                      ? Colors.white 
+                      ? Colors.white
                       : Colors.black,
                   ),
                 ),
@@ -584,6 +591,7 @@ if (userData == null){
               MaterialPageRoute(builder: (context) => screen),
             );
         },
+        isDarkMode: _isDarkMode,
       ),
     );
   }

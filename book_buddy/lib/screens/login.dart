@@ -221,7 +221,10 @@ class _LoginState extends State<Login> {
 
               SizedBox(height: 30),
 
-              Text("Or"),
+              Text("Or",
+                style: TextStyle(
+                  color: _isDarkMode? Colors.white : Colors.black
+                )),
 
               SizedBox(height: 30),
 
