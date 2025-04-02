@@ -5,7 +5,6 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 class Library_specific_book extends StatefulWidget {
@@ -51,52 +50,91 @@ class NavBar extends StatelessWidget {
         color: isDarkMode 
           ? Colors.white
           : Colors.black, // Nav bar background colour
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+        borderRadius: 
+          BorderRadius.only(
+          topLeft: 
+            Radius.circular(20),
+          topRight: 
+            Radius.circular(20),
         ),
       ),
     
-    child: BottomNavigationBar(
-        backgroundColor: Colors.transparent, 
-        selectedItemColor: Colors.white, 
-        unselectedItemColor: Colors.white, 
-        showSelectedLabels: false, 
-        showUnselectedLabels: false, 
-        currentIndex: currentIndex, 
-        onTap: onTap, 
-        type: BottomNavigationBarType.fixed,  
+    child: 
+      BottomNavigationBar(
+        backgroundColor: 
+          Colors.transparent, 
+        selectedItemColor: 
+          Colors.white, 
+        unselectedItemColor: 
+          Colors.white, 
+        showSelectedLabels: 
+          false, 
+        showUnselectedLabels: 
+          false, 
+        currentIndex: 
+          currentIndex, 
+        onTap: 
+          onTap, 
+        type: 
+          BottomNavigationBarType.fixed,  
 
       items: [
         BottomNavigationBarItem(
-          icon: Semantics(
+          icon: 
+          Semantics(
             label: 'Library- book icon',
             hint: 'Press to go to My Library screen',
-            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
+            child: 
+              Icon(
+                Icons.menu_book, 
+                color: isDarkMode 
+                  ? Colors.black
+                  : Colors.white,
+                ),
           ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Semantics(
+          icon: 
+          Semantics(
             label: 'My TBR- bookmark icon',
             hint: 'Press to go to My TBR screen',
-            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
+            child: 
+              Icon(
+                Icons.bookmark, 
+                color: isDarkMode 
+                  ? Colors.black  
+                  : Colors.white,
+                )
           ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-            icon: Semantics(
+            icon: 
+            Semantics(
               label: 'Scan book- camera icon',
               hint: 'Press to to go to scan book screen',
-              child: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
-                  shape: BoxShape.circle,
+              child: 
+              Container(
+                padding: 
+                EdgeInsets.all(8),
+                decoration: 
+                BoxDecoration(
+                  color: isDarkMode
+                    ? Colors.white70
+                    : Colors.black, 
+                  shape: 
+                    BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
+                child: 
+                  Icon(
+                    Icons.camera_alt,  
+                      color: isDarkMode 
+                        ? Colors.black
+                        : Colors.white,
+                      ), 
               ),
             ),
             label: "", 
@@ -104,19 +142,33 @@ class NavBar extends StatelessWidget {
             
 
         BottomNavigationBarItem(
-          icon: Semantics(
+          icon: 
+          Semantics(
             label: 'Settings- settings icon',
             hint: 'Press to go to Settings screen', 
-            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
+            child: 
+              Icon(
+                Icons.settings, 
+                  color: isDarkMode 
+                    ? Colors.black
+                    : Colors.white,
+                  ),
           ), 
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Semantics(
+          icon: 
+          Semantics(
             label: 'Home- home icon', 
             hint: 'Press to go to the home page screen',
-            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
+            child: 
+              Icon(
+                Icons.home, 
+                  color: isDarkMode 
+                    ? Colors.black
+                    : Colors.white,
+                  ),
           ),
           label: "", 
         ),
@@ -168,7 +220,9 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     }
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error loading book data: ${e.toString()}")),
+      SnackBar(
+        content: 
+          Text("Error loading book data: ${e.toString()}")),
       );
     }
   }
@@ -213,7 +267,11 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     });
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error saving rating: ${e.toString()}")),
+      SnackBar(
+        content: 
+          Text("Error saving rating: ${e.toString()}"
+        )
+      ),
     );
   }
   }
@@ -224,17 +282,28 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     });
 
     try {
-      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final model = GenerativeModel(
+        model: 'gemini-2.0-flash', 
+        apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
+      ); 
       final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
-      final response = await model.generateContent([Content.text(prompt)]);
+      final response = await model.generateContent([
+        Content.text(prompt)
+      ]
+    );
       
       setState(() {
-        _aiReview = response.text ?? "Could not generate review. Please try again.";
+        _aiReview = response.text 
+          ?? "Could not generate review. Please try again.";
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error generating review: ${e.toString()}")),
+        SnackBar(
+          content: 
+            Text("Error generating review: ${e.toString()}"
+          )
+        ),
       );
       setState(() {
         _aiReview = "Error generating review. Please try again.";
@@ -279,75 +348,133 @@ class _Library_specific_bookState extends State<Library_specific_book> {
 
     return Scaffold(
     appBar: PreferredSize(
-      preferredSize: const Size.fromHeight(35),
+      preferredSize: 
+        const Size.fromHeight(35),
       child: AppBar(
         backgroundColor: bgColor,
         elevation: 5,
-        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Colors.black),
+        iconTheme: IconThemeData(
+          color: _isDarkMode 
+            ? Colors.white 
+            : Colors.black
+          ),
       ),
     ),
     backgroundColor: bgColor,
-    body: SingleChildScrollView(
+    body: 
+    SingleChildScrollView(
       child: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        alignment: 
+        Alignment.topCenter,
+        child: 
+        Column(
+          crossAxisAlignment: 
+            CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(
+              height: 40
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment:
+                MainAxisAlignment.center,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.network(
+                  borderRadius: 
+                    BorderRadius.circular(5),
+                  child: 
+                  Image.network(
                     widget.imageUrl,
                     height: 100,
                     width: 80,
-                    fit: BoxFit.cover,
+                    fit: 
+                      BoxFit.cover,
                   ),
                 ),
-                const SizedBox(width: 40),
-                _buildBox(200, 100, '${widget.bookTitle} \n ${widget.bookAuthor}', boxColor, shadowColor),
+                const SizedBox(
+                  width: 40
+                ),
+                _buildBox(
+                  200, 
+                  100, 
+                  '${widget.bookTitle} \n ${widget.bookAuthor}', 
+                  boxColor, 
+                  shadowColor
+                ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(
+              height: 10
+            ),
             _buildStarRating(),
-            const SizedBox(height: 20),
+            const SizedBox(
+              height: 20
+            ),
             GestureDetector(
-              onTap: _isGeneratingReview ? null : generateAIReview, 
+              onTap: 
+                _isGeneratingReview ? 
+                  null : generateAIReview, 
               child: _buildBox(
                 350, 
                 60, 
-                _isGeneratingReview ? 'Generating review...' : 'Click to generate AI review', 
-                _isDarkMode ? Colors.white : Colors.black, 
+                _isGeneratingReview 
+                  ? 'Generating review...' 
+                  : 'Click to generate AI review', 
+                _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black, 
                 shadowColor,
-                textColor: _isDarkMode ? Colors.black : Colors.white,
+                textColor: _isDarkMode 
+                  ? Colors.black 
+                  : Colors.white,
               )
             ),
-            const SizedBox(height: 40),
-            _buildSpeechBubble(_aiReview, boxColor, shadowColor),
-            const SizedBox(height: 40),
+            const SizedBox(
+              height: 40
+            ),
+            _buildSpeechBubble(
+              _aiReview, 
+              boxColor, 
+              shadowColor
+            ),
+            const SizedBox(
+              height: 40
+            ),
 
-            // ====== NOTES SECTION STARTS HERE ======
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: 
+                  const EdgeInsets.symmetric(
+                    horizontal: 20
+                  ),
+                child: 
+                Column(
+                  crossAxisAlignment: 
+                    CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Your Notes:",
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: _isDarkMode ? Colors.white : Colors.black,
+                        fontSize: 
+                          18,
+                        fontWeight: 
+                          FontWeight.bold,
+                        color: _isDarkMode 
+                          ? Colors.white 
+                          : Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(
+                      height
+                      : 10
+                    ),
                     Container(
                       height: 200,
-                      decoration: BoxDecoration(
-                        color: _isDarkMode ? Colors.grey[900] : Colors.white,
-                        borderRadius: BorderRadius.circular(10),
+                      decoration: 
+                      BoxDecoration(
+                        color: _isDarkMode 
+                          ? Colors.grey[900] 
+                          : Colors.white,
+                        borderRadius: 
+                          BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: shadowColor,
@@ -357,45 +484,76 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: _notesController,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
+                        padding: 
+                          const EdgeInsets.all(8.0),
+                        child: 
+                        TextField(
+                          controller:
+                            _notesController,
+                          maxLines: 
+                            null,
+                          keyboardType: 
+                            TextInputType.multiline,
+                          decoration: 
+                          InputDecoration(
                             hintText: "Write your notes about this book here...",
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: _isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                            border: 
+                              InputBorder.none,
+                            hintStyle: 
+                              TextStyle(
+                              color: _isDarkMode 
+                                ? Colors.grey[400] 
+                                : Colors.grey[600],
                             ),
                           ),
                           style: TextStyle(
-                            color: _isDarkMode ? Colors.white : Colors.black,
+                            color: _isDarkMode 
+                              ? Colors.white 
+                              : Colors.black,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(
+                      height: 15
+                    ),
                     SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
+                      width: 
+                        double.infinity,
+                      child: 
+                      ElevatedButton(
                         onPressed: _saveNotes,
-                        style: ElevatedButton.styleFrom(
+                        style: 
+                        ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          padding: 
+                            const EdgeInsets.symmetric(
+                              vertical: 15
+                            ),
+                          shape: 
+                          RoundedRectangleBorder(
+                            borderRadius: 
+                              BorderRadius.circular(10),
                           ),
                         ),
                         child: _isSavingNotes
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: 
+                                  Colors.white
+                                )
                             : const Text(
                                 "Save Notes",
-                                style: TextStyle(color: Colors.white),
+                                style: 
+                                TextStyle(
+                                  color: 
+                                    Colors.white
+                                ),
                               ),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(
+                      height: 40
+                    ),
                   ],
                 ),
               ),
@@ -511,14 +669,27 @@ class _Library_specific_bookState extends State<Library_specific_book> {
       ),
       child: Row(
         children: [
-          Icon(Icons.person, size: 30, color: _isDarkMode ? Colors.white: Colors.black,),
-          const SizedBox(width: 10),
+          Icon(
+            Icons.person, 
+            size: 30, 
+            color: _isDarkMode 
+              ? Colors.white
+              : Colors.black,
+            ),
+          const SizedBox(
+            width: 10
+          ),
           Expanded(
             child: isLoading
                 ? const CircularProgressIndicator()
                 : Text(
                     text,
-                    style: TextStyle(fontSize: 16, color: _isDarkMode ? Colors.white : Colors.black,),
+                    style: TextStyle(
+                      fontSize: 16, 
+                      color: _isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
+                      ),
                   ),
           ),
         ],

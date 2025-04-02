@@ -49,22 +49,33 @@ class NavBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDarkMode 
           ? Colors.white
-          : Colors.black, // Nav bar background colour
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          : Colors.black, 
+        borderRadius: 
+          BorderRadius.only(
+          topLeft: 
+            Radius.circular(20),
+          topRight: 
+            Radius.circular(20),
         ),
       ),
     
     child: BottomNavigationBar(
-        backgroundColor: Colors.transparent, 
-        selectedItemColor: Colors.white, 
-        unselectedItemColor: Colors.white, 
-        showSelectedLabels: false, 
-        showUnselectedLabels: false, 
-        currentIndex: currentIndex, 
-        onTap: onTap, 
-        type: BottomNavigationBarType.fixed,  
+        backgroundColor: 
+          Colors.transparent, 
+        selectedItemColor: 
+          Colors.white, 
+        unselectedItemColor: 
+          Colors.white, 
+        showSelectedLabels: 
+          false, 
+        showUnselectedLabels: 
+          false, 
+        currentIndex: 
+          currentIndex, 
+        onTap: 
+          onTap, 
+        type: 
+          BottomNavigationBarType.fixed,  
 
       items: [
         BottomNavigationBarItem(
@@ -73,7 +84,10 @@ class NavBar extends StatelessWidget {
             hint: 'Press to go to My Library screen',
             child: Icon(
               Icons.menu_book, 
-              color: isDarkMode ? Colors.black: Colors.white,),
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              ),
           ),
           label: "", 
         ),
@@ -84,7 +98,10 @@ class NavBar extends StatelessWidget {
             hint: 'Press to go to My TBR screen',
             child: Icon(
               Icons.bookmark, 
-              color: isDarkMode ? Colors.black: Colors.white,)
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              )
           ),
           label: "", 
         ),
@@ -96,12 +113,18 @@ class NavBar extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
-                  shape: BoxShape.circle,
+                  color: isDarkMode
+                    ? Colors.white70
+                    : Colors.black, // Black circle for camera button
+                  shape: 
+                    BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.camera_alt, 
-                  color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
+                  color: isDarkMode 
+                    ? Colors.black
+                    : Colors.white,
+                  ), // White camera icon
               ),
             ),
             label: "", 
@@ -114,7 +137,10 @@ class NavBar extends StatelessWidget {
             hint: 'Press to go to Settings screen', 
             child: Icon(
               Icons.settings, 
-              color: isDarkMode ? Colors.black: Colors.white,),
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              ),
           ), 
           label: "", 
         ),
@@ -125,7 +151,10 @@ class NavBar extends StatelessWidget {
             hint: 'Press to go to the home page screen',
             child: Icon(
               Icons.home, 
-              color: isDarkMode ? Colors.black: Colors.white,),
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              ),
           ),
           label: "", 
         ),
@@ -192,8 +221,13 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         _aiReview = response.text ?? "Could not generate review. Please try again.";
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error generating review: ${e.toString()}")),
+      ScaffoldMessenger.of(
+        context).showSnackBar(
+        SnackBar(
+          content: 
+            Text("Error generating review: ${e.toString()}"
+          )
+        ),
       );
       setState(() {
         _aiReview = "Error generating review. Please try again.";
@@ -215,53 +249,83 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(35),
+        preferredSize: 
+          const Size.fromHeight(35),
         child: AppBar(
           backgroundColor: bgColor,
           elevation: 5,
-          iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Colors.black),
+          iconTheme: 
+            IconThemeData(
+              color: _isDarkMode 
+                ? Colors.white 
+                : Colors.black
+              ),
         ),
       ),
       backgroundColor: bgColor,
       body: Align(
         alignment: Alignment.topCenter,
-        child: Column(
+        child: 
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 40),
+            SizedBox(
+              height: 40
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildBox(80, 100, 'Front cover of book', boxColor, shadowColor),
-                SizedBox(width: 40),
+                _buildBox(
+                  80, 
+                  100, 
+                  'Front cover of book', 
+                  boxColor, 
+                  shadowColor),
+                SizedBox(
+                  width: 40
+                ),
                 _buildBox(200, 100, 'Book Title\nAuthor', boxColor, shadowColor),
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(
+              height: 40
+            ),
             GestureDetector(
-              onTap: _isGeneratingReview ? null : generateAIReview, 
+              onTap: _isGeneratingReview 
+                ? null : generateAIReview, 
               child: _buildBox(
                 350, 
                 60, 
-                _isGeneratingReview ? 'Generating review...' : 'Click to generate AI review', 
-                _isDarkMode ? Colors.white : Colors.black, 
+                _isGeneratingReview 
+                  ? 'Generating review...' : 'Click to generate AI review', 
+                _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black, 
                 shadowColor,
-                textColor: _isDarkMode ? Colors.black : Colors.white,
+                textColor: _isDarkMode 
+                  ? Colors.black 
+                  : Colors.white,
               )
             ),
-            const SizedBox(height: 40),
+            const SizedBox(
+              height: 40),
             _buildSpeechBubble(
               _aiReview, 
               boxColor, 
               shadowColor
               ),
-            const SizedBox(height: 40),
+            const SizedBox(
+              height: 40),
             GestureDetector(
               onTap: markAsRead, 
               child: _buildBox(
                 350, 
                 60, 
-                _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
+                _hasRead ? 'Read ${Icon(
+                  Icons.check_box_sharp, 
+                  size: 30
+                  )
+                }': 'Mark as Read',
                 Colors.black, 
                 shadowColor,
                 textColor: Colors.white,
@@ -328,38 +392,78 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: _isDarkMode ? Colors.white : Colors.black),
-        boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
+        border: 
+          Border.all(
+            color: _isDarkMode 
+              ? Colors.white 
+              : Colors.black),
+        boxShadow: [BoxShadow(
+                      color: shadowColor, 
+                      blurRadius: 5, 
+                      offset: const Offset(2, 2)
+      )
+    ],
       ),
       alignment: Alignment.center,
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(color: textColor ?? (_isDarkMode ? Colors.white: Colors.black), fontSize: 16),
+        style: TextStyle(
+          color: textColor ?? 
+          (_isDarkMode 
+            ? Colors.white
+            : Colors.black), 
+          fontSize: 16),
       ),
     );
   }
 
-  Widget _buildSpeechBubble(String text, Color color, Color shadowColor, {bool isLoading = false}) {
+  Widget _buildSpeechBubble(
+    String text, 
+    Color color, 
+    Color shadowColor, 
+    {bool isLoading = false}) 
+    {
     return Container(
       width: 350,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _isDarkMode ? Colors.white : Colors.black),
-        boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
+        border: Border.all(
+          color: _isDarkMode 
+            ? Colors.white 
+            : Colors.black),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor,
+            blurRadius: 5, 
+            offset: const Offset(2, 2)
+          )
+        ],
       ),
-      child: Row(
+      child: 
+      Row(
         children: [
-           Icon(Icons.person, size: 30, color: _isDarkMode ? Colors.white: Colors.black,),
+           Icon(
+            Icons.person, 
+            size: 30, 
+            color: _isDarkMode 
+              ? Colors.white
+              : Colors.black,
+            ),
           const SizedBox(width: 10),
           Expanded(
             child: isLoading
                 ? const CircularProgressIndicator()
                 : Text(
                     text,
-                    style: TextStyle(fontSize: 16, color: _isDarkMode ? Colors.white : Colors.black,),
+                    style: TextStyle(
+                      fontSize: 16, 
+                      color: _isDarkMode 
+                        ? Colors.white 
+                        : Colors.black,
+                      ),
                   ),
           ),
         ],

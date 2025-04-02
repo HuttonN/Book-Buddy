@@ -52,10 +52,13 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   }
 
   Future<void> _saveBook(bool hasRead) async {
-    if (_titleController.text.isEmpty || _authorController.text.isEmpty) {
+    if (
+      _titleController.text.isEmpty || _authorController.text.isEmpty
+    ) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Title and author are required!")
+          content: 
+            Text("Title and author are required!")
           ),
       );
       return;
@@ -79,7 +82,8 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Book saved successfully!")
+            content: 
+              Text("Book saved successfully!")
             ),
         );
         
@@ -88,9 +92,11 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
           (route) => route.isFirst
           );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(
+          context).showSnackBar(
           SnackBar(
-            content: Text("User not logged in!")
+            content: 
+              Text("User not logged in!")
             ),
         );
       }
@@ -98,8 +104,9 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       ScaffoldMessenger.of(
         context).showSnackBar(
         SnackBar(
-          content: Text("Error saving book: ${e.toString()}"
-          )
+          content: 
+            Text("Error saving book: ${e.toString()}"
+            )
           ),
       );
     } finally {
@@ -114,12 +121,12 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   Future<void> _generateAIReview() async {
     try {
       final model = GenerativeModel(
-        model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
+        model: 'gemini-2.0-flash', 
+        apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
         ); 
       final prompt = "Write a 80-word review for the book '${_titleController.text}' by ${_authorController.text}";
       final response = await model.generateContent(
-        [Content.text(prompt)
-       ]
+        [Content.text(prompt)]
      );
       setState(() {
         _aiReview = response.text;
@@ -128,7 +135,8 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       ScaffoldMessenger.of(
         context).showSnackBar(
         SnackBar(
-          content: Text("Error generating review: ${e.toString()}"
+          content: 
+            Text("Error generating review: ${e.toString()}"
           )
         ),
       );
@@ -139,112 +147,257 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
-      child: AppBar(
-        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+      appBar: 
+      PreferredSize(
+        preferredSize: Size.fromHeight(35), 
+      child: 
+      AppBar(
+        backgroundColor: _isDarkMode 
+          ? Color.fromARGB(255, 20, 9, 45) 
+          : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
-        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45)),
-      )
-      ),
+        iconTheme: 
+          IconThemeData(
+            color: _isDarkMode 
+              ? Colors.white 
+              : Color.fromARGB(255, 20, 9, 45)
+            ),
+          )
+        ),
       
-      backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+      backgroundColor: _isDarkMode 
+        ? Color.fromARGB(255, 20, 9, 45) 
+        : Color.fromARGB(255, 216, 243, 245),
+      body: 
+      SingleChildScrollView(
+        padding: 
+          const EdgeInsets.all(16.0),
+        child: 
+        Column(
+          crossAxisAlignment: 
+            CrossAxisAlignment.stretch,
           children: [
             Container(
               height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: FileImage(File(widget.imagePath)),
-                  fit: BoxFit.cover,
+              decoration: 
+              BoxDecoration(
+                borderRadius: 
+                  BorderRadius.circular(8),
+                image: 
+                DecorationImage(
+                  image: 
+                    FileImage(
+                      File(
+                        widget.imagePath
+                      )
+                    ),
+                  fit: 
+                    BoxFit.cover,
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(
+              height: 20
+            ),
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(
+              decoration: 
+              InputDecoration(
                 labelText: "Book Title",
-                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
-                border: OutlineInputBorder(),
-                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                labelStyle: 
+                  TextStyle(
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black
+                    ),
+                border: 
+                  OutlineInputBorder(),
+                fillColor: _isDarkMode 
+                  ? Colors.grey
+                  : Colors.white,
                 filled: true
               ),
               style: TextStyle(
-                color: _isDarkMode ? Colors.white : Colors.black,
+                color: _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black,
               )
             ),
-            SizedBox(height: 16),
+            SizedBox(
+              height: 16
+            ),
             TextField(
               controller: _authorController,
-              decoration: InputDecoration(
+              decoration: 
+              InputDecoration(
                 labelText: "Author",
-                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
-                border: OutlineInputBorder(),
-                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                labelStyle: 
+                  TextStyle(
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black
+                    ),
+                border: 
+                  OutlineInputBorder(),
+                fillColor: _isDarkMode 
+                  ? Colors.grey
+                  : Colors.white,
                 filled: true
               ),
               style: TextStyle(
-                color: _isDarkMode ? Colors.white : Colors.black,
+                color: _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black,
               )
             ),
-            SizedBox(height: 16),
+            SizedBox(
+              height: 16
+            ),
             TextField(
               controller: _isbnController,
-              decoration: InputDecoration(
+              decoration: 
+              InputDecoration(
                 labelText: "ISBN (optional)",
-                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
-                border: OutlineInputBorder(),
-                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                labelStyle: 
+                  TextStyle(
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black
+                    ),
+                border: 
+                  OutlineInputBorder(),
+                fillColor: _isDarkMode 
+                  ? Colors.grey
+                  : Colors.white,
                 filled: true
               ),
-              keyboardType: TextInputType.number,
+              keyboardType: 
+                TextInputType.number,
             ),
-            SizedBox(height: 24),
+            SizedBox(
+              height: 24
+            ),
             
             ElevatedButton.icon(
-              onPressed: _isSaving ? null : () => _saveBook(true),
-              icon: Icon(Icons.library_books, color: _isDarkMode ? Colors.black : Colors.white),
-              label: Text(_isSaving ? "Saving..." : "Add to Library", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: _isDarkMode ? Colors.white : Colors.black
+              onPressed: _isSaving 
+                ? null 
+                : () => _saveBook(true),
+              icon: 
+                Icon(
+                  Icons.library_books, 
+                  color: _isDarkMode 
+                    ? Colors.black 
+                    : Colors.white
+                  ),
+              label: 
+                Text(_isSaving 
+                  ? "Saving..." : "Add to Library", 
+                  style: 
+                    TextStyle(
+                      color: _isDarkMode 
+                        ? Colors.black 
+                        : Colors.white
+                      )
+                    ),
+              style: 
+              ElevatedButton.styleFrom(
+                padding: 
+                EdgeInsets.symmetric(
+                  vertical: 16
+                ),
+                backgroundColor: _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(
+              height: 12
+            ),
             ElevatedButton.icon(
-              onPressed: _isSaving ? null : () => _saveBook(false),
-              icon: Icon(Icons.bookmark, color: _isDarkMode ? Colors.black : Colors.white),
-              label: Text(_isSaving ? "Saving..." : "Add to TBR", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: _isDarkMode ? Colors.white : Colors.black
+              onPressed: _isSaving 
+                ? null 
+                : () => _saveBook(false),
+              icon: 
+                Icon(
+                  Icons.bookmark, 
+                  color: _isDarkMode 
+                    ? Colors.black 
+                    : Colors.white
+                  ),
+              label: 
+                Text(_isSaving 
+                  ? "Saving..." : "Add to TBR", 
+                  style: 
+                    TextStyle(
+                      color: _isDarkMode 
+                        ? Colors.black 
+                        : Colors.white
+                      )
+                    ),
+              style: 
+              ElevatedButton.styleFrom(
+                padding: 
+                EdgeInsets.symmetric(
+                  vertical: 16
+                ),
+                backgroundColor: _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black
               ),
             ),
-            SizedBox(height: 24),
+            SizedBox(
+              height: 24
+            ),
             Divider(),
-            SizedBox(height: 16),
+            SizedBox(
+              height: 16
+            ),
             ElevatedButton(
-            onPressed: _generateAIReview,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _isDarkMode ? Colors.white : Colors.black, // Background color of the button
+            onPressed: 
+              _generateAIReview,
+            style: 
+            ElevatedButton.styleFrom(
+              backgroundColor: _isDarkMode 
+                ? Colors.white 
+                : Colors.black, // Background color of the button
               ),
-            child: Text("Generate AI Review", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),),
+            child: 
+              Text("Generate AI Review", 
+                style: 
+                TextStyle(
+                  color: _isDarkMode 
+                    ? Colors.black 
+                    : Colors.white
+                  )
+                ),
+              ),
             if (_aiReview != null)
               Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+                padding: 
+                  const EdgeInsets.only(
+                    top: 16.0
+                  ),
                 child: Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: 
+                      const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: 
+                        CrossAxisAlignment.start,
                       children: [
-                        Text("AI Review:", style: TextStyle(fontWeight: FontWeight.bold)),
-                        SizedBox(height: 8),
-                        Text(_aiReview!),
+                        Text("AI Review:", 
+                        style: 
+                          TextStyle(
+                            fontWeight: 
+                              FontWeight.bold
+                            )
+                          ),
+                        SizedBox(
+                          height: 8
+                        ),
+                        Text(
+                          _aiReview!
+                        ),
                       ],
                     ),
                   ),
