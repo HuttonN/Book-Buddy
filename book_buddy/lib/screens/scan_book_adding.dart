@@ -48,7 +48,9 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   Future<void> _saveBook(bool hasRead) async {
     if (_titleController.text.isEmpty || _authorController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Title and author are required!")),
+        SnackBar(
+          content: Text("Title and author are required!")
+          ),
       );
       return;
     }
@@ -70,18 +72,29 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
         });
         
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Book saved successfully!")),
+          SnackBar(
+            content: Text("Book saved successfully!")
+            ),
         );
         
-        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.popUntil(
+          context, 
+          (route) => route.isFirst
+          );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("User not logged in!")),
+          SnackBar(
+            content: Text("User not logged in!")
+            ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error saving book: ${e.toString()}")),
+      ScaffoldMessenger.of(
+        context).showSnackBar(
+        SnackBar(
+          content: Text("Error saving book: ${e.toString()}"
+          )
+          ),
       );
     } finally {
       if (mounted) {
@@ -94,15 +107,24 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
 
   Future<void> _generateAIReview() async {
     try {
-      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final model = GenerativeModel(
+        model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
+        ); 
       final prompt = "Write a 80-word review for the book '${_titleController.text}' by ${_authorController.text}";
-      final response = await model.generateContent([Content.text(prompt)]);
+      final response = await model.generateContent(
+        [Content.text(prompt)
+       ]
+     );
       setState(() {
         _aiReview = response.text;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error generating review: ${e.toString()}")),
+      ScaffoldMessenger.of(
+        context).showSnackBar(
+        SnackBar(
+          content: Text("Error generating review: ${e.toString()}"
+          )
+        ),
       );
     }
   }
@@ -116,7 +138,6 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
           IconButton(
             icon: Icon(Icons.photo_library),
             onPressed: () {
-              // You could add functionality to select from gallery here
             },
           ),
         ],
