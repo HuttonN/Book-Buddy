@@ -51,10 +51,12 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     super.dispose();
   }
 
-  Future<void> _saveBook(String collectionName) async {
+  Future<void> _saveBook(bool hasRead) async {
     if (_titleController.text.isEmpty || _authorController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Title and author are required!")),
+        SnackBar(
+          content: Text("Title and author are required!")
+          ),
       );
       return;
     }
@@ -67,27 +69,38 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       User? user = _auth.currentUser;
 
       if (user != null) {
-        await _firestore.collection('users').doc(user.uid).collection(collectionName).add({
-          'title': _titleController.text,
-          'author': _authorController.text,
-          'isbn': _isbnController.text,
-          'coverImage': widget.imagePath,
+        await _firestore.collection('userCollection').add({
+          'Title': _titleController.text,
+          'Author': _authorController.text,
+          'image_url': widget.imagePath,
+          'has_read': hasRead,
           'timestamp': FieldValue.serverTimestamp(),
         });
         
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Book saved to $collectionName successfully!")),
+          SnackBar(
+            content: Text("Book saved successfully!")
+            ),
         );
         
-        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.popUntil(
+          context, 
+          (route) => route.isFirst
+          );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("User not logged in!")),
+          SnackBar(
+            content: Text("User not logged in!")
+            ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error saving book: ${e.toString()}")),
+      ScaffoldMessenger.of(
+        context).showSnackBar(
+        SnackBar(
+          content: Text("Error saving book: ${e.toString()}"
+          )
+          ),
       );
     } finally {
       if (mounted) {
@@ -100,15 +113,24 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
 
   Future<void> _generateAIReview() async {
     try {
-      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final model = GenerativeModel(
+        model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
+        ); 
       final prompt = "Write a 80-word review for the book '${_titleController.text}' by ${_authorController.text}";
-      final response = await model.generateContent([Content.text(prompt)]);
+      final response = await model.generateContent(
+        [Content.text(prompt)
+       ]
+     );
       setState(() {
         _aiReview = response.text;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error generating review: ${e.toString()}")),
+      ScaffoldMessenger.of(
+        context).showSnackBar(
+        SnackBar(
+          content: Text("Error generating review: ${e.toString()}"
+          )
+        ),
       );
     }
   }
@@ -116,17 +138,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Add Book"),
-      //   actions: [
-      //     IconButton(
-      //       icon: Icon(Icons.photo_library),
-      //       onPressed: () {
-      //         // You could add functionality to select from gallery here
-      //       },
-      //     ),
-      //   ],
-      // ),
+
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
@@ -194,7 +206,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             SizedBox(height: 24),
             
             ElevatedButton.icon(
-              onPressed: _isSaving ? null : () => _saveBook('library'),
+              onPressed: _isSaving ? null : () => _saveBook(true),
               icon: Icon(Icons.library_books, color: _isDarkMode ? Colors.black : Colors.white),
               label: Text(_isSaving ? "Saving..." : "Add to Library", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),
               style: ElevatedButton.styleFrom(
@@ -204,7 +216,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             ),
             SizedBox(height: 12),
             ElevatedButton.icon(
-              onPressed: _isSaving ? null : () => _saveBook('tbr'),
+              onPressed: _isSaving ? null : () => _saveBook(false),
               icon: Icon(Icons.bookmark, color: _isDarkMode ? Colors.black : Colors.white),
               label: Text(_isSaving ? "Saving..." : "Add to TBR", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),
               style: ElevatedButton.styleFrom(
