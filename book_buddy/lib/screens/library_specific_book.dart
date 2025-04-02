@@ -14,6 +14,8 @@ class Library_specific_book extends StatefulWidget {
   final String bookTitle;  
   final String bookAuthor;
   final String imageUrl;
+  final String bookId;
+  final String uid;
 
   const Library_specific_book({
     required this.isDarkMode,
@@ -21,6 +23,8 @@ class Library_specific_book extends StatefulWidget {
     required this.bookTitle,  
     required this.bookAuthor,
     required this.imageUrl,
+    required this.bookId,
+    required this.uid,
     super.key
   });
 
@@ -127,14 +131,11 @@ class _Library_specific_bookState extends State<Library_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
   bool _isGeneratingReview = false;
-<<<<<<< HEAD
   bool _isSavingNotes = false;
 
-  final myFirestore = firestore.FirebaseFirestore.instance;
   final TextEditingController _notesController = TextEditingController() ;
-=======
+
   int _rating = 0; // Star rating state
->>>>>>> main
 
   @override
   void initState() {
@@ -148,16 +149,17 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     });
     if(_notesController.text.isNotEmpty){
       try{
-        String uid = FirebaseAuth.instance.currentUser!.uid;
-
-
-        await myFirestore.collection("usersCollection")
-          .doc(uid)
-          .set({'User_Notes':_notesController.text},firestore.SetOptions(merge: true));
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error saving notes: ${e.toString()}"))
-        );
+        await firestore.FirebaseFirestore.instance
+        .collection("usersCollection")
+        .where("uid", isEqualTo: widget.uid)
+        .get()
+        .then((snapshot) async {
+          final userDoc = snapshot.docs.first;
+          await userDoc.reference
+            .collection("Books")
+            .doc(widget.bookId)
+            .set({'User_Notes':_notesController.text},firestore.SetOptions(merge: true));
+        }); 
       } finally {
       setState(() {
         _isSavingNotes = false;
