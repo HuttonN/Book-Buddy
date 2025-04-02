@@ -120,7 +120,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
 
         await myFirestore.collection("usersCollection")
           .doc(uid)
-          .set({'User_Notes':_notesController.text},merge:true);
+          .set({'User_Notes':_notesController.text},firestore.SetOptions(merge: true));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error saving notes: ${e.toString()}"))
