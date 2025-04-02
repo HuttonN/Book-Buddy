@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart'; //required package for authen
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 
-
+// Registration page allowing new users to create an account
 class Register extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -19,6 +19,8 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
+// State class for the Register screen thay forms input controllers and controls firebase 
+// operations. 
 // Define two TextEditingController instances to be able work with TextFields for email and password
 class _RegisterState extends State<Register> {
 
@@ -30,26 +32,32 @@ class _RegisterState extends State<Register> {
     _isDarkMode = widget.isDarkMode;
   }
 
+  // Controller for form input fields
   final firestore = FirebaseFirestore.instance;
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController surnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-// registerUser function for registering a new user using Firbase Authentication with email and password (createUserWithEmailAndPassword)
+// registerUser function for registering a new user using Firbase Authentication 
+// with email and password (createUserWithEmailAndPassword)
   Future<void> registerUser() async {
+    // Validates that all fields will contain an input 
     if (firstNameController.text.isNotEmpty &&
         surnameController.text.isNotEmpty &&
         emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty) {
       try {
+        // Creates an user in firebase authentication
         UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
           password: passwordController.text.trim() // see line above
         );
         
+        // Generate unique user ID
         String uid = userCredential.user!.uid;
 
+        // Stores user data in firestore
         await firestore.collection("usersCollection").add({
             "First Name": firstNameController.text,
             "Surname": surnameController.text,
@@ -58,6 +66,7 @@ class _RegisterState extends State<Register> {
             "Books Read": 0
           });
 
+          // Feedback to show successful registration
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Registration successful!"),
@@ -66,6 +75,7 @@ class _RegisterState extends State<Register> {
             ),
           );
 
+          // Push to homepage after short delay
           Future.delayed(const Duration(seconds: 2), () {
           print('success');
           Navigator.push(
@@ -79,10 +89,12 @@ class _RegisterState extends State<Register> {
 
         } catch (e) {
           print("Error during registration: $e");
-        } // Need to add action for when user is registered. Currently nothing indicates that user is registered but they have been added to Firebase
+        } // Need to add action for when user is registered. Currently nothing 
+        // indicates that user is registered but they have been added to Firebase
       }
   }
-// ADD SOME ERROR HANDLING HERE? email already in use, email format incorrect (no '@'), password not sophisticated enough, no password and/or email entered
+// ADD SOME ERROR HANDLING HERE? email already in use, email format 
+// incorrect (no '@'), password not sophisticated enough, no password and/or email entered
 
 // Simple Widget for registeration
   @override
@@ -92,6 +104,7 @@ class _RegisterState extends State<Register> {
        // App bar.
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
+        // App bar with consistent styling 
         backgroundColor: Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
         iconTheme: IconThemeData(
@@ -121,10 +134,11 @@ class _RegisterState extends State<Register> {
                 ),
               ],
             ),
+          // Registration form with padding 
           Padding(padding: const EdgeInsets.all(16.0),
             child: Column(
             children: [
-
+              // First name input field
               TextField(
                 controller: firstNameController,
                 decoration: const InputDecoration(
@@ -137,6 +151,7 @@ class _RegisterState extends State<Register> {
 
               SizedBox(height: 20),
 
+              // Surname input field 
               TextField(
                 controller: surnameController,
                 decoration: const InputDecoration(
@@ -148,7 +163,8 @@ class _RegisterState extends State<Register> {
               ),
 
               SizedBox(height: 20),
-
+              
+              // Email input field
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -161,6 +177,7 @@ class _RegisterState extends State<Register> {
 
               SizedBox(height: 20),
 
+              // Password input field 
               TextField(
                 controller: passwordController,
                 decoration: const InputDecoration(
@@ -195,6 +212,7 @@ class _RegisterState extends State<Register> {
               //   child: const Text("Register"),
               // )
 
+              // Register button 
               ElevatedButton(
               onPressed: registerUser,
               style: ElevatedButton.styleFrom(
