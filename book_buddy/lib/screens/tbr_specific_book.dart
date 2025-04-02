@@ -7,23 +7,18 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
 
+
 class TBR_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
   final String bookTitle;  
   final String bookAuthor;
-  final String imageUrl;
-  final String bookId;
-  final String uid;
 
   const TBR_specific_book({
     required this.isDarkMode,
     required this.toggleDarkMode,
     required this.bookTitle,  
     required this.bookAuthor,
-    required this.imageUrl,
-    required this.bookId,
-    required this.uid,
     super.key
   });
 
@@ -34,14 +29,21 @@ class TBR_specific_book extends StatefulWidget {
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final bool isDarkMode;
 
-  const NavBar({super.key, required this.onTap, required this.currentIndex});
+  const NavBar({
+    super.key, 
+    required this.onTap, 
+    required this.currentIndex,
+    required this.isDarkMode});
 
  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black, // Black background
+        color: isDarkMode 
+          ? Colors.white
+          : Colors.black, // Nav bar background colour
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -63,7 +65,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Library- book icon',
             hint: 'Press to go to My Library screen',
-            child: Icon(Icons.menu_book),
+            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
           ),
           label: "", 
         ),
@@ -72,7 +74,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'My TBR- bookmark icon',
             hint: 'Press to go to My TBR screen',
-            child: Icon(Icons.bookmark)
+            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
           ),
           label: "", 
         ),
@@ -84,10 +86,10 @@ class NavBar extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.black, // Black circle for camera button
+                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
+                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
               ),
             ),
             label: "", 
@@ -98,7 +100,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Settings- settings icon',
             hint: 'Press to go to Settings screen', 
-            child: Icon(Icons.settings),
+            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
           ), 
           label: "", 
         ),
@@ -107,7 +109,7 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Home- home icon', 
             hint: 'Press to go to the home page screen',
-            child: Icon(Icons.home),
+            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
           ),
           label: "", 
         ),
@@ -160,8 +162,8 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     });
 
     try {
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
-      final prompt = "Write a 150-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
+      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
       final response = await model.generateContent([Content.text(prompt)]);
       
@@ -205,21 +207,13 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.network(
-                    widget.imageUrl,
-                    height: 100,
-                    width: 80,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 40),
-                _buildBox(200, 100, '${widget.bookTitle} \n ${widget.bookAuthor}', boxColor, shadowColor),
+                _buildBox(80, 100, 'Front cover of book', boxColor, shadowColor),
+                SizedBox(width: 40),
+                _buildBox(200, 100, 'Book Title\nAuthor', boxColor, shadowColor),
               ],
             ),
             const SizedBox(height: 40),
@@ -229,9 +223,9 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                 350, 
                 60, 
                 _isGeneratingReview ? 'Generating review...' : 'Click to generate AI review', 
-                Colors.black, 
+                _isDarkMode ? Colors.white : Colors.black, 
                 shadowColor,
-                textColor: Colors.white,
+                textColor: _isDarkMode ? Colors.black : Colors.white,
               )
             ),
             const SizedBox(height: 40),
@@ -274,26 +268,27 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
           }
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen));
         },
+        isDarkMode: _isDarkMode,
       ),
     );
   }
 
   Widget _buildBox(double width, double height, String text, Color color, Color shadowColor,
-      {Color textColor = Colors.black}) {
+      {Color? textColor}) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: _isDarkMode ? Colors.white : Colors.black),
         boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
       ),
       alignment: Alignment.center,
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(color: textColor, fontSize: 16),
+        style: TextStyle(color: textColor ?? (_isDarkMode ? Colors.white: Colors.black), fontSize: 16),
       ),
     );
   }
@@ -305,18 +300,19 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _isDarkMode ? Colors.white : Colors.black),
         boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
       ),
       child: Row(
         children: [
-          const Icon(Icons.person, size: 30),
+           Icon(Icons.person, size: 30, color: _isDarkMode ? Colors.white: Colors.black,),
           const SizedBox(width: 10),
           Expanded(
             child: isLoading
                 ? const CircularProgressIndicator()
                 : Text(
                     text,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: _isDarkMode ? Colors.white : Colors.black,),
                   ),
           ),
         ],
