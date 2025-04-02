@@ -49,28 +49,45 @@ class NavBar extends StatelessWidget {
         color: isDarkMode 
           ? Colors.white
           : Colors.black, // Nav bar background colour
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+        borderRadius: 
+          BorderRadius.only(
+          topLeft: 
+            Radius.circular(20),
+          topRight: 
+            Radius.circular(20),
         ),
       ),
     
     child: BottomNavigationBar(
-        backgroundColor: Colors.transparent, 
-        selectedItemColor: Colors.white, 
-        unselectedItemColor: Colors.white, 
-        showSelectedLabels: false, 
-        showUnselectedLabels: false, 
-        currentIndex: currentIndex, 
-        onTap: onTap, 
-        type: BottomNavigationBarType.fixed,  
+        backgroundColor:
+          Colors.transparent, 
+        selectedItemColor:
+          Colors.white, 
+        unselectedItemColor:
+          Colors.white, 
+        showSelectedLabels:
+          false, 
+        showUnselectedLabels: 
+          false, 
+        currentIndex: 
+          currentIndex, 
+        onTap: 
+          onTap, 
+        type: 
+          BottomNavigationBarType.fixed,  
 
       items: [
         BottomNavigationBarItem(
           icon: Semantics(
             label: 'Library- book icon',
             hint: 'Press to go to My Library screen',
-            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
+            child: 
+              Icon(
+                Icons.menu_book, 
+                color: isDarkMode 
+                  ? Colors.black
+                  : Colors.white,
+                ),
           ),
           label: "", 
         ),
@@ -79,7 +96,13 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'My TBR- bookmark icon',
             hint: 'Press to go to My TBR screen',
-            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
+            child: 
+              Icon(
+                Icons.bookmark, 
+                color: isDarkMode 
+                  ? Colors.black
+                  : Colors.white,
+                )
           ),
           label: "", 
         ),
@@ -91,10 +114,19 @@ class NavBar extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
-                  shape: BoxShape.circle,
+                  color: isDarkMode
+                    ? Colors.white70
+                    : Colors.black, // Black circle for camera button
+                  shape: 
+                    BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
+                child: 
+                  Icon(
+                    Icons.camera_alt, 
+                    color: isDarkMode 
+                      ? Colors.black
+                      : Colors.white,
+                    ), // White camera icon
               ),
             ),
             label: "", 
@@ -105,7 +137,13 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Settings- settings icon',
             hint: 'Press to go to Settings screen', 
-            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
+            child: 
+              Icon(
+                Icons.settings, 
+                color: isDarkMode 
+                  ? Colors.black
+                  : Colors.white,
+                ),
           ), 
           label: "", 
         ),
@@ -114,7 +152,13 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Home- home icon', 
             hint: 'Press to go to the home page screen',
-            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
+            child: 
+              Icon(
+                Icons.home, 
+                  color: isDarkMode 
+                    ? Colors.black
+                    : Colors.white,
+                  ),
           ),
           label: "", 
         ),
@@ -174,13 +218,17 @@ class _SettingsState extends State<Settings>{
       // Show success snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Log out successful!'),
-          backgroundColor: Colors.black,
-          duration: Duration(seconds: 2),
+          content: 
+            Text('Log out successful!'),
+          backgroundColor: 
+            Colors.black,
+          duration: 
+            Duration(seconds: 2),
         ),
       );
 
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(
+          const Duration(seconds: 2), () {
           print('success');
           Navigator.push(
             context, 
@@ -197,8 +245,10 @@ class _SettingsState extends State<Settings>{
     return Scaffold(
 
       // App bar.
-      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
-      child: AppBar(
+      appBar: 
+        PreferredSize(preferredSize: Size.fromHeight(35), 
+      child: 
+        AppBar(
         backgroundColor: _isDarkMode 
           ? Color.fromARGB(255, 20, 9, 45) 
           : Color.fromARGB(255, 223, 245, 252),
@@ -211,10 +261,18 @@ class _SettingsState extends State<Settings>{
 
         //Save the state of light/dark mode when the back button is pressed.
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: 
+            Icon(
+              Icons.arrow_back
+            ),
             onPressed: () {
-              widget.toggleDarkMode(_isDarkMode);  // Save the dark mode state.
-              Navigator.pop(context, _isDarkMode);  // Go back and pass the updated state.
+              widget.toggleDarkMode(
+                _isDarkMode
+              );  // Save the dark mode state.
+              Navigator.pop(
+                context, 
+                _isDarkMode
+              );  // Go back and pass the updated state.
             },
           ),
         )),
@@ -224,9 +282,12 @@ class _SettingsState extends State<Settings>{
         : Color.fromARGB(255, 216, 243, 245),
       
       body: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        alignment: 
+          Alignment.topCenter,
+        child: 
+        Column(
+          crossAxisAlignment: 
+            CrossAxisAlignment.center,
 
           // Page icon and heading.
           children: [
@@ -272,8 +333,10 @@ class _SettingsState extends State<Settings>{
                 color: _isDarkMode 
                   ? Colors.black 
                   : Color.fromARGB(255, 223, 245, 252),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
+                borderRadius: 
+                  BorderRadius.circular(10),
+                border: 
+                  Border.all(
                   color: _isDarkMode 
                     ? Colors.white 
                     : Color.fromARGB(255, 216, 238, 245),  // Border color
@@ -281,16 +344,20 @@ class _SettingsState extends State<Settings>{
                 ),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(90, 0, 0, 0),  
-                  offset: Offset(0,5),  
+                  color: 
+                    Color.fromARGB(90, 0, 0, 0),  
+                  offset:  
+                    Offset(0,5),  
                   blurRadius: 6,  
                   spreadRadius: 2,  
                 ),
               ],
             ),
 
-              alignment: Alignment.center,
-              child: Column(
+              alignment: 
+                Alignment.center,
+              child:  
+              Column(
 
                 // Inner containers.
                 children: [
@@ -302,14 +369,18 @@ class _SettingsState extends State<Settings>{
                   Container(
                     width: 240,
                     height: 30,
-                    decoration: BoxDecoration(
+                    decoration: 
+                    BoxDecoration(
                       color: _isDarkMode 
                         ? Colors.white 
                         : Colors.black,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: 
+                        BorderRadius.circular(10),
                     ),
-                    alignment: Alignment.center,
-                    child: Text('Email: ${userData!['Email']}', 
+                    alignment: 
+                      Alignment.center,
+                    child: 
+                      Text('Email: ${userData!['Email']}', 
                                 style: TextStyle(
                                   color: _isDarkMode 
                                     ? Colors.black 
@@ -325,14 +396,18 @@ class _SettingsState extends State<Settings>{
                   Container(
                     width: 240,
                     height: 30,
-                    decoration: BoxDecoration(
+                    decoration: 
+                    BoxDecoration(
                       color: _isDarkMode 
                         ? Colors.white 
                         : Colors.black,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius:
+                        BorderRadius.circular(10),
                     ),
-                    alignment: Alignment.center,
-                    child: Text('First Name: ${userData!['First Name']}', 
+                    alignment: 
+                      Alignment.center,
+                    child: 
+                      Text('First Name: ${userData!['First Name']}', 
                                 style: TextStyle(
                                   color: _isDarkMode 
                                     ? Colors.black 
@@ -348,14 +423,18 @@ class _SettingsState extends State<Settings>{
                   Container(
                     width: 240,
                     height: 30,
-                    decoration: BoxDecoration(
+                    decoration: 
+                    BoxDecoration(
                       color: _isDarkMode 
                         ? Colors.white 
                         : Colors.black,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: 
+                        BorderRadius.circular(10),
                     ),
-                    alignment: Alignment.center,
-                    child: Text('Surname: ${userData!['Surname']}', 
+                    alignment: 
+                      Alignment.center,
+                    child: 
+                      Text('Surname: ${userData!['Surname']}', 
                                 style: TextStyle(
                                   color: _isDarkMode 
                                     ? Colors.black 
@@ -375,11 +454,15 @@ class _SettingsState extends State<Settings>{
                       color: _isDarkMode 
                         ? Colors.white 
                         : Colors.black,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: 
+                        BorderRadius.circular(10),
                     ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    alignment: 
+                      Alignment.center,
+                    child: 
+                    Row(
+                      mainAxisAlignment: 
+                        MainAxisAlignment.center,
                       children: [
 
                         // Change the text on the button.
@@ -451,11 +534,14 @@ class _SettingsState extends State<Settings>{
                       );
                     },
 
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
+                    style: 
+                      ElevatedButton.styleFrom(
+                      padding: 
+                        EdgeInsets.symmetric(
                         horizontal: 30, 
                         vertical: 10),  
-                      textStyle: TextStyle(fontSize: 16),  
+                      textStyle: 
+                        TextStyle(fontSize: 16),  
                       backgroundColor: _isDarkMode 
                         ? Colors.white
                         : Colors.black, 
@@ -514,7 +600,10 @@ class _SettingsState extends State<Settings>{
           }
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => screen),
+              MaterialPageRoute(
+                builder: 
+                (context) => screen
+              ),
             );
         },
         isDarkMode: _isDarkMode,
