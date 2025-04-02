@@ -71,7 +71,9 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Library- book icon',
             hint: 'Press to go to My Library screen',
-            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
+            child: Icon(
+              Icons.menu_book, 
+              color: isDarkMode ? Colors.black: Colors.white,),
           ),
           label: "", 
         ),
@@ -80,7 +82,9 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'My TBR- bookmark icon',
             hint: 'Press to go to My TBR screen',
-            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
+            child: Icon(
+              Icons.bookmark, 
+              color: isDarkMode ? Colors.black: Colors.white,)
           ),
           label: "", 
         ),
@@ -95,7 +99,9 @@ class NavBar extends StatelessWidget {
                   color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
+                child: Icon(
+                  Icons.camera_alt, 
+                  color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
               ),
             ),
             label: "", 
@@ -106,7 +112,9 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Settings- settings icon',
             hint: 'Press to go to Settings screen', 
-            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
+            child: Icon(
+              Icons.settings, 
+              color: isDarkMode ? Colors.black: Colors.white,),
           ), 
           label: "", 
         ),
@@ -115,7 +123,9 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Home- home icon', 
             hint: 'Press to go to the home page screen',
-            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
+            child: Icon(
+              Icons.home, 
+              color: isDarkMode ? Colors.black: Colors.white,),
           ),
           label: "", 
         ),
@@ -168,10 +178,15 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     });
 
     try {
-      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final model = GenerativeModel(
+        model: 'gemini-2.0-flash', 
+        apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
+        ); 
       final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
-      final response = await model.generateContent([Content.text(prompt)]);
+      final response = await model.generateContent(
+        [Content.text(prompt)]
+        );
       
       setState(() {
         _aiReview = response.text ?? "Could not generate review. Please try again.";
@@ -235,7 +250,11 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
               )
             ),
             const SizedBox(height: 40),
-            _buildSpeechBubble(_aiReview, boxColor, shadowColor),
+            _buildSpeechBubble(
+              _aiReview, 
+              boxColor, 
+              shadowColor
+              ),
             const SizedBox(height: 40),
             GestureDetector(
               onTap: markAsRead, 
@@ -257,29 +276,51 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = Library(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 1:
-              screen = TBR(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = TBR(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 2:
-              screen = ScanBook(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = ScanBook(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 3:
-              screen = Settings(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = Settings(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 4:
             default:
-              screen = HomePage2(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = HomePage2(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
           }
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen));
+          Navigator.pushReplacement(
+            context, MaterialPageRoute(
+              builder: (context) => screen));
         },
         isDarkMode: _isDarkMode,
       ),
     );
   }
 
-  Widget _buildBox(double width, double height, String text, Color color, Color shadowColor,
+  Widget _buildBox(
+    double width, 
+    double height, 
+    String text, 
+    Color color, 
+    Color shadowColor,
       {Color? textColor}) {
     return Container(
       width: width,
