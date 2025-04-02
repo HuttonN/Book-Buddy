@@ -15,7 +15,9 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final User currentUser = FirebaseAuth.instance.currentUser!;
 
-// Light/dark mode.
+// Settings screen allowing users to view their account 
+// infor, toggle between light and dark mode and sign 
+// out of their acount
 class Settings extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -132,7 +134,7 @@ class NavBar extends StatelessWidget {
             label: "", 
             ),
             
-
+        // Sentimatics
         BottomNavigationBarItem(
           icon: Semantics(
             label: 'Settings- settings icon',
@@ -168,6 +170,9 @@ class NavBar extends StatelessWidget {
   }
 }
 
+// State class for settings screen that fetches and 
+// displays user data, allows light/dark mode 
+// toggling and a user authentication state
 class _SettingsState extends State<Settings>{
   late bool _isDarkMode;
   Map<String, dynamic>? userData;
@@ -179,6 +184,7 @@ class _SettingsState extends State<Settings>{
     fetchUserData();
   }
 
+  // Fetches user data from firestore
   // Error catching for user data.
   Future<void> fetchUserData() async {
     try{
@@ -259,7 +265,8 @@ class _SettingsState extends State<Settings>{
             : Color.fromARGB(255, 20, 9, 45) 
           ),
 
-        //Save the state of light/dark mode when the back button is pressed.
+        // Save the state of light/dark mode 
+        // when the back button is pressed.
         leading: IconButton(
             icon: 
             Icon(
