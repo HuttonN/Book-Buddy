@@ -45,7 +45,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     super.dispose();
   }
 
-  Future<void> _saveBook(String collectionName) async {
+  Future<void> _saveBook(bool hasRead) async {
     if (_titleController.text.isEmpty || _authorController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Title and author are required!")),
@@ -61,16 +61,16 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       User? user = _auth.currentUser;
 
       if (user != null) {
-        await _firestore.collection('users').doc(user.uid).collection(collectionName).add({
-          'title': _titleController.text,
-          'author': _authorController.text,
-          'isbn': _isbnController.text,
-          'coverImage': widget.imagePath,
+        await _firestore.collection('userCollection').add({
+          'Title': _titleController.text,
+          'Author': _authorController.text,
+          'image_url': widget.imagePath,
+          'has_read': hasRead,
           'timestamp': FieldValue.serverTimestamp(),
         });
         
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Book saved to $collectionName successfully!")),
+          SnackBar(content: Text("Book saved successfully!")),
         );
         
         Navigator.popUntil(context, (route) => route.isFirst);
@@ -164,7 +164,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             SizedBox(height: 24),
             
             ElevatedButton.icon(
-              onPressed: _isSaving ? null : () => _saveBook('library'),
+              onPressed: _isSaving ? null : () => _saveBook(true),
               icon: Icon(Icons.library_books),
               label: Text(_isSaving ? "Saving..." : "Add to Library"),
               style: ElevatedButton.styleFrom(
@@ -173,7 +173,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             ),
             SizedBox(height: 12),
             ElevatedButton.icon(
-              onPressed: _isSaving ? null : () => _saveBook('tbr'),
+              onPressed: _isSaving ? null : () => _saveBook(false),
               icon: Icon(Icons.bookmark),
               label: Text(_isSaving ? "Saving..." : "Add to TBR"),
               style: ElevatedButton.styleFrom(
