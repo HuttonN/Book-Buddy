@@ -109,8 +109,8 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     });
 
     try {
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
-      final prompt = "Write a 150-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
+      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'); 
+      final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
       final response = await model.generateContent([Content.text(prompt)]);
       

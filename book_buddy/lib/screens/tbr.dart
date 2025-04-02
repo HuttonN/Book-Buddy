@@ -212,7 +212,7 @@ class _TBRState extends State<TBR>{
                                 toggleDarkMode: widget.toggleDarkMode,
                                 bookTitle: book['Title'],
                                 bookAuthor: book['Author'],
-                                imageUrl: book['image_url'],
+                                //imageUrl: book['image_url'],
                               ),
                             ),
                           );
