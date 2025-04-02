@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Screen to reset password
 class ForgotPassword extends StatefulWidget{
   final bool isDarkMode;
 
@@ -10,10 +11,15 @@ class ForgotPassword extends StatefulWidget{
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
+// State class that manages email input handling, 
+// password reset functionality and user feedback
+// messages
 class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController emailController = TextEditingController();
   String message = '';
 
+  // Sends a password reset email to the provided email 
+  // address using Firebase authentication
   Future<void> sendResetEmail() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
@@ -33,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context){
     return Scaffold(
 
-       // App bar.
+       // App bar
       appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
       child: AppBar(
         backgroundColor: Color.fromARGB(255, 223, 245, 252),
@@ -43,10 +49,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),)),
 
       backgroundColor: Color.fromARGB(255, 216, 243, 245),
-      body: Align(  // Align everything at the top
-        alignment: Alignment.topCenter,  // Move everything to the top
+      // Align everything at the top
+      body: Align(  
+        // Move everything to the top
+        alignment: Alignment.topCenter,  
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
+          // Centre horizontally
+          crossAxisAlignment: CrossAxisAlignment.center,  
           children: [
             Row(
               children: [
@@ -65,7 +74,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ],
             ),
-
+            
+            // Main form content
             Padding(padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
@@ -87,6 +97,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                   SizedBox(height: 20),
 
+                  // Password reset button
                   ElevatedButton(
                     onPressed: sendResetEmail,
                     style: ElevatedButton.styleFrom(
@@ -104,6 +115,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                   SizedBox(height: 20),
 
+                  // Status/ error message display
                   Text(
                     message,
                     style: TextStyle(

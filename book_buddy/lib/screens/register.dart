@@ -80,21 +80,21 @@ class _RegisterState extends State<Register> {
           print('success');
           Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => HomePage2(
+            MaterialPageRoute(
+              builder: (context) => HomePage2(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
-                    ))
-          );
+                )
+              )
+            );
           });
 
         } catch (e) {
           print("Error during registration: $e");
-        } // Need to add action for when user is registered. Currently nothing 
-        // indicates that user is registered but they have been added to Firebase
+        } 
       }
   }
-// ADD SOME ERROR HANDLING HERE? email already in use, email format 
-// incorrect (no '@'), password not sophisticated enough, no password and/or email entered
+
 
 // Simple Widget for registeration
   @override
@@ -115,7 +115,7 @@ class _RegisterState extends State<Register> {
       body: Align(  // Align everything at the top
         alignment: Alignment.topCenter,  // Move everything to the top
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,  // Center horizontally
+          crossAxisAlignment: CrossAxisAlignment.center,  // Centre horizontally
           children: [
             Row(
               children: [
@@ -190,29 +190,6 @@ class _RegisterState extends State<Register> {
 
               SizedBox(height: 20),
 
-              // TextField(
-              //   controller: firstNameController,
-              //   decoration: const InputDecoration(labelText: 'First Name'),
-              // ),
-              // TextField(
-              //   controller: surnameController,
-              //   decoration: const InputDecoration(labelText: 'Surname'),
-              // ),
-              // TextField(
-              //   controller: emailController,
-              //   decoration: const InputDecoration(labelText: 'Email'),
-              // ),
-              // TextField(
-              //   controller: passwordController,
-              //   decoration: const InputDecoration(labelText: 'Password'),
-              //   obscureText: true,
-              // ),
-              // ElevatedButton(
-              //   onPressed: registerUser, //runs registerUser function above when clicked
-              //   child: const Text("Register"),
-              // )
-
-              // Register button 
               ElevatedButton(
               onPressed: registerUser,
               style: ElevatedButton.styleFrom(
@@ -223,16 +200,10 @@ class _RegisterState extends State<Register> {
                       minimumSize: Size(100, 40)
                     ),
               child: Text('Register'),
-            ),
-            ],
-          ),
-          
-          
-          
-          
-          )
-           
-            
+                 ),
+              ],
+             ),
+            )
           ]
         )
       )

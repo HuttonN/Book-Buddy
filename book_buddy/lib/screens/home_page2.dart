@@ -6,10 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
+// Firebase authentication instances
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final User currentUser = FirebaseAuth.instance.currentUser!;
 
+// This is the main dash board screen of the app
+// It displays user reading progress, navigate 
+// to other app sections and supports dark mode
 class HomePage2 extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -24,6 +28,8 @@ class HomePage2 extends StatefulWidget {
    _HomePage2State createState() => _HomePage2State();
 }
 
+// Creates the NavBar widget with sentimatics 
+// included for accessibility
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -59,6 +65,7 @@ class NavBar extends StatelessWidget {
         type: BottomNavigationBarType.fixed,  
 
       items: [
+        // Icon to push to library page
         BottomNavigationBarItem(
           icon: Semantics(
             label: 'Library- book icon',
@@ -68,6 +75,7 @@ class NavBar extends StatelessWidget {
           label: "", 
         ),
         
+        // Icon to push to to be read page
         BottomNavigationBarItem(
           icon: Semantics(
             label: 'My TBR- bookmark icon',
@@ -77,6 +85,7 @@ class NavBar extends StatelessWidget {
           label: "", 
         ),
         
+        // Icon to push to scan book page
         BottomNavigationBarItem(
             icon: Semantics(
               label: 'Scan book- camera icon',
@@ -93,7 +102,7 @@ class NavBar extends StatelessWidget {
             label: "", 
             ),
             
-
+        // Icon to push to settings page 
         BottomNavigationBarItem(
           icon: Semantics(
             label: 'Settings- settings icon',
@@ -103,6 +112,7 @@ class NavBar extends StatelessWidget {
           label: "", 
         ),
         
+        // Icon to push to homepage 
         BottomNavigationBarItem(
           icon: Semantics(
             label: 'Home- home icon', 
@@ -117,7 +127,8 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
+// State class for home page that manages user data fetching
+// theme state and navigation
 class _HomePage2State extends State<HomePage2>{
   late bool _isDarkMode;
   Map<String, dynamic>? userData;
@@ -129,6 +140,7 @@ class _HomePage2State extends State<HomePage2>{
     fetchUserData();
   }
 
+  // Fetches user data for Firestore 
   Future<void> fetchUserData() async {
     try{
       final user = FirebaseAuth.instance.currentUser;
@@ -139,6 +151,7 @@ class _HomePage2State extends State<HomePage2>{
 
       String uid = user.uid;
       
+      // Query to firestore for user document matching UID
       final querySnapshot = await firestore.FirebaseFirestore.instance
       .collection("usersCollection")
       .where("uid", isEqualTo: uid)
@@ -149,6 +162,7 @@ class _HomePage2State extends State<HomePage2>{
         return;
       }
 
+      // Update state with user data 
       final userDoc = querySnapshot.docs.first;
     setState(() {
       userData = userDoc.data() as Map<String,dynamic>?;
@@ -162,7 +176,8 @@ class _HomePage2State extends State<HomePage2>{
 
   @override
   Widget build(BuildContext context) {
-if (userData == null){
+    // Loading indicator 
+    if (userData == null){
       return Scaffold(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
         body: Center(
@@ -172,12 +187,14 @@ if (userData == null){
     }
     
         return Scaffold(
-      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      appBar: 
+      PreferredSize(
+        preferredSize: Size.fromHeight(35), 
       child: AppBar(
         backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
         iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45)),
-      )
+        )
       ),
       
       backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
@@ -205,7 +222,7 @@ if (userData == null){
                     )
                 ),
 
-                // Heading.
+                // Page title
                 Text(
                   'Home',
                   style: TextStyle(
@@ -218,7 +235,8 @@ if (userData == null){
                 ),
               ],
             ),
-
+            
+            // Circular process display
             Container(
               width: 200,
               height: 220,
@@ -231,6 +249,7 @@ if (userData == null){
                 mainAxisAlignment: MainAxisAlignment.center,  
                 crossAxisAlignment: CrossAxisAlignment.center, 
                 children: [
+                  // Conditional message
                   (userData!['Books Read']==0)
                     ? Text(
                       '${userData!['First Name']},\nYOU HAVEN\'T\n READ\nANY BOOKS YET!\nSTART YOUR READING\n JOURNEY TODAY!!!',
@@ -558,7 +577,7 @@ if (userData == null){
         ),
       ),
 
-
+      // Custome NavBar
       bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {
