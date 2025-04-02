@@ -186,6 +186,24 @@ class _Library_specific_bookState extends State<Library_specific_book> {
             ),
             const SizedBox(height: 40),
             _buildSpeechBubble(_aiReview, boxColor, shadowColor),
+
+            if (_isLoadingNotes)
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                )
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text
+                  ]
+                )
+              )
           ],
         ),
       ),
