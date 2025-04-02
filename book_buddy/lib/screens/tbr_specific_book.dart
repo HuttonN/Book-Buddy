@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:book_buddy/screens/library.dart';
@@ -12,6 +13,8 @@ class TBR_specific_book extends StatefulWidget {
   final String bookTitle;  
   final String bookAuthor;
   final String imageUrl;
+  final String bookId;
+  final String uid;
 
   const TBR_specific_book({
     required this.isDarkMode,
@@ -19,6 +22,8 @@ class TBR_specific_book extends StatefulWidget {
     required this.bookTitle,  
     required this.bookAuthor,
     required this.imageUrl,
+    required this.bookId,
+    required this.uid,
     super.key
   });
 
@@ -117,11 +122,34 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
   bool _isGeneratingReview = false;
+  bool _hasRead = false;
 
   @override
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
+  }
+
+  Future<void> markAsRead() async {
+    setState(() {
+      _hasRead = true;
+    });
+
+    try {
+      await firestore.FirebaseFirestore.instance
+        .collection("usersCollection")
+        .where("uid", isEqualTo: widget.uid)
+        .get()
+        .then((snapshot) async {
+          final userDoc = snapshot.docs.first;
+          await userDoc.reference
+            .collection("Books")
+            .doc(widget.bookId)
+            .update({"has_read": true});
+        });
+    } catch (e) {
+      print("Error");
+    }
   }
 
   Future<void> generateAIReview() async {  
@@ -206,6 +234,18 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
             ),
             const SizedBox(height: 40),
             _buildSpeechBubble(_aiReview, boxColor, shadowColor),
+            const SizedBox(height: 40),
+            GestureDetector(
+              onTap: markAsRead, 
+              child: _buildBox(
+                350, 
+                60, 
+                _hasRead ? 'Read ${Icons.check}': 'Mark as Read',
+                Colors.black, 
+                shadowColor,
+                textColor: Colors.white,
+              )
+            )
           ],
         ),
       ),

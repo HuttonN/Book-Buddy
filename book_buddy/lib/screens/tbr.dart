@@ -142,7 +142,11 @@ class _TBRState extends State<TBR>{
       .get();
 
     List<Map<String, dynamic>> booksList = booksSnapshot.docs
-      .map((doc) => doc.data() as Map<String, dynamic>)
+      .map((doc) {
+        final bookData =  doc.data() as Map<String, dynamic>;
+        bookData['id'] = doc.id;
+        return bookData;
+      })
       .where((book) => 
         book['has_read'] == false)
       .toList();
@@ -213,6 +217,8 @@ class _TBRState extends State<TBR>{
                                 bookTitle: book['Title'],
                                 bookAuthor: book['Author'],
                                 imageUrl: book['image_url'],
+                                bookId: book['id'],
+                                uid: userData!['uid']
                               ),
                             ),
                           );
