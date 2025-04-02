@@ -8,12 +8,16 @@ class ScanBookAdding extends StatefulWidget {
   final String imagePath;
   final String initialTitle;
   final String initialAuthor;
+  final bool isDarkMode;
+  final Function(bool) toggleDarkMode;
 
   const ScanBookAdding({
     super.key, 
     required this.imagePath,
     required this.initialTitle,
     required this.initialAuthor,
+    required this.isDarkMode,
+    required this.toggleDarkMode,
   });
 
   @override
@@ -21,6 +25,7 @@ class ScanBookAdding extends StatefulWidget {
 }
 
 class _ScanBookAddingState extends State<ScanBookAdding> {
+  late bool _isDarkMode;
   late TextEditingController _titleController;
   late TextEditingController _authorController;
   final TextEditingController _isbnController = TextEditingController();
@@ -33,6 +38,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   @override
   void initState() {
     super.initState();
+    _isDarkMode = widget.isDarkMode;
     _titleController = TextEditingController(text: widget.initialTitle);
     _authorController = TextEditingController(text: widget.initialAuthor);
   }
@@ -110,17 +116,26 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Book"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.photo_library),
-            onPressed: () {
-              // You could add functionality to select from gallery here
-            },
-          ),
-        ],
+      // appBar: AppBar(
+      //   title: Text("Add Book"),
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(Icons.photo_library),
+      //       onPressed: () {
+      //         // You could add functionality to select from gallery here
+      //       },
+      //     ),
+      //   ],
+      // ),
+      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      child: AppBar(
+        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+        elevation: 5 ,
+        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45)),
+      )
       ),
+      
+      backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -141,23 +156,38 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
               controller: _titleController,
               decoration: InputDecoration(
                 labelText: "Book Title",
+                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
                 border: OutlineInputBorder(),
+                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                filled: true
               ),
+              style: TextStyle(
+                color: _isDarkMode ? Colors.white : Colors.black,
+              )
             ),
             SizedBox(height: 16),
             TextField(
               controller: _authorController,
               decoration: InputDecoration(
                 labelText: "Author",
+                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
                 border: OutlineInputBorder(),
+                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                filled: true
               ),
+              style: TextStyle(
+                color: _isDarkMode ? Colors.white : Colors.black,
+              )
             ),
             SizedBox(height: 16),
             TextField(
               controller: _isbnController,
               decoration: InputDecoration(
                 labelText: "ISBN (optional)",
+                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
                 border: OutlineInputBorder(),
+                fillColor: _isDarkMode ? Colors.grey: Colors.white,
+                filled: true
               ),
               keyboardType: TextInputType.number,
             ),
@@ -165,28 +195,32 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             
             ElevatedButton.icon(
               onPressed: _isSaving ? null : () => _saveBook('library'),
-              icon: Icon(Icons.library_books),
-              label: Text(_isSaving ? "Saving..." : "Add to Library"),
+              icon: Icon(Icons.library_books, color: _isDarkMode ? Colors.black : Colors.white),
+              label: Text(_isSaving ? "Saving..." : "Add to Library", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: _isDarkMode ? Colors.white : Colors.black
               ),
             ),
             SizedBox(height: 12),
             ElevatedButton.icon(
               onPressed: _isSaving ? null : () => _saveBook('tbr'),
-              icon: Icon(Icons.bookmark),
-              label: Text(_isSaving ? "Saving..." : "Add to TBR"),
+              icon: Icon(Icons.bookmark, color: _isDarkMode ? Colors.black : Colors.white),
+              label: Text(_isSaving ? "Saving..." : "Add to TBR", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: _isDarkMode ? Colors.white : Colors.black
               ),
             ),
             SizedBox(height: 24),
             Divider(),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _generateAIReview,
-              child: Text("Generate AI Review"),
-            ),
+            onPressed: _generateAIReview,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _isDarkMode ? Colors.white : Colors.black, // Background color of the button
+              ),
+            child: Text("Generate AI Review", style: TextStyle(color: _isDarkMode ? Colors.black : Colors.white)),),
             if (_aiReview != null)
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
