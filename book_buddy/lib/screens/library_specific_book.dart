@@ -5,6 +5,8 @@ import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 class Library_specific_book extends StatefulWidget {
   final bool isDarkMode;
@@ -12,6 +14,8 @@ class Library_specific_book extends StatefulWidget {
   final String bookTitle;  
   final String bookAuthor;
   final String imageUrl;
+  final String bookId;
+  final String uid;
 
   const Library_specific_book({
     required this.isDarkMode,
@@ -19,6 +23,8 @@ class Library_specific_book extends StatefulWidget {
     required this.bookTitle,  
     required this.bookAuthor,
     required this.imageUrl,
+    required this.bookId,
+    required this.uid,
     super.key
   });
 
@@ -125,12 +131,41 @@ class _Library_specific_bookState extends State<Library_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
   bool _isGeneratingReview = false;
+  bool _isSavingNotes = false;
+
+  final TextEditingController _notesController = TextEditingController() ;
+
   int _rating = 0; // Star rating state
 
   @override
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
+  }
+
+  Future<void> _saveNotes() async {
+    setState(() {
+      _isSavingNotes = true;
+    });
+    if(_notesController.text.isNotEmpty){
+      try{
+        await firestore.FirebaseFirestore.instance
+        .collection("usersCollection")
+        .where("uid", isEqualTo: widget.uid)
+        .get()
+        .then((snapshot) async {
+          final userDoc = snapshot.docs.first;
+          await userDoc.reference
+            .collection("Books")
+            .doc(widget.bookId)
+            .set({'User_Notes':_notesController.text},firestore.SetOptions(merge: true));
+        }); 
+      } finally {
+      setState(() {
+        _isSavingNotes = false;
+      });
+    }
+    }
   }
 
   Future<void> generateAIReview() async {  
@@ -191,16 +226,17 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     Color shadowColor = Colors.black26;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(35),
-        child: AppBar(
-          backgroundColor: bgColor,
-          elevation: 5,
-          iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Colors.black),
-        ),
+    appBar: PreferredSize(
+      preferredSize: const Size.fromHeight(35),
+      child: AppBar(
+        backgroundColor: bgColor,
+        elevation: 5,
+        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Colors.black),
       ),
-      backgroundColor: bgColor,
-      body: Align(
+    ),
+    backgroundColor: bgColor,
+    body: SingleChildScrollView(
+      child: Align(
         alignment: Alignment.topCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -238,12 +274,86 @@ class _Library_specific_bookState extends State<Library_specific_book> {
             ),
             const SizedBox(height: 40),
             _buildSpeechBubble(_aiReview, boxColor, shadowColor),
+            const SizedBox(height: 40),
+
+            // ====== NOTES SECTION STARTS HERE ======
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your Notes:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? Colors.grey[900] : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: shadowColor,
+                            blurRadius: 5,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: _notesController,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            hintText: "Write your notes about this book here...",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: _isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: _isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _saveNotes,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: _isSavingNotes
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text(
+                                "Save Notes",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
-      bottomNavigationBar: NavBar(
-        currentIndex: 4,
-        onTap: (index) {
+    ),
+    bottomNavigationBar: NavBar(
+      currentIndex: 4,
+      onTap: (index) {
           Widget screen;
           switch (index) {
             case 0:

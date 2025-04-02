@@ -151,7 +151,11 @@ class _LibraryState extends State<Library>{
       .get();
 
     List<Map<String, dynamic>> booksList = booksSnapshot.docs
-      .map((doc) => doc.data() as Map<String, dynamic>)
+      .map((doc) { 
+        final bookData = doc.data() as Map<String, dynamic>;
+        bookData['id'] = doc.id;
+        return bookData;
+      })
       .where((book) => 
         book['has_read'] == true)
       .toList();
@@ -222,7 +226,9 @@ class _LibraryState extends State<Library>{
                                 toggleDarkMode: widget.toggleDarkMode,
                                 bookTitle: book['Title'],
                                 bookAuthor: book['Author'],
-                                imageUrl: book['image_url']
+                                imageUrl: book['image_url'],
+                                bookId: book['id'],
+                                uid: userData!['uid']
                               ),
                             ),
                           );
