@@ -12,13 +12,19 @@ class TBR_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
   final String bookTitle;  
-  final String bookAuthor;
+  final String bookAuthor; 
+  final String imageUrl;
+  final String bookId;
+  final String uid;
 
   const TBR_specific_book({
     required this.isDarkMode,
     required this.toggleDarkMode,
     required this.bookTitle,  
     required this.bookAuthor,
+    required this.bookId,
+    required this.imageUrl,
+    required this.uid,
     super.key
   });
 
