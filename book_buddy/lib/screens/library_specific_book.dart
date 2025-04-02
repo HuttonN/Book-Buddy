@@ -134,13 +134,43 @@ class _Library_specific_bookState extends State<Library_specific_book> {
   bool _isSavingNotes = false;
 
   final TextEditingController _notesController = TextEditingController() ;
-
-  int _rating = 0; // Star rating state
+  
+  // Star rating state
+  int _rating = 0; 
 
   @override
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    _loadBookData();
+  }
+
+  Future<void> _loadBookData() async {
+  try {
+    final snapshot = await firestore.FirebaseFirestore.instance
+        .collection("usersCollection")
+        .where("uid", isEqualTo: widget.uid)
+        .get();
+        
+    if (snapshot.docs.isNotEmpty) {
+      final userDoc = snapshot.docs.first;
+      final bookDoc = await userDoc.reference
+          .collection("Books")
+          .doc(widget.bookId)
+          .get();
+          
+      if (bookDoc.exists) {
+        setState(() {
+          _rating = bookDoc.data()?['Rating'] ?? 0;
+          _notesController.text = bookDoc.data()?['User_Notes'] ?? '';
+        });
+      }
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error loading book data: ${e.toString()}")),
+      );
+    }
   }
 
   Future<void> _saveNotes() async {
@@ -166,6 +196,26 @@ class _Library_specific_bookState extends State<Library_specific_book> {
       });
     }
     }
+  }
+
+  Future<void> _saveRating() async {
+    try {
+    await firestore.FirebaseFirestore.instance
+        .collection("usersCollection")
+        .where("uid", isEqualTo: widget.uid)
+        .get()
+        .then((snapshot) async {
+      final userDoc = snapshot.docs.first;
+      await userDoc.reference
+          .collection("Books")
+          .doc(widget.bookId)
+          .set({'Rating': _rating}, firestore.SetOptions(merge: true));
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error saving rating: ${e.toString()}")),
+    );
+  }
   }
 
   Future<void> generateAIReview() async {  
@@ -196,26 +246,28 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     }
   }
 
-  //Used AI to build the rating system for books 
+  // Used AI to build the rating system for books then edited 
+  // the code to save the rating to Firebase
   Widget _buildStarRating() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _rating = index + 1;
-            });
-          },
-          child: Icon(
-            index < _rating ? Icons.star : Icons.star_border,
-            size: 30,
-            color: Colors.black,
-          ),
-        );
-      }),
-    );
-  }
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: List.generate(5, (index) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            _rating = index + 1;
+          });
+          _saveRating(); // Save the rating when changed
+        },
+        child: Icon(
+          index < _rating ? Icons.star : Icons.star_border,
+          size: 30,
+          color: Colors.black,
+        ),
+      );
+    }),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
