@@ -193,6 +193,8 @@ class _ScanBookState extends State<ScanBook> {
             imagePath: imageFile.path, 
             initialTitle: title ?? '',
             initialAuthor: author ?? '',
+            isDarkMode: _isDarkMode,
+            toggleDarkMode: widget.toggleDarkMode,
           ),
         ),
       );

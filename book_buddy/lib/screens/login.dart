@@ -166,6 +166,7 @@ class _LoginState extends State<Login> {
                         decoration: 
                           InputDecoration(
                                 labelText: 'Email',
+                                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
                                 border: OutlineInputBorder(),
                                 fillColor: _isDarkMode ? Colors.grey: Colors.white,
                                 filled: true
@@ -181,6 +182,7 @@ class _LoginState extends State<Login> {
                         decoration: 
                           InputDecoration(
                                 labelText: 'Password',
+                                labelStyle: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
                                 border: OutlineInputBorder(),
                                 fillColor: _isDarkMode ? Colors.grey: Colors.white,
                                 filled: true
@@ -208,6 +210,7 @@ class _LoginState extends State<Login> {
                           'Forgot Password?',
                           style: TextStyle(
                             decoration: TextDecoration.underline,
+                            decorationColor: _isDarkMode ? Colors.white : Colors.black,
                             color: _isDarkMode? Colors.white : Colors.black,
                           ),
                         ),
