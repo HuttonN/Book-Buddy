@@ -96,6 +96,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
   bool _isGeneratingReview = false;
+  int _rating = 0; // Star rating state
 
   @override
   void initState() {
@@ -131,7 +132,27 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     }
   }
 
-   @override
+  Widget _buildStarRating() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (index) {
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _rating = index + 1;
+            });
+          },
+          child: Icon(
+            index < _rating ? Icons.star : Icons.star_border,
+            size: 30,
+            color: Colors.black,
+          ),
+        );
+      }),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     Color bgColor = _isDarkMode
         ? const Color.fromARGB(255, 20, 9, 45)
@@ -166,13 +187,14 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                     width: 80,
                     fit: BoxFit.cover,
                   ),
-                )
-                ,
+                ),
                 const SizedBox(width: 40),
                 _buildBox(200, 100, '${widget.bookTitle} \n ${widget.bookAuthor}', boxColor, shadowColor),
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
+            _buildStarRating(),
+            const SizedBox(height: 20),
             GestureDetector(
               onTap: _isGeneratingReview ? null : generateAIReview, 
               child: _buildBox(
@@ -195,55 +217,104 @@ class _Library_specific_bookState extends State<Library_specific_book> {
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = Library(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 1:
-              screen = TBR(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = TBR(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 2:
-              screen = ScanBook(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = ScanBook(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 3:
-              screen = Settings(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = Settings(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
               break;
             case 4:
             default:
-              screen = HomePage2(isDarkMode: _isDarkMode, toggleDarkMode: widget.toggleDarkMode);
+              screen = HomePage2(
+                isDarkMode: _isDarkMode, 
+                toggleDarkMode: widget.toggleDarkMode
+                );
           }
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen));
+          Navigator.pushReplacement(
+            context, MaterialPageRoute(
+              builder: 
+              (context) => screen));
         },
       ),
     );
   }
 
-  Widget _buildBox(double width, double height, String text, Color color, Color shadowColor,
+  Widget _buildBox(
+    double width, 
+    double height, 
+    String text, 
+    Color color, 
+    Color shadowColor,
       {Color textColor = Colors.black}) {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(
+      decoration: 
+        BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.black),
-        boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
+        borderRadius: 
+          BorderRadius.circular(5),
+        border: 
+          Border.all(
+            color: Colors.black),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor, 
+            blurRadius: 5, 
+            offset: const Offset(2, 2))],
       ),
-      alignment: Alignment.center,
+      alignment: 
+        Alignment.center,
       child: Text(
         text,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: textColor, fontSize: 16),
+        textAlign: 
+          TextAlign.center,
+        style: 
+          TextStyle(
+            color: textColor, 
+            fontSize: 16
+          ),
       ),
     );
   }
 
-  Widget _buildSpeechBubble(String text, Color color, Color shadowColor, {bool isLoading = false}) {
+  Widget _buildSpeechBubble(
+    String text, 
+    Color color, 
+    Color shadowColor, 
+    {bool isLoading = false}) {
     return Container(
       width: 350,
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
+      decoration: 
+      BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
+        borderRadius: 
+          BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor, 
+            blurRadius: 5, 
+            offset: const Offset(2, 2)
+          )
+        ],
       ),
       child: Row(
         children: [
@@ -262,5 +333,3 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     );
   }
 }
-
-
