@@ -161,6 +161,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     }
   }
 
+  //Used AI to build the rating system for books 
   Widget _buildStarRating() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
