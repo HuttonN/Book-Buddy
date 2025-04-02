@@ -140,16 +140,17 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     Color shadowColor = Colors.black26;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(35),
-        child: AppBar(
-          backgroundColor: bgColor,
-          elevation: 5,
-          iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Colors.black),
-        ),
+    appBar: PreferredSize(
+      preferredSize: const Size.fromHeight(35),
+      child: AppBar(
+        backgroundColor: bgColor,
+        elevation: 5,
+        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Colors.black),
       ),
-      backgroundColor: bgColor,
-      body: Align(
+    ),
+    backgroundColor: bgColor,
+    body: SingleChildScrollView(
+      child: Align(
         alignment: Alignment.topCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,8 +167,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                     width: 80,
                     fit: BoxFit.cover,
                   ),
-                )
-                ,
+                ),
                 const SizedBox(width: 40),
                 _buildBox(200, 100, '${widget.bookTitle} \n ${widget.bookAuthor}', boxColor, shadowColor),
               ],
@@ -186,13 +186,15 @@ class _Library_specific_bookState extends State<Library_specific_book> {
             ),
             const SizedBox(height: 40),
             _buildSpeechBubble(_aiReview, boxColor, shadowColor),
+            const SizedBox(height: 40),
 
+            // ====== NOTES SECTION STARTS HERE ======
             if (_isLoadingNotes)
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Center(
                   child: CircularProgressIndicator(),
-                )
+                ),
               )
             else
               Padding(
@@ -200,16 +202,78 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text
-                  ]
-                )
-              )
+                    Text(
+                      "Your Notes:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? Colors.grey[900] : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: shadowColor,
+                            blurRadius: 5,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: _notesController,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            hintText: "Write your notes about this book here...",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: _isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: _isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isSavingNotes ? null : _saveNotes,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: _isSavingNotes
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text(
+                                "Save Notes",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
-      bottomNavigationBar: NavBar(
-        currentIndex: 4,
-        onTap: (index) {
+    ),
+    bottomNavigationBar: NavBar(
+      currentIndex: 4,
+      onTap: (index) {
           Widget screen;
           switch (index) {
             case 0:
