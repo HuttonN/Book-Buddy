@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:book_buddy/screens/library.dart';
@@ -123,11 +124,36 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
   bool _isGeneratingReview = false;
+  bool _hasRead = false;
 
   @override
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
+  }
+
+  Future<void> markAsRead() async {
+    setState(() {
+      _hasRead = true;
+    });
+
+    try {
+      await firestore.FirebaseFirestore.instance
+        .collection("usersCollection")
+        .where("uid", isEqualTo: widget.uid)
+        .get()
+        .then((snapshot) async {
+          final userDoc = snapshot.docs.first;
+          await userDoc.reference
+            .collection("Books")
+            .doc(widget.bookId)
+            .update({"has_read": true});
+          await userDoc.reference
+            .update({"Books Read": firestore.FieldValue.increment(1)});
+        }); 
+    } catch (e) {
+      print("Error");
+    }
   }
 
   Future<void> generateAIReview() async {  
@@ -204,6 +230,18 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
             ),
             const SizedBox(height: 40),
             _buildSpeechBubble(_aiReview, boxColor, shadowColor),
+            const SizedBox(height: 40),
+            GestureDetector(
+              onTap: markAsRead, 
+              child: _buildBox(
+                350, 
+                60, 
+                _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
+                Colors.black, 
+                shadowColor,
+                textColor: Colors.white,
+              )
+            )
           ],
         ),
       ),
