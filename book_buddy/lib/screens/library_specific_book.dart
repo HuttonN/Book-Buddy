@@ -26,17 +26,25 @@ class Library_specific_book extends StatefulWidget {
   _Library_specific_bookState createState() => _Library_specific_bookState();
 }
 
+// Navigation bar.
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final bool isDarkMode;
 
-  const NavBar({super.key, required this.onTap, required this.currentIndex});
+  const NavBar({
+    super.key, 
+    required this.onTap, 
+    required this.currentIndex,
+    required this.isDarkMode});
 
  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black, // Black background
+        color: isDarkMode 
+          ? Colors.white
+          : Colors.black, // Nav bar background colour
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -55,34 +63,55 @@ class NavBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book),
+          icon: Semantics(
+            label: 'Library- book icon',
+            hint: 'Press to go to My Library screen',
+            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Semantics(
+            label: 'My TBR- bookmark icon',
+            hint: 'Press to go to My TBR screen',
+            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
+          ),
           label: "", 
         ),
         
         BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black, // Black circle for camera button
-                shape: BoxShape.circle,
+            icon: Semantics(
+              label: 'Scan book- camera icon',
+              hint: 'Press to to go to scan book screen',
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white), // White camera icon
             ),
             label: "", 
-        ),
-        
+            ),
+            
+
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Semantics(
+            label: 'Settings- settings icon',
+            hint: 'Press to go to Settings screen', 
+            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
+          ), 
           label: "", 
         ),
         
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Semantics(
+            label: 'Home- home icon', 
+            hint: 'Press to go to the home page screen',
+            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
+          ),
           label: "", 
         ),
       ],
@@ -179,9 +208,9 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                 350, 
                 60, 
                 _isGeneratingReview ? 'Generating review...' : 'Click to generate AI review', 
-                Colors.black, 
+                _isDarkMode ? Colors.white : Colors.black, 
                 shadowColor,
-                textColor: Colors.white,
+                textColor: _isDarkMode ? Colors.black : Colors.white,
               )
             ),
             const SizedBox(height: 40),
@@ -212,26 +241,27 @@ class _Library_specific_bookState extends State<Library_specific_book> {
           }
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen));
         },
+        isDarkMode: _isDarkMode,
       ),
     );
   }
 
   Widget _buildBox(double width, double height, String text, Color color, Color shadowColor,
-      {Color textColor = Colors.black}) {
+      {Color? textColor}) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: _isDarkMode ? Colors.white : Colors.black),
         boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
       ),
       alignment: Alignment.center,
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(color: textColor, fontSize: 16),
+        style: TextStyle(color: textColor ?? (_isDarkMode ? Colors.white: Colors.black), fontSize: 16),
       ),
     );
   }
@@ -243,18 +273,19 @@ class _Library_specific_bookState extends State<Library_specific_book> {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _isDarkMode ? Colors.white : Colors.black),
         boxShadow: [BoxShadow(color: shadowColor, blurRadius: 5, offset: const Offset(2, 2))],
       ),
       child: Row(
         children: [
-          const Icon(Icons.person, size: 30),
+          Icon(Icons.person, size: 30, color: _isDarkMode ? Colors.white: Colors.black,),
           const SizedBox(width: 10),
           Expanded(
             child: isLoading
                 ? const CircularProgressIndicator()
                 : Text(
                     text,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: _isDarkMode ? Colors.white : Colors.black,),
                   ),
           ),
         ],
@@ -262,5 +293,3 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     );
   }
 }
-
-
