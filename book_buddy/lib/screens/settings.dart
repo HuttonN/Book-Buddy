@@ -249,6 +249,18 @@ class _SettingsState extends State<Settings>{
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Define the margin (you can modify this to make it editable)
+    double margin = 20.0;
+
+    // Calculate the available width by subtracting the margin from the screen width
+    double availiableWidth = screenWidth - margin * 2;
+
+
+
+
     return Scaffold(
 
       // App bar.
@@ -306,6 +318,8 @@ class _SettingsState extends State<Settings>{
         Column(
           crossAxisAlignment: 
             CrossAxisAlignment.center,
+          
+          
 
           // Page icon and heading.
           children: [
@@ -340,13 +354,14 @@ class _SettingsState extends State<Settings>{
             ),
 
             // Add space
-            SizedBox(height: 50),
+            SizedBox(height:85),
 
             // Menu of user details, mode and sign out options.
             // Outer container.
             Container(
-              width: 270,
-              height: 330,
+              width: availiableWidth,
+              height: 400,
+              padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: _isDarkMode 
                   ? Colors.black 
@@ -376,17 +391,16 @@ class _SettingsState extends State<Settings>{
                 Alignment.center,
               child:  
               Column(
-
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 // Inner containers.
                 children: [
 
                   // Add space.
-                  SizedBox(height: 30),
+                  //SizedBox(height: 30),
 
                   // Displayn user's email address.
                   Container(
-                    width: 260,
-                    height: 50,
+                    height: 30,
                     decoration: 
                     BoxDecoration(
                       color: _isDarkMode 
@@ -398,7 +412,7 @@ class _SettingsState extends State<Settings>{
                     alignment: 
                       Alignment.center,
                     child: 
-                      Text('Email: ${userData!['Email']}', 
+                      Text('Email: ${userData['Email']}', 
                                 style: TextStyle(
                                   color: _isDarkMode 
                                     ? Colors.black 
@@ -406,13 +420,9 @@ class _SettingsState extends State<Settings>{
                                 )
                             ),
                   ),
-
-                  // Add space.
-                  SizedBox(height: 30),
                   
                   // Display user's first name.
                   Container(
-                    width: 240,
                     height: 30,
                     decoration: 
                     BoxDecoration(
@@ -425,7 +435,7 @@ class _SettingsState extends State<Settings>{
                     alignment: 
                       Alignment.center,
                     child: 
-                      Text('First Name: ${userData!['First Name']}', 
+                      Text('First Name: ${userData['First Name']}', 
                                 style: TextStyle(
                                   color: _isDarkMode 
                                     ? Colors.black 
@@ -434,12 +444,8 @@ class _SettingsState extends State<Settings>{
                             ),
                   ),
 
-                  // Add space.
-                  SizedBox(height: 30),
-
                   // Display user's surname.
                   Container(
-                    width: 240,
                     height: 30,
                     decoration: 
                     BoxDecoration(
@@ -461,12 +467,8 @@ class _SettingsState extends State<Settings>{
                             ),
                   ),
 
-                  // Add space.
-                  SizedBox(height: 30),
-
                   // Light/ dark mode toggle switch.
                   Container(
-                    width: 240,
                     height: 30,
                     decoration: BoxDecoration(
                       color: _isDarkMode 
@@ -509,14 +511,9 @@ class _SettingsState extends State<Settings>{
                             activeColor: Colors.blue,
                           ),
                         )
-
                       ],
-
                     ),
                   ),
-
-                  // Add space
-                  SizedBox(height: 30),
 
                   // Sign out button.
                   ElevatedButton(
@@ -535,6 +532,7 @@ class _SettingsState extends State<Settings>{
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       signOutUser();
+                                      _isDarkMode= false;
                                     }, 
                                     child: Text("Yes")
                                   ),
@@ -574,7 +572,7 @@ class _SettingsState extends State<Settings>{
               ),
             ),
 
-            SizedBox(height: 30),
+            Spacer(),
           ],
         ),
       );

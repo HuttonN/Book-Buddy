@@ -7,7 +7,7 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
 
-
+// Screen for viewing a specific book in TBR
 class TBR_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
@@ -32,6 +32,7 @@ class TBR_specific_book extends StatefulWidget {
   _TBR_specific_bookState createState() => _TBR_specific_bookState();
 }
 
+// Nav bar implementation 
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -164,7 +165,7 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
+// State class for the TBR specific book page
 class _TBR_specific_bookState extends State<TBR_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
@@ -201,18 +202,21 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     }
   }
 
+  // Generates AI review for book
   Future<void> generateAIReview() async {  
     setState(() {
       _isGeneratingReview = true;
     });
 
     try {
+      // Initialise AI model
       final model = GenerativeModel(
         model: 'gemini-2.0-flash', 
         apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
         ); 
       final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
+      // Get AI response
       final response = await model.generateContent(
         [Content.text(prompt)]
         );
@@ -220,6 +224,8 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
       setState(() {
         _aiReview = response.text ?? "Could not generate review. Please try again.";
       });
+
+      // Error message if generation fails
     } catch (e) {
       ScaffoldMessenger.of(
         context).showSnackBar(
@@ -248,6 +254,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     Color shadowColor = Colors.black26;
 
     return Scaffold(
+      // Custome app bar
       appBar: PreferredSize(
         preferredSize: 
           const Size.fromHeight(35),
@@ -263,75 +270,82 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         ),
       ),
       backgroundColor: bgColor,
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: 
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 40
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildBox(
-                  80, 
-                  100, 
-                  'Front cover of book', 
-                  boxColor, 
-                  shadowColor),
+      body: SingleChildScrollView(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const 
                 SizedBox(
-                  width: 40
+                  height: 40
                 ),
-                _buildBox(200, 100, 'Book Title\nAuthor', boxColor, shadowColor),
-              ],
-            ),
-            const SizedBox(
-              height: 40
-            ),
-            GestureDetector(
-              onTap: _isGeneratingReview 
-                ? null : generateAIReview, 
-              child: _buildBox(
-                350, 
-                60, 
-                _isGeneratingReview 
-                  ? 'Generating review...' : 'Click to generate AI review', 
-                _isDarkMode 
-                  ? Colors.white 
-                  : Colors.black, 
-                shadowColor,
-                textColor: _isDarkMode 
-                  ? Colors.black 
-                  : Colors.white,
-              )
-            ),
-            const SizedBox(
-              height: 40),
-            _buildSpeechBubble(
-              _aiReview, 
-              boxColor, 
-              shadowColor
-              ),
-            const SizedBox(
-              height: 40),
-            GestureDetector(
-              onTap: markAsRead, 
-              child: _buildBox(
-                350, 
-                60, 
-                _hasRead ? 'Read ${Icon(
-                  Icons.check_box_sharp, 
-                  size: 30
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: 
+                        BorderRadius.circular(5),
+                      child: 
+                      Image.network(
+                        widget.imageUrl,
+                        height: 100,
+                        width: 80,
+                        fit: 
+                          BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 40
+                    ),
+                    _buildBox(
+                      200, 
+                      100, 
+                      '${widget.bookTitle} \n ${widget.bookAuthor}', 
+                      boxColor, 
+                      shadowColor,
+                      isDarkMode: _isDarkMode,),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40
+                ),
+                GestureDetector(
+                  onTap: _isGeneratingReview 
+                    ? null : generateAIReview, 
+                  child: _buildBox(
+                    350, 
+                    60, 
+                    _isGeneratingReview 
+                      ? 'Generating review...' 
+                      : 'Click to generate AI review', 
+                    boxColor, 
+                  shadowColor,
+                  isDarkMode: _isDarkMode,
                   )
-                }': 'Mark as Read',
-                Colors.black, 
-                shadowColor,
-                textColor: Colors.white,
-              )
-            )
-          ],
+                ),
+                const SizedBox(
+                  height: 40),
+                _buildSpeechBubble(
+                  _aiReview, 
+                  boxColor, 
+                  shadowColor
+                  ),
+                const SizedBox(
+                  height: 40),
+                GestureDetector(
+                  onTap: markAsRead, 
+                  child: _buildBox(
+                    350,
+                    60, 
+                    _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
+                    Colors.black, 
+                  shadowColor,
+                  isDarkMode: _isDarkMode,
+                  )
+              ),
+            ]
+            ),
         ),
       ),
       bottomNavigationBar: NavBar(
@@ -385,13 +399,14 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     String text, 
     Color color, 
     Color shadowColor,
-      {Color? textColor}) {
+      {required bool isDarkMode,}) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
+        
         border: 
           Border.all(
             color: _isDarkMode 
@@ -409,7 +424,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: textColor ?? 
+          color: 
           (_isDarkMode 
             ? Colors.white
             : Colors.black), 
@@ -418,6 +433,8 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     );
   }
 
+  // Method to create speech bubble style 
+  // container for AI reviews
   Widget _buildSpeechBubble(
     String text, 
     Color color, 

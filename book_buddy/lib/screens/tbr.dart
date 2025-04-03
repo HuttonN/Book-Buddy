@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:firebase_auth/firebase_auth.dart';
 
+// The to be read screen widget 
 class TBR extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -21,7 +22,7 @@ class TBR extends StatefulWidget {
    _TBRState createState() => _TBRState();
 }
 
-// Navigation bar.
+// Navigation bar with sentimatics 
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -142,7 +143,7 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
+// State class for the TBR screen 
 class _TBRState extends State<TBR>{
   late bool _isDarkMode;
   Map<String, dynamic>? userData;
@@ -155,6 +156,7 @@ class _TBRState extends State<TBR>{
     fetchUserData();
   }
 
+  // Fetching the needed data from Firestore
   Future<void> fetchUserData() async {
     try{
       String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -169,9 +171,10 @@ class _TBRState extends State<TBR>{
     setState(() {
       userData = userDoc.data() as Map<String,dynamic>?;
     });
-
+    
      print(userData);
 
+     // Query to get all books from database that are unread
     firestore.QuerySnapshot booksSnapshot = await userDoc.reference
       .collection("Books")
       .get();
@@ -200,6 +203,8 @@ class _TBRState extends State<TBR>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      // Custom app bar
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(35), 
       child: AppBar(
@@ -220,6 +225,7 @@ class _TBRState extends State<TBR>{
         : Color.fromARGB(255, 216, 243, 245),
       
       body: Align(
+        // Formatting for icon and title 
         alignment: Alignment.topCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

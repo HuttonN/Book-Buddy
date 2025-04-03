@@ -93,6 +93,16 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
+    // Get screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Define the margin (you can modify this to make it editable)
+    double margin = 20.0;
+
+    // Calculate the available width by subtracting the margin from the screen width
+    double availiableWidth = screenWidth - margin * 2;
+
     return Scaffold(
       // Adjust layout when keyboard appears
       resizeToAvoidBottomInset: true,
@@ -136,7 +146,7 @@ class _LoginState extends State<Login> {
 
                 // Main login form container
                 Container(
-                  width: 200,
+                  width: availiableWidth,
                   height: 295,
                   decoration: BoxDecoration(
                     color: _isDarkMode ? Colors.black : Color.fromARGB(255, 223, 245, 252),
@@ -156,13 +166,17 @@ class _LoginState extends State<Login> {
                 ),
                   alignment: Alignment.center,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      
+
                       // Add space
                       SizedBox(height: 30),
 
                       // Email input field
+                      Padding( padding: EdgeInsets.symmetric(horizontal: 16.0),child: 
                       TextField(
-                        controller: emailController,
+                        controller: emailController, 
                         decoration: 
                           InputDecoration(
                                 labelText: 'Email',
@@ -171,14 +185,16 @@ class _LoginState extends State<Login> {
                                 fillColor: _isDarkMode ? Colors.grey: Colors.white,
                                 filled: true
                           )
-                      ),
+                      ),),
 
                       // Add space
                       SizedBox(height: 30),
 
                       // Password input field
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 16.0), child:
                       TextField(
                         controller: passwordController,
+                        
                         decoration: 
                           InputDecoration(
                                 labelText: 'Password',
@@ -189,7 +205,7 @@ class _LoginState extends State<Login> {
                           ),
                           // Hides input characters
                           obscureText: true, 
-                      ),
+                      ),),
 
                       // Add space
                       SizedBox(height: 10),
