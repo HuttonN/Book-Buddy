@@ -119,7 +119,7 @@ class StartUpPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ScanBookAdding(imagePath: "null", initialTitle: "initialTitle", initialAuthor: "initialAuthor", isDarkMode: isDarkMode, 
-                          toggleDarkMode: toggleDarkMode)), 
+                          toggleDarkMode: toggleDarkMode, uid: "",)), 
                 );
               },
               style: ElevatedButton.styleFrom(

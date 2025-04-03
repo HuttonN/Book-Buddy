@@ -12,6 +12,7 @@ class ScanBookAdding extends StatefulWidget {
   final Function(bool) toggleDarkMode;
   final String uid;
 
+
   const ScanBookAdding({
     super.key, 
     required this.imagePath,
@@ -75,14 +76,18 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
 
       if (user != null) {
         await FirebaseFirestore.instance
-          .collection('userCollection')
+          .collection('usersCollection')
           .where('uid', isEqualTo: widget.uid)
-          add({
-            'Title': _titleController.text,
-            'Author': _authorController.text,
-            'image_url': widget.imagePath,
-            'has_read': hasRead,
-            'timestamp': FieldValue.serverTimestamp(),
+          .get()
+          .then((snapshot) async {
+            final userDoc = snapshot.docs.first;
+            await userDoc.reference
+              .collection("Books")
+              .add({'Author': _authorController.text,
+                  'Title': _titleController.text,
+                  'has_read': true,
+                  'image_url': widget.imagePath,
+              });
           });
         
         ScaffoldMessenger.of(context).showSnackBar(
