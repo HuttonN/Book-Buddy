@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:book_buddy/screens/library_specific_book.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
 
+// Library screen widget to display the user's
+// read books
 class Library extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
@@ -22,7 +23,7 @@ class Library extends StatefulWidget {
    _LibraryState createState() => _LibraryState();
 }
 
-// Navigation bar.
+// Navigation bar implementation
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -161,7 +162,7 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
+// State class for library screen 
 class _LibraryState extends State<Library>{
   late bool _isDarkMode;
   Map<String, dynamic>? userData;
@@ -174,6 +175,7 @@ class _LibraryState extends State<Library>{
     fetchUserData();
   }
 
+  // Fetches user data from Firebase
   Future<void> fetchUserData() async {
     try{
       String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -191,6 +193,7 @@ class _LibraryState extends State<Library>{
 
      print(userData);
 
+    // Query to get all books that the user has read
     firestore.QuerySnapshot booksSnapshot = await userDoc.reference
       .collection("Books")
       .get();
@@ -219,6 +222,7 @@ class _LibraryState extends State<Library>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Custome app bar
       appBar:
         PreferredSize(
           preferredSize: 
@@ -250,6 +254,7 @@ class _LibraryState extends State<Library>{
           crossAxisAlignment: 
             CrossAxisAlignment.center,
           children: [
+            // Header section for icon and title
             Row(
               children: [
                 SizedBox(
@@ -276,6 +281,7 @@ class _LibraryState extends State<Library>{
               ],
             ),
 
+            // Builds list of read books
             Expanded(
               child:ListView.builder(
                 itemCount: 
