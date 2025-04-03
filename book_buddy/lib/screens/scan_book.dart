@@ -9,6 +9,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:image/image.dart' as image;
 import 'dart:io';
 
+// Screen to scan book covers and extract text
 class ScanBook extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
@@ -23,7 +24,7 @@ class ScanBook extends StatefulWidget {
   _ScanBookState createState() => _ScanBookState();
 }
 
-// Navigation bar.
+// Navigation bar implementation
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -168,8 +169,10 @@ class NavBar extends StatelessWidget {
   }
 }
 
+// State class for the scan book screen
 class _ScanBookState extends State<ScanBook> {
   late bool _isDarkMode;
+  // Camera control functionality
   CameraController? _cameraController;
   late List<CameraDescription> cameras;
   bool isCameraInitialized = false;
@@ -187,6 +190,7 @@ class _ScanBookState extends State<ScanBook> {
     cameras = await availableCameras();
     _cameraController = CameraController(
       cameras[0], 
+      // Set highest resolution available
       ResolutionPreset.max
     );
     await _cameraController!.initialize();
@@ -202,20 +206,26 @@ class _ScanBookState extends State<ScanBook> {
     });
   }
 
+  // Preprocess images to improve text recognition
   Future<InputImage> preprocessImage(
     String imagePath
   ) async {
+    // Decode the original image
     final originalImage = image.decodeImage(
       await File(imagePath).readAsBytes()
     )!;
+    // Convert to greyscale
     final grayImage = image.grayscale(
       originalImage
     );
+    // Increase the contrast
     final contrastImage = image.adjustColor(
       grayImage, 
       contrast: 1.5
     );
+    // Create path for processed image
     final processedPath = '${imagePath}_processed.jpg';
+
 
     await File(
       processedPath).writeAsBytes(
@@ -239,18 +249,25 @@ class _ScanBookState extends State<ScanBook> {
   );
 
     try {
+      // Capture image from camera
       final XFile imageFile = await _cameraController!.takePicture();
+      // Initialise text recogniser for Latin alphabet
       final textRecognizer = TextRecognizer(
         script: TextRecognitionScript.latin
       );
+      // Preprocess image for better optical character 
+      // recognition (OCR)
       final inputImage = await preprocessImage(
         imageFile.path
       ); 
+      // Processs image to recognise text
       final RecognizedText recognizedText = await textRecognizer.processImage(
         inputImage
       );
 
+      // Find book title
       String? title;
+      // Find author name
       String? author;
 
       for (
@@ -277,6 +294,7 @@ class _ScanBookState extends State<ScanBook> {
 
       if (!mounted) return;
 
+      // Navigate to book adding screen with info
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -296,6 +314,7 @@ class _ScanBookState extends State<ScanBook> {
         ),
       );
     } catch (e) {
+      // Error message
       ScaffoldMessenger.of(
         context).showSnackBar(
         SnackBar(
@@ -324,6 +343,7 @@ class _ScanBookState extends State<ScanBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Custom app bar
       appBar: 
       PreferredSize(
         preferredSize: 
@@ -349,6 +369,7 @@ class _ScanBookState extends State<ScanBook> {
         children: [
           Row(
             children: [
+              // Header section with icon and title
               SizedBox(
                 width: 100,
                 height: 100,
@@ -374,6 +395,7 @@ class _ScanBookState extends State<ScanBook> {
               ),
             ],
           ),
+          // Scanning instructions
           Padding(
             padding: 
               EdgeInsets.all(0),
@@ -389,6 +411,7 @@ class _ScanBookState extends State<ScanBook> {
                 ),
             ),
           ),
+          // Preview camera area 
           Expanded(
             child: 
             Container(
@@ -409,6 +432,7 @@ class _ScanBookState extends State<ScanBook> {
                   ),
             ),
           ),
+          // Capture image button
           FloatingActionButton(
             onPressed: captureAndSearch,
             backgroundColor: _isDarkMode
