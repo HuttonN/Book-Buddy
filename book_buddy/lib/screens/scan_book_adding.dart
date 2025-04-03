@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
 class ScanBookAdding extends StatefulWidget {
@@ -54,6 +55,18 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     super.dispose();
   }
 
+  Future<String> _uploadImageToFirebase(String filePath) async {
+    File file = File(filePath);
+    String fileName = 'book_covers/${DateTime.now()}.jpg';
+    Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+
+    UploadTask uploadTask = storageRef.putFile(file);
+    TaskSnapshot snapshot = await uploadTask.whenComplete(()=>{});
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+
+    return downloadUrl;
+  }
+
   Future<void> _saveBook(bool hasRead) async {
     if (
       _titleController.text.isEmpty || _authorController.text.isEmpty
@@ -74,6 +87,8 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     try {
       User? user = _auth.currentUser;
 
+      String downloadUrl = await _uploadImageToFirebase(widget.imagePath);
+
       if (user != null) {
         await FirebaseFirestore.instance
           .collection('usersCollection')
@@ -86,7 +101,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
               .add({'Author': _authorController.text,
                   'Title': _titleController.text,
                   'has_read': true,
-                  'image_url': widget.imagePath,
+                  'image_url': downloadUrl,
               });
           });
         
