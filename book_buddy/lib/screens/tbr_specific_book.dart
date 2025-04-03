@@ -341,14 +341,15 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                   child: _buildBox(
                     350,
                     60, 
+
                     _hasRead ? 'Read!': 'Mark as Read',
                     Colors.black, 
                     shadowColor,
                     textColor: Colors.white,
                   )
-              )
-            ],
-          ),
+              ),
+            ]
+            ),
         ),
       ),
       bottomNavigationBar: NavBar(

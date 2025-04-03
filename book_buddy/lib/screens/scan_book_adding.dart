@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:book_buddy/screens/home_page2.dart';
 import 'dart:io';
 
 // Scan book for adding a book to a users library or TBR
@@ -11,6 +13,8 @@ class ScanBookAdding extends StatefulWidget {
   final String initialAuthor;
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
+  final String uid;
+
 
   const ScanBookAdding({
     super.key, 
@@ -19,6 +23,7 @@ class ScanBookAdding extends StatefulWidget {
     required this.initialAuthor,
     required this.isDarkMode,
     required this.toggleDarkMode,
+    required this.uid,
   });
 
   @override
@@ -55,6 +60,18 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     super.dispose();
   }
 
+  Future<String> _uploadImageToFirebase(String filePath) async {
+    File file = File(filePath);
+    String fileName = 'book_covers/${DateTime.now()}.jpg';
+    Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+
+    UploadTask uploadTask = storageRef.putFile(file);
+    TaskSnapshot snapshot = await uploadTask.whenComplete(()=>{});
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+
+    return downloadUrl;
+  }
+
   // Save book to Firestore with the specified read status
   Future<void> _saveBook(bool hasRead) async {
     if (
@@ -76,14 +93,29 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     try {
       User? user = _auth.currentUser;
 
+      String downloadUrl = await _uploadImageToFirebase(widget.imagePath);
+
       // Save to Firestore
       if (user != null) {
-        await _firestore.collection('userCollection').add({
-          'Title': _titleController.text,
-          'Author': _authorController.text,
-          'image_url': widget.imagePath,
-          'has_read': hasRead,
-          'timestamp': FieldValue.serverTimestamp(),
+        await FirebaseFirestore.instance
+          .collection('usersCollection')
+          .where('uid', isEqualTo: widget.uid)
+          .get()
+          .then((snapshot) async {
+            final userDoc = snapshot.docs.first;
+            await userDoc.reference
+              .collection("Books")
+              .add({'Author': _authorController.text,
+                  'Title': _titleController.text,
+                  'has_read': hasRead,
+                  'image_url': downloadUrl,
+              });
+
+          if (hasRead) {
+            await userDoc.reference.update({
+              "Books Read":FieldValue.increment(1),
+            });
+          }
         });
         
         // Shows success message
@@ -94,10 +126,15 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             ),
         );
         
-        Navigator.popUntil(
-          context, 
-          (route) => route.isFirst
-          );
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage2(
+            isDarkMode: _isDarkMode, 
+            toggleDarkMode: widget.toggleDarkMode,
+          ),
+        ),
+      );
       } else {
         ScaffoldMessenger.of(
           context).showSnackBar(

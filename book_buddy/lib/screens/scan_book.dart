@@ -8,6 +8,8 @@ import 'package:book_buddy/screens/scan_book_adding.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image/image.dart' as image;
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 // Screen to scan book covers and extract text
 class ScanBook extends StatefulWidget {
@@ -177,12 +179,47 @@ class _ScanBookState extends State<ScanBook> {
   late List<CameraDescription> cameras;
   bool isCameraInitialized = false;
   bool isProcessing = false;
+  Map<String, dynamic>? userData;
 
   @override
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
     initializeCamera();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try{
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null){
+        print("User not signed in yet.");
+        return;
+      }
+
+      String uid = user.uid;
+      
+      // Query to firestore for user document matching UID
+      final querySnapshot = await firestore.FirebaseFirestore.instance
+      .collection("usersCollection")
+      .where("uid", isEqualTo: uid)
+      .get();
+
+     if (querySnapshot.docs.isEmpty){
+        print("No matching user found.");
+        return;
+      }
+
+      // Update state with user data 
+      final userDoc = querySnapshot.docs.first;
+    setState(() {
+      userData = userDoc.data() as Map<String,dynamic>?;
+    });
+
+     print(userData);
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
   }
 
   // Initialize the Camera
@@ -310,6 +347,8 @@ class _ScanBookState extends State<ScanBook> {
               _isDarkMode,
             toggleDarkMode: 
               widget.toggleDarkMode,
+            uid:
+              userData!['uid']
           ),
         ),
       );
