@@ -532,6 +532,7 @@ class _SettingsState extends State<Settings>{
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       signOutUser();
+                                      _isDarkMode= false;
                                     }, 
                                     child: Text("Yes")
                                   ),
