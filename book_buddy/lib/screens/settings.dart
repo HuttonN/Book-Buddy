@@ -354,7 +354,7 @@ class _SettingsState extends State<Settings>{
             ),
 
             // Add space
-            SizedBox(height:40),
+            SizedBox(height:85),
 
             // Menu of user details, mode and sign out options.
             // Outer container.

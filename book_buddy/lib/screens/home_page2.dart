@@ -271,7 +271,7 @@ class _HomePage2State extends State<HomePage2>{
               ),
             ),
 
-            SizedBox(height:15), 
+            SizedBox(height:50), 
 
             // Container for navigations.
             Container(
