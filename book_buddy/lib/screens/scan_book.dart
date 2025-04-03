@@ -292,6 +292,8 @@ class _ScanBookState extends State<ScanBook> {
               _isDarkMode,
             toggleDarkMode: 
               widget.toggleDarkMode,
+            uid:
+              uid
           ),
         ),
       );

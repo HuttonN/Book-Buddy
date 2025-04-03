@@ -10,6 +10,7 @@ class ScanBookAdding extends StatefulWidget {
   final String initialAuthor;
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
+  final String uid;
 
   const ScanBookAdding({
     super.key, 
@@ -18,6 +19,7 @@ class ScanBookAdding extends StatefulWidget {
     required this.initialAuthor,
     required this.isDarkMode,
     required this.toggleDarkMode,
+    required this.uid,
   });
 
   @override
@@ -72,13 +74,16 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       User? user = _auth.currentUser;
 
       if (user != null) {
-        await _firestore.collection('userCollection').add({
-          'Title': _titleController.text,
-          'Author': _authorController.text,
-          'image_url': widget.imagePath,
-          'has_read': hasRead,
-          'timestamp': FieldValue.serverTimestamp(),
-        });
+        await FirebaseFirestore.instance
+          .collection('userCollection')
+          .where('uid', isEqualTo: widget.uid)
+          add({
+            'Title': _titleController.text,
+            'Author': _authorController.text,
+            'image_url': widget.imagePath,
+            'has_read': hasRead,
+            'timestamp': FieldValue.serverTimestamp(),
+          });
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
