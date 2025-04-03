@@ -296,7 +296,8 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                       100, 
                       '${widget.bookTitle} \n ${widget.bookAuthor}', 
                       boxColor, 
-                      shadowColor),
+                      shadowColor,
+                      isDarkMode: _isDarkMode,),
                   ],
                 ),
                 const SizedBox(
@@ -311,13 +312,9 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                     _isGeneratingReview 
                       ? 'Generating review...' 
                       : 'Click to generate AI review', 
-                    _isDarkMode 
-                      ? Colors.white 
-                      : Colors.black, 
-                    shadowColor,
-                    textColor: _isDarkMode 
-                      ? Colors.black 
-                      : Colors.white,
+                    boxColor, 
+                  shadowColor,
+                  isDarkMode: _isDarkMode,
                   )
                 ),
                 const SizedBox(
@@ -335,9 +332,9 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                     350,
                     60, 
                     _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
-                    Colors.black, 
-                    shadowColor,
-                    textColor: Colors.white,
+                    boxColor, 
+                  shadowColor,
+                  isDarkMode: _isDarkMode,
                   )
               )
             ],
@@ -395,13 +392,14 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     String text, 
     Color color, 
     Color shadowColor,
-      {Color? textColor}) {
+      {required bool isDarkMode,}) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
+        
         border: 
           Border.all(
             color: _isDarkMode 
@@ -419,7 +417,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: textColor ?? 
+          color: 
           (_isDarkMode 
             ? Colors.white
             : Colors.black), 
