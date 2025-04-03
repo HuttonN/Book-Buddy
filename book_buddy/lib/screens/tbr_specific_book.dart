@@ -276,19 +276,25 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildBox(
-                      80, 
-                      100, 
-                      'Front cover of book', 
-                      boxColor, 
-                      shadowColor),
+                    ClipRRect(
+                      borderRadius: 
+                        BorderRadius.circular(5),
+                      child: 
+                      Image.network(
+                        widget.imageUrl,
+                        height: 100,
+                        width: 80,
+                        fit: 
+                          BoxFit.cover,
+                      ),
+                    ),
                     SizedBox(
                       width: 40
                     ),
                     _buildBox(
                       200, 
                       100, 
-                      'Book Title\nAuthor', 
+                      '${widget.bookTitle} \n ${widget.bookAuthor}', 
                       boxColor, 
                       shadowColor),
                   ],
