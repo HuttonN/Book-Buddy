@@ -271,6 +271,8 @@ class _HomePage2State extends State<HomePage2>{
               ),
             ),
 
+            SizedBox(height:50), 
+
             // Container for navigations.
             Container(
               width: 200,
@@ -292,11 +294,9 @@ class _HomePage2State extends State<HomePage2>{
               ],
             ),
             child: Column(
-
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               //Navigations to different pages.
               children: [
-
-                SizedBox(height: 10),
 
                 //My Library.
                 Semantics(
@@ -359,8 +359,6 @@ class _HomePage2State extends State<HomePage2>{
                         )
                       ),
                 ),
-                
-                SizedBox(height: 10),
 
                 //My TBR.
                 Semantics(
@@ -423,8 +421,6 @@ class _HomePage2State extends State<HomePage2>{
                         )
                       )
                 ),
-
-                SizedBox(height: 10),
 
                 //Scan Book.
                 Semantics(
@@ -492,9 +488,6 @@ class _HomePage2State extends State<HomePage2>{
                   )
 
                 ),
-                
-
-                SizedBox(height: 10),
 
                 //Settings.
                 Semantics(
