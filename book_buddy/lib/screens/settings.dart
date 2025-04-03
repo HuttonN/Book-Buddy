@@ -354,11 +354,10 @@ class _SettingsState extends State<Settings>{
             ),
 
             // Add space
-            Spacer(),
+            SizedBox(height:40),
 
             // Menu of user details, mode and sign out options.
             // Outer container.
-            
             Container(
               width: availiableWidth,
               height: 400,
@@ -401,7 +400,6 @@ class _SettingsState extends State<Settings>{
 
                   // Displayn user's email address.
                   Container(
-                    //width: 260,
                     height: 30,
                     decoration: 
                     BoxDecoration(
@@ -422,13 +420,9 @@ class _SettingsState extends State<Settings>{
                                 )
                             ),
                   ),
-
-                  // Add space.
-                  //SizedBox(height: 30),
                   
                   // Display user's first name.
                   Container(
-                    //width: 240,
                     height: 30,
                     decoration: 
                     BoxDecoration(
@@ -450,12 +444,8 @@ class _SettingsState extends State<Settings>{
                             ),
                   ),
 
-                  // Add space.
-                  //SizedBox(height: 30),
-
                   // Display user's surname.
                   Container(
-                    //width: 240,
                     height: 30,
                     decoration: 
                     BoxDecoration(
@@ -477,12 +467,8 @@ class _SettingsState extends State<Settings>{
                             ),
                   ),
 
-                  // Add space.
-                  //SizedBox(height: 30),
-
                   // Light/ dark mode toggle switch.
                   Container(
-                    //width: 240,
                     height: 30,
                     decoration: BoxDecoration(
                       color: _isDarkMode 
@@ -525,14 +511,9 @@ class _SettingsState extends State<Settings>{
                             activeColor: Colors.blue,
                           ),
                         )
-
                       ],
-
                     ),
                   ),
-
-                  // Add space
-                  //SizedBox(height: 30),
 
                   // Sign out button.
                   ElevatedButton(
