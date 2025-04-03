@@ -38,62 +38,107 @@ class _RegisterState extends State<Register> {
   final TextEditingController surnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
 // registerUser function for registering a new user using Firbase Authentication 
 // with email and password (createUserWithEmailAndPassword)
-  Future<void> registerUser() async {
-    // Validates that all fields will contain an input 
-    if (firstNameController.text.isNotEmpty &&
-        surnameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
-      try {
-        // Creates an user in firebase authentication
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(), // trim() used to remove leading and trailling whitespace
-          password: passwordController.text.trim() // see line above
-        );
-        
-        // Generate unique user ID
-        String uid = userCredential.user!.uid;
-
-        // Stores user data in firestore
-        await firestore.collection("usersCollection").add({
-            "First Name": firstNameController.text,
-            "Surname": surnameController.text,
-            "Email": emailController.text,
-            "uid": uid,
-            "Books Read": 0
-          });
-
-          // Feedback to show successful registration
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Registration successful!"),
-              backgroundColor: Colors.black,
-              duration: Duration(seconds: 3),
-            ),
-          );
-
-          // Push to homepage after short delay
-          Future.delayed(const Duration(seconds: 2), () {
-          print('success');
-          Navigator.push(
-            context, 
-            MaterialPageRoute(
-              builder: (context) => HomePage2(
-                      isDarkMode: _isDarkMode, 
-                      toggleDarkMode: widget.toggleDarkMode
-                )
-              )
-            );
-          });
-
-        } catch (e) {
-          print("Error during registration: $e");
-        } 
-      }
+Future<void> registerUser() async {
+  // Validates that all fields contain input
+  if (firstNameController.text.isEmpty) {
+    _showErrorMessage('Please enter your first name.');
+    return;
+  } else if (surnameController.text.isEmpty) {
+    _showErrorMessage('Please enter your surname.');
+    return;
+  } else if (emailController.text.isEmpty) {
+    _showErrorMessage('Please enter your email address.');
+    return;
+  } else if (passwordController.text.isEmpty) {
+    _showErrorMessage('Please enter a password.');
+    return;
+  } else if (confirmPasswordController.text.isEmpty) {
+    _showErrorMessage('Please confirm your password.');
+    return;
+  } else if (passwordController.text != confirmPasswordController.text) {
+    _showErrorMessage('Passwords do not match.');
+    return;
   }
+
+  try {
+    // Creates a user in Firebase Authentication
+    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+
+    // Generate unique user ID
+    String uid = userCredential.user!.uid;
+
+    // Stores user data in Firestore
+    await firestore.collection("usersCollection").add({
+      "First Name": firstNameController.text,
+      "Surname": surnameController.text,
+      "Email": emailController.text,
+      "uid": uid,
+      "Books Read": 0
+    });
+
+    // Feedback to show successful registration
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Registration successful!"),
+        backgroundColor: Colors.black,
+        duration: Duration(seconds: 3),
+      ),
+    );
+
+    // Push to homepage after short delay
+    Future.delayed(const Duration(seconds: 2), () {
+      print('success');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage2(
+            isDarkMode: _isDarkMode,
+            toggleDarkMode: widget.toggleDarkMode,
+          ),
+        ),
+      );
+    });
+  } catch (e) {
+    // Handle specific Firebase authentication errors
+    String errorMessage = 'An error occurred. Please try again later.';
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage = 'The email address is already in use. Please use a different email.';
+          break;
+        case 'weak-password':
+          errorMessage = 'The password is too weak. Please use a stronger password.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid. Please enter a valid email.';
+          break;
+        default:
+          errorMessage = 'An error occurred during registration. Please try again.';
+          break;
+      }
+    }
+    _showErrorMessage(errorMessage);
+    print("Error during registration: $e");
+  }
+}
+
+// Helper function to show error messages
+void _showErrorMessage(String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+      duration: Duration(seconds: 3),
+    ),
+  );
+}
 
 
 // Simple Widget for registeration
@@ -186,6 +231,21 @@ class _RegisterState extends State<Register> {
                 fillColor:Colors.white,
                 border: OutlineInputBorder(),
                 ),
+                obscureText: true, 
+              ),
+
+              SizedBox(height: 20),
+
+              // Confirm Password input field 
+              TextField(
+                controller: confirmPasswordController,
+                decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+                filled: true,
+                fillColor:Colors.white,
+                border: OutlineInputBorder(),
+                ),
+                obscureText: true, 
               ),
 
               SizedBox(height: 20),

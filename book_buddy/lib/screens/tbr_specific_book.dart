@@ -303,8 +303,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                       100, 
                       '${widget.bookTitle} \n ${widget.bookAuthor}', 
                       boxColor, 
-                      shadowColor,
-                      isDarkMode: _isDarkMode,),
+                      shadowColor),
                   ],
                 ),
                 const SizedBox(
@@ -319,9 +318,13 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                     _isGeneratingReview 
                       ? 'Generating review...' 
                       : 'Click to generate AI review', 
-                    boxColor, 
-                  shadowColor,
-                  isDarkMode: _isDarkMode,
+                    _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black, 
+                    shadowColor,
+                    textColor: _isDarkMode 
+                      ? Colors.black 
+                      : Colors.white,
                   )
                 ),
                 const SizedBox(
@@ -338,10 +341,10 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
                   child: _buildBox(
                     350,
                     60, 
-                    _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
-                    boxColor, 
-                  shadowColor,
-                  isDarkMode: _isDarkMode,
+                    _hasRead ? 'Read!': 'Mark as Read',
+                    Colors.black, 
+                    shadowColor,
+                    textColor: Colors.white,
                   )
               )
             ],
@@ -399,14 +402,13 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     String text, 
     Color color, 
     Color shadowColor,
-      {required bool isDarkMode,}) {
+      {Color? textColor}) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
-        
         border: 
           Border.all(
             color: _isDarkMode 
@@ -424,7 +426,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: 
+          color: textColor ?? 
           (_isDarkMode 
             ? Colors.white
             : Colors.black), 
