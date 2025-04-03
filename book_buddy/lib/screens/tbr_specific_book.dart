@@ -263,85 +263,75 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
         ),
       ),
       backgroundColor: bgColor,
-      body: SingleChildScrollView(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const 
-                SizedBox(
-                  height: 40
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: 
-                        BorderRadius.circular(5),
-                      child: 
-                      Image.network(
-                        widget.imageUrl,
-                        height: 100,
-                        width: 80,
-                        fit: 
-                          BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40
-                    ),
-                    _buildBox(
-                      200, 
-                      100, 
-                      '${widget.bookTitle} \n ${widget.bookAuthor}', 
-                      boxColor, 
-                      shadowColor),
-                  ],
-                ),
-                const SizedBox(
-                  height: 40
-                ),
-                GestureDetector(
-                  onTap: _isGeneratingReview 
-                    ? null : generateAIReview, 
-                  child: _buildBox(
-                    350, 
-                    60, 
-                    _isGeneratingReview 
-                      ? 'Generating review...' 
-                      : 'Click to generate AI review', 
-                    _isDarkMode 
-                      ? Colors.white 
-                      : Colors.black, 
-                    shadowColor,
-                    textColor: _isDarkMode 
-                      ? Colors.black 
-                      : Colors.white,
-                  )
-                ),
-                const SizedBox(
-                  height: 40),
-                _buildSpeechBubble(
-                  _aiReview, 
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: 
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 40
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildBox(
+                  80, 
+                  100, 
+                  'Front cover of book', 
                   boxColor, 
-                  shadowColor
-                  ),
-                const SizedBox(
-                  height: 40),
-                GestureDetector(
-                  onTap: markAsRead, 
-                  child: _buildBox(
-                    350,
-                    60, 
-                    _hasRead ? 'Read ${Icon(Icons.check_box_sharp, size: 30)}': 'Mark as Read',
-                    Colors.black, 
-                    shadowColor,
-                    textColor: Colors.white,
-                  )
+                  shadowColor),
+                SizedBox(
+                  width: 40
+                ),
+                _buildBox(200, 100, 'Book Title\nAuthor', boxColor, shadowColor),
+              ],
+            ),
+            const SizedBox(
+              height: 40
+            ),
+            GestureDetector(
+              onTap: _isGeneratingReview 
+                ? null : generateAIReview, 
+              child: _buildBox(
+                350, 
+                60, 
+                _isGeneratingReview 
+                  ? 'Generating review...' : 'Click to generate AI review', 
+                _isDarkMode 
+                  ? Colors.white 
+                  : Colors.black, 
+                shadowColor,
+                textColor: _isDarkMode 
+                  ? Colors.black 
+                  : Colors.white,
               )
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 40),
+            _buildSpeechBubble(
+              _aiReview, 
+              boxColor, 
+              shadowColor
+              ),
+            const SizedBox(
+              height: 40),
+            GestureDetector(
+              onTap: markAsRead, 
+              child: _buildBox(
+                350, 
+                60, 
+                _hasRead ? 'Read ${Icon(
+                  Icons.check_box_sharp, 
+                  size: 30
+                  )
+                }': 'Mark as Read',
+                Colors.black, 
+                shadowColor,
+                textColor: Colors.white,
+              )
+            )
+          ],
         ),
       ),
       bottomNavigationBar: NavBar(

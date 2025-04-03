@@ -100,10 +100,16 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
               .collection("Books")
               .add({'Author': _authorController.text,
                   'Title': _titleController.text,
-                  'has_read': true,
+                  'has_read': hasRead,
                   'image_url': downloadUrl,
               });
-          });
+
+          if (hasRead) {
+            await userDoc.reference.update({
+              "Books Read":FieldValue.increment(1),
+            });
+          }
+        });
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -341,7 +347,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             ElevatedButton.icon(
               onPressed: _isSaving 
                 ? null 
-                : () => _saveBook(false),
+                : () => _saveBook(true),
               icon: 
                 Icon(
                   Icons.bookmark, 
