@@ -7,7 +7,7 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
 
-
+// Screen for viewing a specific book in TBR
 class TBR_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
@@ -32,6 +32,7 @@ class TBR_specific_book extends StatefulWidget {
   _TBR_specific_bookState createState() => _TBR_specific_bookState();
 }
 
+// Nav bar implementation 
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -164,7 +165,7 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
+// State class for the TBR specific book page
 class _TBR_specific_bookState extends State<TBR_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
@@ -201,18 +202,21 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     }
   }
 
+  // Generates AI review for book
   Future<void> generateAIReview() async {  
     setState(() {
       _isGeneratingReview = true;
     });
 
     try {
+      // Initialise AI model
       final model = GenerativeModel(
         model: 'gemini-2.0-flash', 
         apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
         ); 
       final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
+      // Get AI response
       final response = await model.generateContent(
         [Content.text(prompt)]
         );
@@ -220,6 +224,8 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
       setState(() {
         _aiReview = response.text ?? "Could not generate review. Please try again.";
       });
+
+      // Error message if generation fails
     } catch (e) {
       ScaffoldMessenger.of(
         context).showSnackBar(
@@ -248,6 +254,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     Color shadowColor = Colors.black26;
 
     return Scaffold(
+      // Custome app bar
       appBar: PreferredSize(
         preferredSize: 
           const Size.fromHeight(35),
@@ -428,6 +435,8 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     );
   }
 
+  // Helper method to create speech bubble style 
+  // container for AI reviews
   Widget _buildSpeechBubble(
     String text, 
     Color color, 
