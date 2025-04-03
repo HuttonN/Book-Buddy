@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 
+// Scan book for adding a book to a users library or TBR
 class ScanBookAdding extends StatefulWidget {
   final String imagePath;
   final String initialTitle;
@@ -24,6 +25,7 @@ class ScanBookAdding extends StatefulWidget {
   _ScanBookAddingState createState() => _ScanBookAddingState();
 }
 
+// State class for the book adding screen
 class _ScanBookAddingState extends State<ScanBookAdding> {
   late bool _isDarkMode;
   late TextEditingController _titleController;
@@ -32,6 +34,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   String? _aiReview;
   bool _isSaving = false;
 
+  // Firebase instances
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -39,6 +42,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   void initState() {
     super.initState();
     _isDarkMode = widget.isDarkMode;
+    // Initialise controllers with scanned data
     _titleController = TextEditingController(text: widget.initialTitle);
     _authorController = TextEditingController(text: widget.initialAuthor);
   }
@@ -51,6 +55,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     super.dispose();
   }
 
+  // Save book to Firestore with the specified read status
   Future<void> _saveBook(bool hasRead) async {
     if (
       _titleController.text.isEmpty || _authorController.text.isEmpty
@@ -71,6 +76,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     try {
       User? user = _auth.currentUser;
 
+      // Save to Firestore
       if (user != null) {
         await _firestore.collection('userCollection').add({
           'Title': _titleController.text,
@@ -80,6 +86,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
           'timestamp': FieldValue.serverTimestamp(),
         });
         
+        // Shows success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: 
@@ -101,6 +108,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
         );
       }
     } catch (e) {
+      // Shows error message
       ScaffoldMessenger.of(
         context).showSnackBar(
         SnackBar(
@@ -118,8 +126,10 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
     }
   }
 
+  // Generate an AI review for the scanned book
   Future<void> _generateAIReview() async {
     try {
+      // Initialise AI model
       final model = GenerativeModel(
         model: 'gemini-2.0-flash', 
         apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
@@ -135,6 +145,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
       ScaffoldMessenger.of(
         context).showSnackBar(
         SnackBar(
+          // Error message
           content: 
             Text("Error generating review: ${e.toString()}"
           )
@@ -146,7 +157,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      // Custome app bar
       appBar: 
       PreferredSize(
         preferredSize: Size.fromHeight(35), 
@@ -177,6 +188,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
           crossAxisAlignment: 
             CrossAxisAlignment.stretch,
           children: [
+            // Display scanned book image
             Container(
               height: 200,
               decoration: 
@@ -199,6 +211,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             SizedBox(
               height: 20
             ),
+            // Book title input field
             TextField(
               controller: _titleController,
               decoration: 
@@ -226,6 +239,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             SizedBox(
               height: 16
             ),
+            // Author input field
             TextField(
               controller: _authorController,
               decoration: 
@@ -250,9 +264,11 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
                   : Colors.black,
               )
             ),
+
             SizedBox(
               height: 16
             ),
+            // ISBN input field
             TextField(
               controller: _isbnController,
               decoration: 
@@ -278,6 +294,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
               height: 24
             ),
             
+            // Button to add book to library
             ElevatedButton.icon(
               onPressed: _isSaving 
                 ? null 
@@ -313,6 +330,8 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             SizedBox(
               height: 12
             ),
+
+            // Button to add book to TBR
             ElevatedButton.icon(
               onPressed: _isSaving 
                 ? null 
@@ -348,6 +367,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             SizedBox(
               height: 24
             ),
+            // Button to generate AI review
             Divider(),
             SizedBox(
               height: 16
