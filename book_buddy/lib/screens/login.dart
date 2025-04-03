@@ -44,12 +44,12 @@ class _LoginState extends State<Login> {
           SnackBar(
             content: Text('Login successful!'),
             backgroundColor: Colors.black,
-            duration: Duration(seconds: 2),
+            duration: Duration(seconds: 1),
           ),
         );
 
         // Navigate to home page after successful login 
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 1), () {
           print('success');
           Navigator.push(
             context, 
