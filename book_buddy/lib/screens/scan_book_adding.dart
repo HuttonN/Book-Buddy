@@ -3,6 +3,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:book_buddy/screens/home_page2.dart';
 import 'dart:io';
 
 // Scan book for adding a book to a users library or TBR
@@ -125,10 +126,15 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             ),
         );
         
-        Navigator.popUntil(
-          context, 
-          (route) => route.isFirst
-          );
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage2(
+            isDarkMode: _isDarkMode, 
+            toggleDarkMode: widget.toggleDarkMode,
+          ),
+        ),
+      );
       } else {
         ScaffoldMessenger.of(
           context).showSnackBar(
@@ -366,7 +372,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
             ElevatedButton.icon(
               onPressed: _isSaving 
                 ? null 
-                : () => _saveBook(true),
+                : () => _saveBook(false),
               icon: 
                 Icon(
                   Icons.bookmark, 
