@@ -61,7 +61,12 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Library- book icon',
             hint: 'Press to go to My Library screen',
-            child: Icon(Icons.menu_book, color: isDarkMode ? Colors.black: Colors.white,),
+            child: Icon(
+              Icons.menu_book, 
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              ),
           ),
           label: "", 
         ),
@@ -70,7 +75,12 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'My TBR- bookmark icon',
             hint: 'Press to go to My TBR screen',
-            child: Icon(Icons.bookmark, color: isDarkMode ? Colors.black: Colors.white,)
+            child: Icon(
+              Icons.bookmark, 
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              )
           ),
           label: "", 
         ),
@@ -82,10 +92,17 @@ class NavBar extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isDarkMode? Colors.white70: Colors.black, // Black circle for camera button
+                  color: isDarkMode
+                    ? Colors.white70
+                    : Colors.black, // Black circle for camera button
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt, color: isDarkMode ? Colors.black: Colors.white,), // White camera icon
+                child: Icon(
+                  Icons.camera_alt, 
+                  color: isDarkMode 
+                    ? Colors.black
+                    : Colors.white,
+                  ), // White camera icon
               ),
             ),
             label: "", 
@@ -96,7 +113,12 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Settings- settings icon',
             hint: 'Press to go to Settings screen', 
-            child: Icon(Icons.settings, color: isDarkMode ? Colors.black: Colors.white,),
+            child: Icon(
+              Icons.settings, 
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              ),
           ), 
           label: "", 
         ),
@@ -105,7 +127,12 @@ class NavBar extends StatelessWidget {
           icon: Semantics(
             label: 'Home- home icon', 
             hint: 'Press to go to the home page screen',
-            child: Icon(Icons.home, color: isDarkMode ? Colors.black: Colors.white,),
+            child: Icon(
+              Icons.home, 
+              color: isDarkMode 
+                ? Colors.black
+                : Colors.white,
+              ),
           ),
           label: "", 
         ),
@@ -173,14 +200,24 @@ class _TBRState extends State<TBR>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(preferredSize: Size.fromHeight(35), 
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(35), 
       child: AppBar(
-        backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 223, 245, 252),
+        backgroundColor: _isDarkMode 
+          ? Color.fromARGB(255, 20, 9, 45) 
+          : Color.fromARGB(255, 223, 245, 252),
         elevation: 5 ,
-        iconTheme: IconThemeData(color: _isDarkMode ? Colors.white : Color.fromARGB(255, 20, 9, 45) ),
-        )),
+        iconTheme: IconThemeData(
+          color: _isDarkMode 
+            ? Colors.white 
+            : Color.fromARGB(255, 20, 9, 45) 
+          ),
+       )
+      ),
       
-      backgroundColor: _isDarkMode ? Color.fromARGB(255, 20, 9, 45) : Color.fromARGB(255, 216, 243, 245),
+      backgroundColor: _isDarkMode 
+        ? Color.fromARGB(255, 20, 9, 45) 
+        : Color.fromARGB(255, 216, 243, 245),
       
       body: Align(
         alignment: Alignment.topCenter,
@@ -194,7 +231,9 @@ class _TBRState extends State<TBR>{
                   height: 100,
                   child: Icon(
                     Icons.bookmark,
-                    color: _isDarkMode ? Colors.white: Colors.black,
+                    color: _isDarkMode 
+                      ? Colors.white
+                      : Colors.black,
                     size: 90,
                     )
                 ),
@@ -203,7 +242,9 @@ class _TBRState extends State<TBR>{
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: _isDarkMode ? Colors.white : Colors.black,
+                    color: _isDarkMode 
+                      ? Colors.white 
+                      : Colors.black,
                   ),
                 ),
               ],
@@ -211,7 +252,10 @@ class _TBRState extends State<TBR>{
             Expanded(
               child:ListView.builder(
                 itemCount: userBooks.length,
-                itemBuilder: (context, index) {
+                itemBuilder: (
+                  context, 
+                  index
+                  ) {
                   final book = userBooks[index];
                   return Card(
                       child: ListTile(
@@ -221,12 +265,18 @@ class _TBRState extends State<TBR>{
                             MaterialPageRoute(
                               builder: (context) => TBR_specific_book(
                                 isDarkMode: _isDarkMode, 
-                                toggleDarkMode: widget.toggleDarkMode,
-                                bookTitle: book['Title'],
-                                bookAuthor: book['Author'],
-                                imageUrl: book['image_url'],
-                                bookId: book['id'],
-                                uid: userData!['uid']
+                                toggleDarkMode: 
+                                  widget.toggleDarkMode,
+                                bookTitle: 
+                                  book['Title'],
+                                bookAuthor: 
+                                  book['Author'],
+                                imageUrl: 
+                                  book['image_url'],
+                                bookId: 
+                                  book['id'],
+                                uid: 
+                                  userData!['uid']
                               ),
                             ),
                           );
@@ -250,7 +300,7 @@ class _TBRState extends State<TBR>{
         ),
       ),
 
-             bottomNavigationBar: NavBar(
+      bottomNavigationBar: NavBar(
         currentIndex: 4,
         onTap: (index) {
           Widget screen;
@@ -288,7 +338,8 @@ class _TBRState extends State<TBR>{
           }
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => screen),
+              MaterialPageRoute(
+                builder: (context) => screen),
             );
         },
         isDarkMode: _isDarkMode,
