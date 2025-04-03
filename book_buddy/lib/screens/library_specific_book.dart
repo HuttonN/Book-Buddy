@@ -340,7 +340,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
         child: Icon(
           index < _rating ? Icons.star : Icons.star_border,
           size: 30,
-          color: Colors.black,
+          color:_isDarkMode? Colors.white: Colors.black,
         ),
       );
     }),
@@ -408,7 +408,8 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                   100, 
                   '${widget.bookTitle} \n ${widget.bookAuthor}', 
                   boxColor, 
-                  shadowColor
+                  shadowColor,
+                  isDarkMode: _isDarkMode,
                 ),
               ],
             ),
@@ -429,13 +430,9 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                 _isGeneratingReview 
                   ? 'Generating review...' 
                   : 'Click to generate AI review', 
-                _isDarkMode 
-                  ? Colors.white 
-                  : Colors.black, 
-                shadowColor,
-                textColor: _isDarkMode 
-                  ? Colors.black 
-                  : Colors.white,
+               boxColor, 
+                  shadowColor,
+                  isDarkMode: _isDarkMode,
               )
             ),
             const SizedBox(
@@ -535,7 +532,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                         onPressed: _saveNotes,
                         style: 
                         ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
+                          backgroundColor:_isDarkMode ? Colors.white: Colors.black,
                           padding: 
                             const EdgeInsets.symmetric(
                               vertical: 15
@@ -547,15 +544,15 @@ class _Library_specific_bookState extends State<Library_specific_book> {
                           ),
                         ),
                         child: _isSavingNotes
-                            ? const CircularProgressIndicator(
-                                color: 
+                            ? CircularProgressIndicator(
+                                color: _isDarkMode ? Colors.black :
                                   Colors.white
                                 )
-                            : const Text(
+                            :  Text(
                                 "Save Notes",
                                 style: 
                                 TextStyle(
-                                  color: 
+                                  color: _isDarkMode ? Colors.black:
                                     Colors.white
                                 ),
                               ),
@@ -623,7 +620,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     String text, 
     Color color, 
     Color shadowColor,
-      {Color textColor = Colors.black}) {
+      {required bool isDarkMode,}) {
     return Container(
       width: width,
       height: height,
@@ -634,7 +631,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
           BorderRadius.circular(5),
         border: 
           Border.all(
-            color: Colors.black),
+            color:isDarkMode ? Colors.white: Colors.black),
         boxShadow: [
           BoxShadow(
             color: shadowColor, 
@@ -649,7 +646,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
           TextAlign.center,
         style: 
           TextStyle(
-            color: textColor, 
+            color: isDarkMode ? Colors.white: Colors.black, 
             fontSize: 16
           ),
       ),
@@ -671,6 +668,8 @@ class _Library_specific_bookState extends State<Library_specific_book> {
         color: color,
         borderRadius: 
           BorderRadius.circular(10),
+        border: Border.all(
+          color: _isDarkMode ? Colors.white : Colors.black ),
         boxShadow: [
           BoxShadow(
             color: shadowColor, 
