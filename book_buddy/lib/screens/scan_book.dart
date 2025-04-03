@@ -282,12 +282,12 @@ class _ScanBookState extends State<ScanBook> {
             if (
               title == null && text.length > 20
               ) 
-              title = text; 
+              {title = text;}
             if (
               author == null && text.contains
               (RegExp(r'^[A-Za-z\s]+$'))
               ) 
-              author = text; 
+              {author = text;} 
           }
         }
       }
