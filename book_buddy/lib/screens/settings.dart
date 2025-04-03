@@ -15,6 +15,10 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final User currentUser = FirebaseAuth.instance.currentUser!;
 
+/* Initially, when navigating to the settings page a red error screen 
+was briefly displayed before all the user data was fetched. AI was used
+to help fix this error, by helping to add in the future builder.*/
+
 // Settings screen allowing users to view their account 
 // infor, toggle between light and dark mode and sign 
 // out of their acount
@@ -175,23 +179,23 @@ class NavBar extends StatelessWidget {
 // toggling and a user authentication state
 class _SettingsState extends State<Settings>{
   late bool _isDarkMode;
-  Map<String, dynamic>? userData;
+  late Future<Map<String, dynamic>?> _userDataFuture;
 
   @override
   void initState(){
     super.initState();
     _isDarkMode = widget.isDarkMode;
-    fetchUserData();
+    _userDataFuture = fetchUserData();
   }
 
   // Fetches user data from firestore
   // Error catching for user data.
-  Future<void> fetchUserData() async {
+  Future<Map<String, dynamic>?> fetchUserData() async {
     try{
       final user = FirebaseAuth.instance.currentUser;
       if (user == null){
         print("User not signed in yet.");
-        return;
+        return null;
       }
 
       String uid = user.uid;
@@ -203,17 +207,14 @@ class _SettingsState extends State<Settings>{
 
       if (querySnapshot.docs.isEmpty){
         print("No matching user found.");
-        return;
+        return null;
       }
 
       final userDoc = querySnapshot.docs.first;
-      setState(() {
-        userData = userDoc.data() as Map<String,dynamic>?;
-      });
-
-      print(userData);
+      return userDoc.data() as Map<String, dynamic>?;
     } catch (e) {
-      print("Error fetching user data: $e");
+      print('Error fetching user data: $e');
+      return null;
     }
   }
 
@@ -287,8 +288,18 @@ class _SettingsState extends State<Settings>{
       backgroundColor: _isDarkMode 
         ? Color.fromARGB(255, 20, 9, 45) 
         : Color.fromARGB(255, 216, 243, 245),
-      
-      body: Align(
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: _userDataFuture,
+        builder: (contect, snapshot){
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center();
+          } else if (snapshot.hasError){
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data == null){
+            return Center(child:Text('No user data found.'));
+          } else {
+            final userData = snapshot.data!;
+            return Align(
         alignment: 
           Alignment.topCenter,
         child: 
@@ -441,7 +452,7 @@ class _SettingsState extends State<Settings>{
                     alignment: 
                       Alignment.center,
                     child: 
-                      Text('Surname: ${userData!['Surname']}', 
+                      Text('Surname: ${userData['Surname']}', 
                                 style: TextStyle(
                                   color: _isDarkMode 
                                     ? Colors.black 
@@ -566,7 +577,10 @@ class _SettingsState extends State<Settings>{
             SizedBox(height: 30),
           ],
         ),
-      ),
+      );
+          }
+        }),
+      
 
       // Navigation bar.       
       bottomNavigationBar: NavBar(
