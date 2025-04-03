@@ -7,6 +7,7 @@ import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/tbr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
+// Screen for viewing a specific book in Library
 class Library_specific_book extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode;
@@ -31,7 +32,7 @@ class Library_specific_book extends StatefulWidget {
   _Library_specific_bookState createState() => _Library_specific_bookState();
 }
 
-// Navigation bar.
+// Nav bar implementation
 class NavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -178,7 +179,7 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
+// State class for the Library specific book page
 class _Library_specific_bookState extends State<Library_specific_book> {
   late bool _isDarkMode;
   String _aiReview = "";
@@ -197,6 +198,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     _loadBookData();
   }
 
+  // Loading book data from firestore
   Future<void> _loadBookData() async {
   try {
     final snapshot = await firestore.FirebaseFirestore.instance
@@ -210,7 +212,9 @@ class _Library_specific_bookState extends State<Library_specific_book> {
           .collection("Books")
           .doc(widget.bookId)
           .get();
-          
+
+      // Checking if the book has a pre-existed rating or 
+      // user inputed notes    
       if (bookDoc.exists) {
         setState(() {
           _rating = bookDoc.data()?['Rating'] ?? 0;
@@ -227,6 +231,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     }
   }
 
+  // Saving notes to Firebase
   Future<void> _saveNotes() async {
     setState(() {
       _isSavingNotes = true;
@@ -252,6 +257,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     }
   }
 
+  // Saving rating to Firebase
   Future<void> _saveRating() async {
     try {
     await firestore.FirebaseFirestore.instance
@@ -275,25 +281,28 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     );
   }
   }
-
+  // Generates AI review for book
   Future<void> generateAIReview() async {  
     setState(() {
       _isGeneratingReview = true;
     });
 
     try {
+      // Initialise AI model
       final model = GenerativeModel(
         model: 'gemini-2.0-flash', 
         apiKey: 'AIzaSyCElfNpjFeYtMAhK1KqLg14VyMOEhGq_oA'
       ); 
       final prompt = "Write a 80-word review for the book '${widget.bookTitle}' by ${widget.bookAuthor}. "
           "Include the genre, main themes, and who might enjoy it.";
+      // Get AI response
       final response = await model.generateContent([
         Content.text(prompt)
       ]
     );
       
       setState(() {
+        // Error message if generation fails
         _aiReview = response.text 
           ?? "Could not generate review. Please try again.";
       });
@@ -347,6 +356,7 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     Color shadowColor = Colors.black26;
 
     return Scaffold(
+    // Custome app bar
     appBar: PreferredSize(
       preferredSize: 
         const Size.fromHeight(35),
@@ -646,6 +656,8 @@ class _Library_specific_bookState extends State<Library_specific_book> {
     );
   }
 
+  // Method to create speech bubble style 
+  // container for AI reviews
   Widget _buildSpeechBubble(
     String text, 
     Color color, 

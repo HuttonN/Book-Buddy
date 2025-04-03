@@ -435,7 +435,7 @@ class _TBR_specific_bookState extends State<TBR_specific_book> {
     );
   }
 
-  // Helper method to create speech bubble style 
+  // Method to create speech bubble style 
   // container for AI reviews
   Widget _buildSpeechBubble(
     String text, 
