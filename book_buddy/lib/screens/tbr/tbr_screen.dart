@@ -1,8 +1,8 @@
 import 'package:book_buddy/screens/library/library_screen.dart';
-import 'package:book_buddy/screens/scan_book.dart';
+import 'package:book_buddy/screens/scan/scan_book_screen.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
-import 'package:book_buddy/screens/tbr_specific_book.dart';
+import 'package:book_buddy/screens/tbr/tbr_specific_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,5 +1,5 @@
 import 'package:book_buddy/screens/library/library_screen.dart';
-import 'package:book_buddy/screens/scan_book.dart';
+import 'package:book_buddy/screens/scan/scan_book_screen.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/tbr/tbr_screen.dart';
 import 'package:flutter/material.dart';
