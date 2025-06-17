@@ -1,6 +1,6 @@
 import 'package:book_buddy/screens/library/library_screen.dart';
 import 'package:book_buddy/screens/home/home_page_screen.dart';
-import 'package:book_buddy/screens/settings.dart';
+import 'package:book_buddy/screens/settings/settings_screen.dart';
 import 'package:book_buddy/screens/tbr/tbr_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
