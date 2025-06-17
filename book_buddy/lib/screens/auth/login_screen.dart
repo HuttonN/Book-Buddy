@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/auth/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:book_buddy/screens/home/home_page_screen.dart';
-import 'package:book_buddy/screens/forgot_password.dart';
+import 'package:book_buddy/screens/auth/forgot_password_screen.dart';
 
 // Login screen that handles user authentication with email and password
 class Login extends StatefulWidget {
