@@ -1,7 +1,7 @@
 import 'package:book_buddy/screens/library/library_screen.dart';
 import 'package:book_buddy/screens/home_page2.dart';
 import 'package:book_buddy/screens/settings.dart';
-import 'package:book_buddy/screens/tbr.dart';
+import 'package:book_buddy/screens/tbr/tbr_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/scan_book_adding.dart';

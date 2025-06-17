@@ -5,7 +5,7 @@ import 'package:book_buddy/screens/library/library_screen.dart';
 import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
-import 'package:book_buddy/screens/tbr.dart';
+import 'package:book_buddy/screens/tbr/tbr_screen.dart';
 
 // Screen for viewing a specific book in TBR
 class TBR_specific_book extends StatefulWidget {
