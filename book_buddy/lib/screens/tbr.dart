@@ -1,4 +1,4 @@
-import 'package:book_buddy/screens/library.dart';
+import 'package:book_buddy/screens/library/library.dart';
 import 'package:book_buddy/screens/scan_book.dart';
 import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/home_page2.dart';
