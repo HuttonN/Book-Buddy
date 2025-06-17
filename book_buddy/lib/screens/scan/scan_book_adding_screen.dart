@@ -3,7 +3,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:book_buddy/screens/home_page2.dart';
+import 'package:book_buddy/screens/home/home_page_screen.dart';
 import 'dart:io';
 
 // Scan book for adding a book to a users library or TBR

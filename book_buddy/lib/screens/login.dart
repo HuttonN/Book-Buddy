@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:book_buddy/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:book_buddy/screens/home_page2.dart';
+import 'package:book_buddy/screens/home/home_page_screen.dart';
 import 'package:book_buddy/screens/forgot_password.dart';
 
 // Login screen that handles user authentication with email and password

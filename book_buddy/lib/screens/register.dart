@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; //required package for authentication
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:book_buddy/screens/home_page2.dart';
+import 'package:book_buddy/screens/home/home_page_screen.dart';
 
 // Registration page allowing new users to create an account
 class Register extends StatefulWidget {

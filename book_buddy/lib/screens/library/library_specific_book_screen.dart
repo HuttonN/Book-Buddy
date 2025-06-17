@@ -3,7 +3,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:book_buddy/screens/library/library_screen.dart';
 import 'package:book_buddy/screens/scan/scan_book_screen.dart';
 import 'package:book_buddy/screens/settings.dart';
-import 'package:book_buddy/screens/home_page2.dart';
+import 'package:book_buddy/screens/home/home_page_screen.dart';
 import 'package:book_buddy/screens/tbr/tbr_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
