@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:book_buddy/screens/home/home_page_screen.dart';
 
 // Registration page allowing new users to create an account
-class Register extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
 
-  const Register({
+  const RegisterScreen({
     super.key,
     required this.isDarkMode,
     required this.toggleDarkMode,
@@ -16,13 +16,13 @@ class Register extends StatefulWidget {
   
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<RegisterScreen> createState() => _RegisterState();
 }
 
 // State class for the Register screen thay forms input controllers and controls firebase 
 // operations. 
 // Define two TextEditingController instances to be able work with TextFields for email and password
-class _RegisterState extends State<Register> {
+class _RegisterState extends State<RegisterScreen> {
 
   late bool _isDarkMode;
 
@@ -98,7 +98,7 @@ Future<void> registerUser() async {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage2(
+          builder: (context) => HomePageScreen(
             isDarkMode: _isDarkMode,
             toggleDarkMode: widget.toggleDarkMode,
           ),

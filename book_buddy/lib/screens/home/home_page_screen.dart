@@ -14,11 +14,11 @@ final User currentUser = FirebaseAuth.instance.currentUser!;
 // This is the main dash board screen of the app
 // It displays user reading progress, navigate 
 // to other app sections and supports dark mode
-class HomePage2 extends StatefulWidget {
+class HomePageScreen extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
 
-   const HomePage2({
+   const HomePageScreen({
     required this.isDarkMode,
     required this.toggleDarkMode,
     super.key,
@@ -129,7 +129,7 @@ class NavBar extends StatelessWidget {
 
 // State class for home page that manages user data fetching
 // theme state and navigation
-class _HomePage2State extends State<HomePage2>{
+class _HomePage2State extends State<HomePageScreen>{
   late bool _isDarkMode;
   Map<String, dynamic>? userData;
 
@@ -309,7 +309,7 @@ class _HomePage2State extends State<HomePage2>{
                     TextButton(onPressed: (){
                       Navigator.push(
                         context, 
-                        MaterialPageRoute(builder: (context) => Library(
+                        MaterialPageRoute(builder: (context) => LibraryScreen(
                           isDarkMode: _isDarkMode, 
                           toggleDarkMode: widget.toggleDarkMode
                           )
@@ -577,7 +577,7 @@ class _HomePage2State extends State<HomePage2>{
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(
+              screen = LibraryScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );
@@ -602,7 +602,7 @@ class _HomePage2State extends State<HomePage2>{
               break;
             case 4:
             default:
-              screen = HomePage2(
+              screen = HomePageScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );

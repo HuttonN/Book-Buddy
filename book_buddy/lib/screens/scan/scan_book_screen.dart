@@ -497,7 +497,7 @@ class _ScanBookState extends State<ScanBook> {
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(
+              screen = LibraryScreen(
                 isDarkMode: _isDarkMode, 
                 toggleDarkMode: widget.toggleDarkMode
               );
@@ -521,7 +521,7 @@ class _ScanBookState extends State<ScanBook> {
               );
               break;
             default:
-              screen = HomePage2(
+              screen = HomePageScreen(
                 isDarkMode: _isDarkMode, 
                 toggleDarkMode: widget.toggleDarkMode
               );

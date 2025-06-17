@@ -9,11 +9,11 @@ import 'package:book_buddy/screens/library/library_specific_book_screen.dart';
 
 // Library screen widget to display the user's
 // read books
-class Library extends StatefulWidget {
+class LibraryScreen extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
 
-   const Library({
+   const LibraryScreen({
     required this.isDarkMode,
     required this.toggleDarkMode,
     super.key,
@@ -163,7 +163,7 @@ class NavBar extends StatelessWidget {
 }
 
 // State class for library screen 
-class _LibraryState extends State<Library>{
+class _LibraryState extends State<LibraryScreen>{
   late bool _isDarkMode;
   Map<String, dynamic>? userData;
   List<Map<String, dynamic>> userBooks = [];
@@ -342,7 +342,7 @@ class _LibraryState extends State<Library>{
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(
+              screen = LibraryScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );
@@ -367,7 +367,7 @@ class _LibraryState extends State<Library>{
               break;
             case 4:
             default:
-              screen = HomePage2(
+              screen = HomePageScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );

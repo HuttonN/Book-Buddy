@@ -88,7 +88,7 @@ class StartUpPage extends StatelessWidget {
                 // Navigate to the Login page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login(
+                  MaterialPageRoute(builder: (context) => LoginScreen(
                       isDarkMode: isDarkMode, 
                       toggleDarkMode: toggleDarkMode
                     )),  // Navigate to LoginPage

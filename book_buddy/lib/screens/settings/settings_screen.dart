@@ -239,7 +239,7 @@ class _SettingsState extends State<Settings>{
           print('success');
           Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => Login(
+            MaterialPageRoute(builder: (context) => LoginScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
                     ))
@@ -587,7 +587,7 @@ class _SettingsState extends State<Settings>{
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(
+              screen = LibraryScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );
@@ -612,7 +612,7 @@ class _SettingsState extends State<Settings>{
               break;
             case 4:
             default:
-              screen = HomePage2(
+              screen = HomePageScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );

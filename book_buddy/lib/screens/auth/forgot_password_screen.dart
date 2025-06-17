@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Screen to reset password
-class ForgotPassword extends StatefulWidget{
+class ForgotPasswordScreen extends StatefulWidget{
   final bool isDarkMode;
 
-  const ForgotPassword({super.key, required this.isDarkMode});
+  const ForgotPasswordScreen({super.key, required this.isDarkMode});
 
   @override
-  State<ForgotPassword> createState() => _ForgotPasswordState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordState();
 }
 
 // State class that manages email input handling, 
 // password reset functionality and user feedback
 // messages
-class _ForgotPasswordState extends State<ForgotPassword> {
+class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
   String message = '';
 

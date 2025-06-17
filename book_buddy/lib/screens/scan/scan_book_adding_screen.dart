@@ -129,7 +129,7 @@ class _ScanBookAddingState extends State<ScanBookAdding> {
         Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage2(
+          builder: (context) => HomePageScreen(
             isDarkMode: _isDarkMode, 
             toggleDarkMode: widget.toggleDarkMode,
           ),

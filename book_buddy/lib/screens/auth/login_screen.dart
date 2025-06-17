@@ -5,11 +5,11 @@ import 'package:book_buddy/screens/home/home_page_screen.dart';
 import 'package:book_buddy/screens/auth/forgot_password_screen.dart';
 
 // Login screen that handles user authentication with email and password
-class Login extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   final bool isDarkMode;
   final Function(bool) toggleDarkMode; 
 
-   const Login({
+   const LoginScreen({
     required this.isDarkMode,
     required this.toggleDarkMode,
     super.key,
@@ -22,7 +22,7 @@ class Login extends StatefulWidget {
 
 
 // Define two TextEditingController instances to be able work with TextFields for email and password
-class _LoginState extends State<Login> {
+class _LoginState extends State<LoginScreen> {
 
   late bool _isDarkMode;
 
@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
           print('success');
           Navigator.push(
             context, 
-            MaterialPageRoute(builder: (context) => HomePage2(
+            MaterialPageRoute(builder: (context) => HomePageScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
                     ))
@@ -218,7 +218,7 @@ class _LoginState extends State<Login> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                ForgotPassword(isDarkMode: _isDarkMode),
+                                ForgotPasswordScreen(isDarkMode: _isDarkMode),
                             ),
                           );
                         },
@@ -268,7 +268,7 @@ class _LoginState extends State<Login> {
                     // Navigate to the Login page when the button is pressed
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Register(
+                      MaterialPageRoute(builder: (context) => RegisterScreen(
                           isDarkMode: _isDarkMode, 
                           toggleDarkMode: widget.toggleDarkMode)),  // Navigate to LoginPage
                     );

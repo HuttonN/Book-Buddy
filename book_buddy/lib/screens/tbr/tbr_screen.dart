@@ -312,7 +312,7 @@ class _TBRState extends State<TBR>{
           Widget screen;
           switch (index) {
             case 0:
-              screen = Library(
+              screen = LibraryScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );
@@ -337,7 +337,7 @@ class _TBRState extends State<TBR>{
               break;
             case 4:
             default:
-              screen = HomePage2(
+              screen = HomePageScreen(
                       isDarkMode: _isDarkMode, 
                       toggleDarkMode: widget.toggleDarkMode
               );
