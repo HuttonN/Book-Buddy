@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_buddy/screens/register.dart';
+import 'package:book_buddy/screens/auth/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:book_buddy/screens/home/home_page_screen.dart';
 import 'package:book_buddy/screens/forgot_password.dart';

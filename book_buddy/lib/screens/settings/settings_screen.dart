@@ -8,7 +8,7 @@ import 'package:book_buddy/screens/library/library_screen.dart';
 import 'package:book_buddy/screens/scan/scan_book_screen.dart';
 import 'package:book_buddy/screens/home/home_page_screen.dart';
 import 'package:book_buddy/screens/tbr/tbr_screen.dart';
-import 'package:book_buddy/screens/login.dart';
+import 'package:book_buddy/screens/auth/login_screen.dart';
 
 // User details from Firebase.
 final FirebaseAuth auth = FirebaseAuth.instance;

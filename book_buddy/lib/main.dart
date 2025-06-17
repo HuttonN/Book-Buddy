@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:book_buddy/firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'package:book_buddy/screens/login.dart';
+import 'package:book_buddy/screens/auth/login_screen.dart';
 
 // Following block is required to ensure Flutter's widget system and Firebase are initialised before the application starts
 void main() async {
