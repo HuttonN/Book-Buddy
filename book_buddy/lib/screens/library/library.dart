@@ -5,7 +5,7 @@ import 'package:book_buddy/screens/tbr.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
-import 'package:book_buddy/screens/library_specific_book.dart';
+import 'package:book_buddy/screens/library/library_specific_book.dart';
 
 // Library screen widget to display the user's
 // read books
