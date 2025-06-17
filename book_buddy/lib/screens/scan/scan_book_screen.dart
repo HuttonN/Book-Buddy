@@ -4,7 +4,7 @@ import 'package:book_buddy/screens/settings.dart';
 import 'package:book_buddy/screens/tbr/tbr_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:book_buddy/screens/scan_book_adding.dart';
+import 'package:book_buddy/screens/scan/scan_book_adding_screen.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image/image.dart' as image;
 import 'dart:io';
